@@ -16,7 +16,7 @@ using System.IO;
 public class GoogleDataSettings : ScriptableObject 
 {
     [SerializeField]
-    public static string AssetPath = "Assets/SpreadSheetPro/SpreadSheetPro/GDataPlugin/Editor/";
+    public string AssetPath = "Assets/SpreadSheetPro/SpreadSheetPro/GDataPlugin/Editor/";
     [SerializeField]
     public static string AssetFileName = "GoogleDataSettings.asset";
 
@@ -25,7 +25,10 @@ public class GoogleDataSettings : ScriptableObject
     /// </summary>
     public string Account
     {
-        get { return Instance.account; }
+        get 
+        {
+            return account;
+        }
         set
         {
             if (s_Instance != null && Instance.account != value)
@@ -41,7 +44,10 @@ public class GoogleDataSettings : ScriptableObject
     /// </summary>
     public string Password
     {
-        get { return Instance.password; }
+        get 
+        {
+            return password;
+        }
         set
         {
             if (s_Instance != null && Instance.password != value)
@@ -91,18 +97,22 @@ public class GoogleDataSettings : ScriptableObject
         {
             if (s_Instance == null)
             {
-                string filePath = AssetPath + AssetFileName;
+                //string filePath = AssetPath + AssetFileName;
+                string path = AssetDatabase.GetAssetPath(Selection.activeObject);
+                string filePath = path + AssetFileName;
+
                 s_Instance = (GoogleDataSettings)AssetDatabase.LoadAssetAtPath (filePath, typeof (GoogleDataSettings));
                 
                 if (s_Instance == null)
                 {
                     //HACK: DO NOT create googlesettings.asset at the start of the unity editor.
                     //      If it does, it crashes.
-                    EditorUtility.DisplayDialog (
-                        "Warning",
-                        "No account setting file is found. You need to create GoogleDataSettings.asset file.",
-                        "OK"
-                    );
+                    //EditorUtility.DisplayDialog (
+                    //    "Warning",
+                    //    "No account setting file is found. You need to create GoogleDataSettings.asset file.",
+                    //    "OK"
+                    //);
+                    Debug.LogWarning("No account setting file is at " + filePath + " You need to create a new one or modify its path.");
                 }
             }
             return s_Instance;
@@ -114,7 +124,8 @@ public class GoogleDataSettings : ScriptableObject
     /// </summary>
     public static GoogleDataSettings Create()
     {
-        string filePath = AssetPath + AssetFileName;
+        string filePath = CustomAssetUtility.GetUniqueAssetPathNameOrFallback(AssetFileName);
+        //string filePath = AssetPath + AssetFileName;
         s_Instance = (GoogleDataSettings)AssetDatabase.LoadAssetAtPath(filePath, typeof(GoogleDataSettings));
                         
         if (s_Instance == null)
@@ -124,8 +135,8 @@ public class GoogleDataSettings : ScriptableObject
             string path = CustomAssetUtility.GetUniqueAssetPathNameOrFallback(AssetFileName);
             AssetDatabase.CreateAsset(s_Instance, path);
 
-            AssetPath = Path.GetDirectoryName(path);
-            AssetPath += "/";
+            s_Instance.AssetPath = Path.GetDirectoryName(path);
+            s_Instance.AssetPath += "/";
 
             // saves file path of the created asset.
             EditorUtility.SetDirty(s_Instance);
