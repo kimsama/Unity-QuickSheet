@@ -44,7 +44,7 @@ namespace UnityEditor
         private string templatePath = "SpreadSheetPro/SpreadSheetPro/Templates";
 
         [ExposeProperty]
-        public string ClassPath
+        public string RuntimeClassPath
         {
             get { return scriptFilePath; }
             set { scriptFilePath = value; }
@@ -123,8 +123,8 @@ namespace UnityEditor
         /// </summary>
         public void ReInitialize()
         {
-            if (string.IsNullOrEmpty(ClassPath))
-                ClassPath = DEFAULT_CLASS_PATH;
+            if (string.IsNullOrEmpty(RuntimeClassPath))
+                RuntimeClassPath = DEFAULT_CLASS_PATH;
             if (string.IsNullOrEmpty(EditorClassPath))
                 EditorClassPath = DEFAULT_EDITOR_PATH;
 

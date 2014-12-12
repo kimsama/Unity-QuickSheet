@@ -1,4 +1,4 @@
-﻿///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 ///
 /// ScriptMachineEditor.cs
 /// 
@@ -64,8 +64,8 @@ public class ScriptMachineEditor : Editor
     public override void OnInspectorGUI()
     {
         GUILayout.Label("GoogleDrive Settings");
-        EditorGUILayout.TextField("Username", GoogleDataSettings.Instance.Account);
-        EditorGUILayout.PasswordField("Password", GoogleDataSettings.Instance.Password);
+		GoogleDataSettings.Instance.Account = EditorGUILayout.TextField("Username", GoogleDataSettings.Instance.Account);
+		GoogleDataSettings.Instance.Password = EditorGUILayout.PasswordField("Password", GoogleDataSettings.Instance.Password);
 
         EditorGUILayout.Separator ();
 
@@ -104,6 +104,7 @@ public class ScriptMachineEditor : Editor
         // force save changed type.
         if (GUI.changed)
         {
+			EditorUtility.SetDirty(GoogleDataSettings.Instance);
             EditorUtility.SetDirty(scriptMachine);
             AssetDatabase.SaveAssets();
         }
@@ -226,12 +227,25 @@ public class ScriptMachineEditor : Editor
         sp.className = scriptMachine.WorkSheetName;
         sp.dataClassName = scriptMachine.WorkSheetName + "Data";
         sp.template = GetTemplate ("ScriptableObjectClass");
-
-        StreamWriter writer = null;
-        try
-        {
-            // write a script to the given folder.		
-            writer = new StreamWriter(TargetPathForClassScript(scriptMachine.WorkSheetName));
+		
+		// check the directory path exists
+		string fullPath = TargetPathForClassScript (scriptMachine.WorkSheetName);
+		string folderPath = Path.GetDirectoryName (fullPath);
+		if (!Directory.Exists(folderPath))
+		{
+			EditorUtility.DisplayDialog (
+			    "Warning",
+				"The folder for runtime script files does not exist. Check the path " + folderPath + " exists.",
+				"OK"
+			);
+			return;
+		}
+		
+		StreamWriter writer = null;
+		try
+		{
+			// write a script to the given folder.		
+            writer = new StreamWriter(fullPath);
             writer.Write(new NewScriptGenerator(sp).ToString());
         }
         catch(System.Exception e)
@@ -258,11 +272,24 @@ public class ScriptMachineEditor : Editor
         sp.dataClassName = scriptMachine.WorkSheetName + "Data";
         sp.template = GetTemplate ("ScriptableObjectEditorClass");
 
-        StreamWriter writer = null;
+		// check the directory path exists
+		string fullPath = TargetPathForEditorScript (scriptMachine.WorkSheetName);
+		string folderPath = Path.GetDirectoryName (fullPath);
+		if (!Directory.Exists(folderPath))
+		{
+			EditorUtility.DisplayDialog (
+				"Warning",
+				"The folder for editor script files does not exist. Check the path " + folderPath + " exists.",
+				"OK"
+				);
+			return;
+		}
+		
+		StreamWriter writer = null;
         try
         {
             // write a script to the given folder.		
-            writer = new StreamWriter(TargetPathForEditorScript(scriptMachine.WorkSheetName));
+            writer = new StreamWriter(fullPath);
             writer.Write(new NewScriptGenerator(sp).ToString());
         }
         catch(System.Exception e)
@@ -284,6 +311,19 @@ public class ScriptMachineEditor : Editor
     /// </summary>
     private void CreateDataClassScript(ScriptPrescription sp)
     {
+		// check the directory path exists
+		string fullPath = TargetPathForData(scriptMachine.WorkSheetName);
+		string folderPath = Path.GetDirectoryName (fullPath);
+		if (!Directory.Exists(folderPath))
+		{
+			EditorUtility.DisplayDialog (
+				"Warning",
+				"The folder for runtime script files does not exist. Check the path " + folderPath + " exists.",
+				"OK"
+				);
+			return;
+		}
+
         List<MemberFieldData> fieldList = new List<MemberFieldData>();
 
         //FIXME: replace ValueType to CellType and support Enum type.
@@ -302,7 +342,7 @@ public class ScriptMachineEditor : Editor
         sp.memberFields = fieldList.ToArray ();
         
         // write a script to the given folder.		
-        using (var writer = new StreamWriter(TargetPathForData(scriptMachine.WorkSheetName)))
+        using (var writer = new StreamWriter(fullPath))
         {
             writer.Write(new NewScriptGenerator(sp).ToString());
             writer.Close();
@@ -367,7 +407,7 @@ public class ScriptMachineEditor : Editor
     /// </summary>
     private string TargetPathForClassScript(string worksheetName)
     {
-        return Path.Combine ("Assets/"+scriptMachine.ClassPath, worksheetName + "." + "cs");
+        return Path.Combine ("Assets/"+scriptMachine.RuntimeClassPath, worksheetName + "." + "cs");
     }
 
     /// <summary>
@@ -384,7 +424,7 @@ public class ScriptMachineEditor : Editor
     /// </summary>
     private string TargetPathForData(string worksheetName)
     {
-        return Path.Combine ("Assets/" + scriptMachine.ClassPath, worksheetName + "Data" + "." + "cs");
+		return Path.Combine ("Assets/" + scriptMachine.RuntimeClassPath, worksheetName + "Data" + "." + "cs");
     }
 
     /// <summary>
