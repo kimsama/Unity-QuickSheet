@@ -17,23 +17,69 @@ using System.Collections;
 public class GoogleDataSettingsEditor : Editor 
 {
     GoogleDataSettings setting;
-    
+
+    bool hasCorrectPath = false;
+
     public void OnEnable()
     {
+
         setting = target as GoogleDataSettings;
+        hasCorrectPath = CheckPath();
+        //if (hasCorrectPath)
+        //{
+            
+        //}
+    }
+
+    bool CheckPath()
+    {
+        string file = AssetDatabase.GetAssetPath(Selection.activeObject);
+
+        //string file = GoogleDataSettings.AssetPath + GoogleDataSettings.AssetFileName;
+        //GoogleDataSettings inst = (GoogleDataSettings)AssetDatabase.LoadAssetAtPath(file, typeof(GoogleDataSettings));
+        //return inst != null ? true : false;
+
+        string assetFile = setting.AssetPath + GoogleDataSettings.AssetFileName;
+        if (file == assetFile)
+            return true;
+        return false;
     }
     
     public override void OnInspectorGUI()
-    {		
+    {
+        GUI.changed = false;
+
         GUILayout.Label("GoogleSpreadsheet Settings");
         
         // path and asset file name which contains a google account and password.
-        GoogleDataSettings.AssetPath = GUILayout.TextField(GoogleDataSettings.AssetPath, 120);
+        setting.AssetPath = GUILayout.TextField(setting.AssetPath, 120);
         GoogleDataSettings.AssetFileName = GUILayout.TextField(GoogleDataSettings.AssetFileName, 120);
-        
-        // account and passwords setting, this should be specified before you're trying to connect a google spreadsheet.
-        setting.Account = GUILayout.TextField(setting.Account, 100);
-        setting.Password = GUILayout.PasswordField (setting.Password, "*"[0], 25);
+
+        if (GUI.changed)
+        {
+            EditorUtility.SetDirty(setting);
+            AssetDatabase.SaveAssets();
+
+            hasCorrectPath = CheckPath();
+        }
+
+        //if (hasCorrectPath && setting.Account != null)
+        if (hasCorrectPath )
+        {
+            // account and passwords setting, this should be specified before you're trying to connect a google spreadsheet.
+            setting.Account = GUILayout.TextField(setting.Account, 100);
+            setting.Password = GUILayout.PasswordField(setting.Password, "*"[0], 25);
+        }
+        else
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Toggle(true, "", "CN EntryError", GUILayout.Width(20));
+            GUILayout.BeginVertical();
+            GUILayout.Label("", GUILayout.Height(12));
+            GUILayout.Label("Correct the path of the GoogleDataSetting.asset file.", GUILayout.Height(20));
+            GUILayout.EndVertical();
+            GUILayout.EndHorizontal();
+        }
 
         if (GUI.changed)
         {
