@@ -153,5 +153,4 @@ public class GoogleDataSettings : ScriptableObject
         
         return s_Instance;
     }
-    
 }

@@ -144,6 +144,5 @@ namespace UnityEditor
             AssetDatabase.SaveAssets();
             Selection.activeObject = inst;
         }
-
     }
 }

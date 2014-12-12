@@ -42,9 +42,6 @@ public class ScriptMachineEditor : Editor
         return true;
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     void OnEnable()
     {
         // to resolve TlsException error
