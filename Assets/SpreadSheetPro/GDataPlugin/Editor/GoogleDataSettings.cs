@@ -15,8 +15,8 @@ using System.IO;
 /// </summary>
 public class GoogleDataSettings : ScriptableObject 
 {
-    [SerializeField]
     public string AssetPath = "Assets/SpreadSheetPro/SpreadSheetPro/GDataPlugin/Editor/";
+
     [SerializeField]
     public static string AssetFileName = "GoogleDataSettings.asset";
 
@@ -97,7 +97,6 @@ public class GoogleDataSettings : ScriptableObject
         {
             if (s_Instance == null)
             {
-                //string filePath = AssetPath + AssetFileName;
                 string path = AssetDatabase.GetAssetPath(Selection.activeObject);
                 string filePath = path + AssetFileName;
 
@@ -125,7 +124,6 @@ public class GoogleDataSettings : ScriptableObject
     public static GoogleDataSettings Create()
     {
         string filePath = CustomAssetUtility.GetUniqueAssetPathNameOrFallback(AssetFileName);
-        //string filePath = AssetPath + AssetFileName;
         s_Instance = (GoogleDataSettings)AssetDatabase.LoadAssetAtPath(filePath, typeof(GoogleDataSettings));
                         
         if (s_Instance == null)
