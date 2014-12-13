@@ -31,9 +31,9 @@ public class GoogleDataSettingsEditor : Editor
         // path and asset file name which contains a google account and password.
         setting.AssetPath = GUILayout.TextField(setting.AssetPath, 120);
         GoogleDataSettings.AssetFileName = GUILayout.TextField(GoogleDataSettings.AssetFileName, 120);		       
-		
-		if (setting.CheckPath())
-		{
+        
+        if (setting.CheckPath())
+        {
             // account and passwords setting, this should be specified before you're trying to connect a google spreadsheet.
             setting.Account = GUILayout.TextField(setting.Account, 100);
             setting.Password = GUILayout.PasswordField(setting.Password, "*"[0], 25);

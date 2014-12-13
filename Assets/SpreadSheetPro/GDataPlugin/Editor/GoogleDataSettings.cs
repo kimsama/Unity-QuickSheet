@@ -28,8 +28,8 @@ public class GoogleDataSettings : ScriptableObject
         get { return account; }
         set
         {
-			if (account != value)
-				account = value;
+            if (account != value)
+                account = value;
         }
     }
 
@@ -44,8 +44,8 @@ public class GoogleDataSettings : ScriptableObject
         get { return password; }
         set
         {
-			if (password != value)
-				password = value;
+            if (password != value)
+                password = value;
         }
     }
 
@@ -82,16 +82,16 @@ public class GoogleDataSettings : ScriptableObject
     {
     }
     
-	/// <summary>
-	/// Checks GoogleDataSetting.asset file exist at the specified path(AssetPath+AssetFileName).
-	/// </summary>
-	public bool CheckPath()
-	{
-		string file = AssetDatabase.GetAssetPath(Selection.activeObject);
-		string assetFile = AssetPath + GoogleDataSettings.AssetFileName;
+    /// <summary>
+    /// Checks GoogleDataSetting.asset file exist at the specified path(AssetPath+AssetFileName).
+    /// </summary>
+    public bool CheckPath()
+    {
+        string file = AssetDatabase.GetAssetPath(Selection.activeObject);
+        string assetFile = AssetPath + GoogleDataSettings.AssetFileName;
 
-		return (file == assetFile) ? true : false;
-	}
+        return (file == assetFile) ? true : false;
+    }
 
     /// <summary>
     /// A property for singleton.
@@ -102,18 +102,19 @@ public class GoogleDataSettings : ScriptableObject
         {
             if (s_Instance == null)
             {
-				// A tricky way to assess non-static member in the static method.
-				GoogleDataSettings temp = new GoogleDataSettings();
-				string path = temp.AssetPath + GoogleDataSettings.AssetFileName;
+                // A tricky way to assess non-static member in the static method.
+                GoogleDataSettings temp = new GoogleDataSettings();
+                string path = temp.AssetPath + GoogleDataSettings.AssetFileName;
 
-				s_Instance = (GoogleDataSettings)AssetDatabase.LoadAssetAtPath (path, typeof (GoogleDataSettings));
-				if (s_Instance == null)
-				{
-					Debug.LogWarning("No account setting file is at " + path + " You need to create a new one or modify its path.");
-				}
+                s_Instance = (GoogleDataSettings)AssetDatabase.LoadAssetAtPath (path, typeof (GoogleDataSettings));
+                if (s_Instance == null)
+                {
+                    Debug.LogWarning("No account setting file is at " + path + " You need to create a new one or modify its path.");
+                }
             }
             return s_Instance;
         }
+
     }
     
     /// <summary>

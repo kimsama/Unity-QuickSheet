@@ -41,7 +41,7 @@ namespace UnityEditor
         }
 
         [SerializeField]
-        private string templatePath = "SpreadSheetPro/SpreadSheetPro/Templates";
+        private string templatePath = "SpreadSheetPro/Templates";
 
         [ExposeProperty]
         public string RuntimeClassPath
@@ -106,8 +106,8 @@ namespace UnityEditor
             return false;
         }
 
-        private readonly string DEFAULT_CLASS_PATH = "Script/Data/Runtime";
-        private readonly string DEFAULT_EDITOR_PATH = "Script/Data/Editor";
+        private readonly string DEFAULT_CLASS_PATH = "Scripts/Runtime";
+        private readonly string DEFAULT_EDITOR_PATH = "Scripts/Editor";
 
         /// <summary>
         /// Called when the asset file is selected.
