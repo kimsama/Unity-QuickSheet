@@ -70,14 +70,24 @@ public class ScriptMachineEditor : Editor
             GUILayout.EndVertical();
             GUILayout.EndHorizontal();
         }
+        GUIStyle headerStyle = null;
+        Rect rc;
+        headerStyle = new GUIStyle(GUI.skin.label);
+        headerStyle.fontSize = 12;
+        headerStyle.fontStyle = FontStyle.Bold;
+        GUILayout.Label("GoogleDrive Settings:", headerStyle);
+        //rc = GUILayoutUtility.GetLastRect();
+        //GUI.skin.box.Draw(rc, GUIContent.none, 0);
 
-        GUILayout.Label("GoogleDrive Settings");
         GoogleDataSettings.Instance.Account = EditorGUILayout.TextField("Username", GoogleDataSettings.Instance.Account);
         GoogleDataSettings.Instance.Password = EditorGUILayout.PasswordField("Password", GoogleDataSettings.Instance.Password);
 
         EditorGUILayout.Separator ();
 
-        GUILayout.Label("Script Path Settings");
+        GUILayout.Label("Script Path Settings:", headerStyle);
+        //rc = GUILayoutUtility.GetLastRect();
+        //GUI.skin.box.Draw(new Rect(rc.left, rc.top + rc.height, rc.width, 1f), GUIContent.none, 0);
+
         ExposeProperties.Expose(databaseFields);
         EditorGUILayout.Separator ();
 
