@@ -6,5 +6,8 @@ namespace Data.Excel
 	{
 		Schema ReadSchema ();
 		Row[] ReadData();
+
+        string[] GetTitle(string sheetName);
+
 	}
 }

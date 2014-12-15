@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 ///
-/// BaseEditor.cs
+/// BaseGoogleEditor.cs
 /// 
 /// (c)2013 Kim, Hyoun Woo
 ///
@@ -26,7 +26,7 @@ using Google.GData.Spreadsheets;
 /// 
 /// A BaseEditor class.
 /// 
-public class BaseEditor<T> : Editor //where T : BaseDatabase
+public class BaseGoogleEditor<T> : Editor //where T : BaseDatabase
 {	
     protected string username;
     protected string password;
@@ -127,7 +127,7 @@ public class BaseEditor<T> : Editor //where T : BaseDatabase
         {
             if (!Load ())
                 Debug.LogError("Failed to Load data from Google.");
-        }				
+        }
     }
         
     /*

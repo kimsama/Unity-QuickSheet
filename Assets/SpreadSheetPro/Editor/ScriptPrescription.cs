@@ -16,7 +16,7 @@ using Object = UnityEngine.Object;
 namespace UnityEditor
 {
     [Serializable]
-    internal class ScriptPrescription
+    public class ScriptPrescription
     {
         public string className               = string.Empty;
         public string worksheetClassName      = string.Empty; // used for ScriptableObject class name.
@@ -38,7 +38,7 @@ namespace UnityEditor
         Bool,
     }
 
-    internal class MemberFieldData
+    public class MemberFieldData
     {
         public CellType type = CellType.Undefined;
         private string name;

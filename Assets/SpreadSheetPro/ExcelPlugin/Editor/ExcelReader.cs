@@ -36,5 +36,10 @@ namespace Data.Excel
 
 			return arg2[1];
 		}
+
+        //public virtual string[] GetTitle(string sheetName)
+        //{
+        //    return null;
+        //}
 	}
 }

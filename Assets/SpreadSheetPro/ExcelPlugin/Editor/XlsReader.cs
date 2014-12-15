@@ -5,6 +5,7 @@ using System.IO;
 using System.Data;
 using System.Collections;
 using System.Collections.Generic;
+using NPOI.SS.UserModel;
 using NPOI.HSSF.UserModel;
 
 namespace Data.Excel
@@ -42,9 +43,12 @@ namespace Data.Excel
 			if (InitHssf())
 			{
 				//TODO: change to retrieve sheet index by argument
+                /*
 				int sheetIndex = 0;
 				LoadSchema(sheetIndex);
 				LoadData(sheetIndex);
+                */
+
 			}
 			else
 				Debug.Log ("Failed to creaate HSSFWorkbook instance.");
@@ -78,6 +82,7 @@ namespace Data.Excel
 			return false;
 		}
 
+        [System.Obsolete("No more need to specify a cell type within a spreadsheet.")]
 		bool LoadSchema(int sheetIndex)
 		{
 			this.schema = new Schema ();
@@ -117,7 +122,9 @@ namespace Data.Excel
 		}
 
 		int startRow = 2;
-		bool LoadData(int sheetIndex)
+
+        [System.Obsolete("No more need to specify a cell type within a spreadsheet.")]
+        bool LoadData(int sheetIndex)
 		{
 			if (this.schema == null)
 				return false;
@@ -196,6 +203,83 @@ namespace Data.Excel
 			return true;
 		}
 
+        bool LoadDataWithoutSchema(int sheetIndex)
+        {
+            HSSFSheet sheet = (HSSFSheet)this.hssWorkbook.GetSheetAt(sheetIndex);
+            if (sheet != null)
+            {
+                int currentRowIndex = 0;
+                int startRow = 1;
+
+                System.Collections.IEnumerator rows = sheet.GetRowEnumerator();
+                while (rows.MoveNext())
+                {
+                    // skip a row if it is field description and its type
+                    if (currentRowIndex < startRow)
+                    {
+                        currentRowIndex++;
+                        continue;
+                    }
+
+                    Row tmpRow = new Row(this.schema);
+                    HSSFRow currentRow = (HSSFRow)rows.Current;
+
+                    for (int i = 0; i < currentRow.LastCellNum; i++)
+                    {
+                        HSSFCell cell = (HSSFCell)currentRow.GetCell(i);
+                        FieldDefine fieldDefine = this.schema.GetDefine(i);
+                        Field field = null;
+                        if (cell != null)
+                        {
+                            switch (fieldDefine.FieldType)
+                            {
+                                case FIELD_TYPE.T_INT:
+                                    int intValue = (int)cell.NumericCellValue;
+                                    field = new Field(intValue);
+                                    break;
+
+                                case FIELD_TYPE.T_FLOAT:
+                                    float floatValue = (float)cell.NumericCellValue;
+                                    field = new Field(floatValue);
+                                    break;
+
+                                case FIELD_TYPE.T_STRING:
+                                    string stringValue = cell.StringCellValue;
+                                    field = new Field(stringValue);
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            switch (fieldDefine.FieldType)
+                            {
+                                case FIELD_TYPE.T_INT:
+                                    field = new Field(0);
+                                    break;
+                                case FIELD_TYPE.T_FLOAT:
+                                    field = new Field(0f);
+                                    break;
+                                case FIELD_TYPE.T_STRING:
+                                    field = new Field("");
+                                    break;
+                            }
+                        }
+
+                        tmpRow.m_Fields.Add(field);
+
+                        Debug.Log("FieldValue at [" + currentRowIndex.ToString() + "]" + " : " + field.m_Value.ToString());
+                    }
+
+                    this.rowList.Add(tmpRow);
+                    currentRowIndex++;
+                }
+            }
+            else
+                return false;
+
+            return true;
+        }
+
 		public Schema ReadSchema()
 		{
 			return schema;
@@ -211,7 +295,40 @@ namespace Data.Excel
 			{
 				return null;
 			}
-		}		
+		}
 
+
+
+        public string[] GetTitle(int sheetIndex)
+        {
+            HSSFSheet sheet = (HSSFSheet)this.hssWorkbook.GetSheetAt(sheetIndex);
+            IRow titleRow = sheet.GetRow(0);
+
+            List<string> titleList = new List<string>();
+            for(int i=0; i<titleRow.LastCellNum; i++)
+            {
+                titleList.Add(titleRow.GetCell(i).StringCellValue);
+            }
+            return titleList.ToArray();
+        }
+
+        int GetSheetIndexFromName(string sheetName)
+        {
+            int index = 0;
+            string name;
+            for (index = 0; index < this.hssWorkbook.NumberOfSheets; ++index)
+            {
+                name = this.hssWorkbook.GetSheetName(index);
+                if (string.Compare(sheetName, name) == 0)
+                    break;
+            }
+            return index;
+        }
+
+        public string[] GetTitle(string sheetName)
+        {
+            int index = GetSheetIndexFromName(sheetName);
+            return GetTitle(index);
+        }
 	}
 }

@@ -1,0 +1,11 @@
+using UnityEngine;
+using System.Collections;
+
+///
+/// !!! Machine generated code !!!
+/// 
+[System.Serializable]
+public class $ClassName
+{
+	$MemberFields
+}

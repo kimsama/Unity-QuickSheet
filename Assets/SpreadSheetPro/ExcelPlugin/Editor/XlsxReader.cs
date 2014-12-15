@@ -31,5 +31,10 @@ namespace Data.Excel
 			else
 				return null;
 		}
+
+        public string[] GetTitle(string sheetName)
+        {
+            return null;
+        }
 	}
 }

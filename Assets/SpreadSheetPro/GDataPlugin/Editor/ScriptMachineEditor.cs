@@ -28,12 +28,12 @@ using Google.GData.Spreadsheets;
 /// An editor script class of ScriptMachine class.
 /// </summary>
 [CustomEditor(typeof(ScriptMachine))]
-public class ScriptMachineEditor : Editor
+public class ScriptMachineEditor : BaseMachineEditor
 {
     ScriptMachine scriptMachine;
     PropertyField[] databaseFields;
 
-    private readonly string NoTemplateString = "No Template File Found";
+    
 
     // to resolve TlsException error
     public static bool Validator (object sender, X509Certificate certificate, 
@@ -70,11 +70,12 @@ public class ScriptMachineEditor : Editor
             GUILayout.EndVertical();
             GUILayout.EndHorizontal();
         }
-        GUIStyle headerStyle = null;
+
         Rect rc;
-        headerStyle = new GUIStyle(GUI.skin.label);
-        headerStyle.fontSize = 12;
-        headerStyle.fontStyle = FontStyle.Bold;
+        GUIStyle headerStyle = null;
+
+        headerStyle = MakeHeader();
+
         GUILayout.Label("GoogleDrive Settings:", headerStyle);
         //rc = GUILayoutUtility.GetLastRect();
         //GUI.skin.box.Draw(rc, GUIContent.none, 0);
@@ -100,24 +101,8 @@ public class ScriptMachineEditor : Editor
 
         EditorGUILayout.Separator();
 
-        if (scriptMachine.HasHeadColumn())
-        {
-            EditorGUILayout.LabelField("type settings");
-            //curretScroll = EditorGUILayout.BeginScrollView(curretScroll, false, false);
-            EditorGUILayout.BeginVertical("box");
-            
-            string lastCellName = string.Empty;
-            foreach (HeaderColumn header in scriptMachine.HeaderColumnList)
-            {
-                GUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField(header.name);
-                header.type = (CellType)EditorGUILayout.EnumPopup(header.type, GUILayout.MaxWidth(100));
-                GUILayout.EndHorizontal();
-            }
-            
-            EditorGUILayout.EndVertical();
-            //EditorGUILayout.EndScrollView();
-        }
+        DrawHeaderSetting(scriptMachine);
+
 
         // force save changed type.
         if (GUI.changed)
@@ -186,7 +171,7 @@ public class ScriptMachineEditor : Editor
     /// <summary>
     /// Connect to the google spreadsheet and retrieves its header columns.
     /// </summary>
-    private void Import()
+    protected override void Import()
     {
         if (scriptMachine.HasHeadColumn())
             scriptMachine.HeaderColumnList.Clear();
@@ -212,160 +197,7 @@ public class ScriptMachineEditor : Editor
         AssetDatabase.SaveAssets();
     }
 
-    /// <summary>
-    /// Generate script files with the given templates.
-    /// Total four files are generated, two for runtime and others for editor.
-    /// </summary>
-    private bool Generate()
-    {
-        ScriptPrescription sp = new ScriptPrescription ();
 
-        if (scriptMachine.onlyCreateDataClass) 
-        {
-            CreateDataClassScript (sp);
-        } 
-        else 
-        {
-            CreateScriptableObjectClassScript (sp);
-            CreateScriptableObjectEditorClassScript (sp);
-            CreateDataClassScript (sp);
-            CreateAssetFileFunc(sp);
-        }
-
-        AssetDatabase.Refresh ();
-
-        return true;
-    }
-
-    /// <summary>
-    /// Create a ScriptableObject class and write it down on the specified folder.
-    /// </summary>
-    private void CreateScriptableObjectClassScript(ScriptPrescription sp)
-    {
-        sp.className = scriptMachine.WorkSheetName;
-        sp.dataClassName = scriptMachine.WorkSheetName + "Data";
-        sp.template = GetTemplate ("ScriptableObjectClass");
-        
-        // check the directory path exists
-        string fullPath = TargetPathForClassScript (scriptMachine.WorkSheetName);
-        string folderPath = Path.GetDirectoryName (fullPath);
-        if (!Directory.Exists(folderPath))
-        {
-            EditorUtility.DisplayDialog (
-                "Warning",
-                "The folder for runtime script files does not exist. Check the path " + folderPath + " exists.",
-                "OK"
-            );
-            return;
-        }
-        
-        StreamWriter writer = null;
-        try
-        {
-            // write a script to the given folder.		
-            writer = new StreamWriter(fullPath);
-            writer.Write(new NewScriptGenerator(sp).ToString());
-        }
-        catch(System.Exception e)
-        {
-            Debug.LogError(e);
-        }
-        finally
-        {
-            if (writer != null)
-            {
-                writer.Close();
-                writer.Dispose();
-            }
-        }
-    }
-
-    /// <summary>
-    /// Create a ScriptableObject editor class and write it down on the specified folder.
-    /// </summary>
-    private void CreateScriptableObjectEditorClassScript(ScriptPrescription sp)
-    {
-        sp.className = scriptMachine.WorkSheetName + "Editor";
-        sp.worksheetClassName = scriptMachine.WorkSheetName;
-        sp.dataClassName = scriptMachine.WorkSheetName + "Data";
-        sp.template = GetTemplate ("ScriptableObjectEditorClass");
-
-        // check the directory path exists
-        string fullPath = TargetPathForEditorScript (scriptMachine.WorkSheetName);
-        string folderPath = Path.GetDirectoryName (fullPath);
-        if (!Directory.Exists(folderPath))
-        {
-            EditorUtility.DisplayDialog (
-                "Warning",
-                "The folder for editor script files does not exist. Check the path " + folderPath + " exists.",
-                "OK"
-                );
-            return;
-        }
-        
-        StreamWriter writer = null;
-        try
-        {
-            // write a script to the given folder.		
-            writer = new StreamWriter(fullPath);
-            writer.Write(new NewScriptGenerator(sp).ToString());
-        }
-        catch(System.Exception e)
-        {
-            Debug.LogError(e);
-        }
-        finally
-        {
-            if (writer != null)
-            {
-                writer.Close();
-                writer.Dispose();
-            }
-        }
-    }
-
-    /// <summary>
-    /// Create a data class which describes the spreadsheet and write it down on the specified folder.
-    /// </summary>
-    private void CreateDataClassScript(ScriptPrescription sp)
-    {
-        // check the directory path exists
-        string fullPath = TargetPathForData(scriptMachine.WorkSheetName);
-        string folderPath = Path.GetDirectoryName (fullPath);
-        if (!Directory.Exists(folderPath))
-        {
-            EditorUtility.DisplayDialog (
-                "Warning",
-                "The folder for runtime script files does not exist. Check the path " + folderPath + " exists.",
-                "OK"
-                );
-            return;
-        }
-
-        List<MemberFieldData> fieldList = new List<MemberFieldData>();
-
-        //FIXME: replace ValueType to CellType and support Enum type.
-        foreach (HeaderColumn header in scriptMachine.HeaderColumnList)
-        {
-            MemberFieldData member = new MemberFieldData();
-            member.Name = header.name;
-            member.type = header.type;
-
-            fieldList.Add(member);
-        }
-
-        sp.className = scriptMachine.WorkSheetName + "Data";
-        sp.template = GetTemplate ("DataClass");
-        
-        sp.memberFields = fieldList.ToArray ();
-        
-        // write a script to the given folder.		
-        using (var writer = new StreamWriter(fullPath))
-        {
-            writer.Write(new NewScriptGenerator(sp).ToString());
-            writer.Close();
-        }
-    }
 
     /// <summary>
     /// Translate type of the member fields directly from google spreadsheet's header column.
@@ -402,88 +234,9 @@ public class ScriptMachineEditor : Editor
         }
     }
 
-    /// 
-    /// Create utility class which has menu item function to create an asset file.
-    /// 
-    private void CreateAssetFileFunc(ScriptPrescription sp)
-    {
-        sp.className = scriptMachine.WorkSheetName;
-        sp.worksheetClassName = scriptMachine.WorkSheetName;
-        sp.assetFileCreateFuncName = "Create" + scriptMachine.WorkSheetName + "AssetFile";
-        sp.template = GetTemplate ("AssetFileClass");
-        
-        // write a script to the given folder.		
-        using (var writer = new StreamWriter(TargetPathForAssetFileCreateFunc(scriptMachine.WorkSheetName)))
-        {
-            writer.Write(new NewScriptGenerator(sp).ToString());
-            writer.Close();
-        }
-    }
 
-    /// <summary>
-    /// e.g. "Assets/Script/Data/Runtime/Item.cs"
-    /// </summary>
-    private string TargetPathForClassScript(string worksheetName)
-    {
-        return Path.Combine ("Assets/" + scriptMachine.RuntimeClassPath, worksheetName + "." + "cs");
-    }
 
-    /// <summary>
-    /// e.g. "Assets/Script/Data/Editor/ItemEditor.cs"
-    /// </summary>
-    private string TargetPathForEditorScript(string worksheetName)
-    {
-        return Path.Combine ("Assets/" + scriptMachine.EditorClassPath, worksheetName + "Editor" + "." + "cs");
-    }
 
-    /// <summary>
-    /// data class script file has 'WorkSheetNameData' for its filename.
-    /// e.g. "Assets/Script/Data/Runtime/ItemData.cs"
-    /// </summary>
-    private string TargetPathForData(string worksheetName)
-    {
-        return Path.Combine ("Assets/" + scriptMachine.RuntimeClassPath, worksheetName + "Data" + "." + "cs");
-    }
-
-    /// <summary>
-    /// e.g. "Assets/Script/Data/Editor/ItemAssetCreator.cs"
-    /// </summary>
-    private string TargetPathForAssetFileCreateFunc(string worksheetName)
-    {
-        return Path.Combine ("Assets/"+ scriptMachine.EditorClassPath, worksheetName + "AssetCreator" + "." + "cs");
-    }
-
-    /// <summary>
-    /// Retrieves all ascii text in the given template file.
-    /// </summary>
-    private string GetTemplate (string nameWithoutExtension)
-    {
-        string path = Path.Combine (GetAbsoluteCustomTemplatePath (), nameWithoutExtension + ".txt");
-        if (File.Exists (path))
-            return File.ReadAllText (path);
-        
-        path = Path.Combine (GetAbsoluteBuiltinTemplatePath (), nameWithoutExtension + ".txt");
-        if (File.Exists (path))
-            return File.ReadAllText (path);
-        
-        return NoTemplateString;
-    }
-
-    /// <summary>
-    /// e.g. "Assets/SpreadSheetPro/Templates"
-    /// </summary>
-    private string GetAbsoluteCustomTemplatePath ()
-    {
-        return Path.Combine(Application.dataPath, scriptMachine.TemplatePath);
-    }
-
-    /// <summary>
-    /// e.g. "C:/Program File(x86)/Unity/Editor/Data"
-    /// </summary>
-    private string GetAbsoluteBuiltinTemplatePath ()
-    {
-        return Path.Combine(EditorApplication.applicationContentsPath, scriptMachine.TemplatePath);
-    }
 
 }
 
