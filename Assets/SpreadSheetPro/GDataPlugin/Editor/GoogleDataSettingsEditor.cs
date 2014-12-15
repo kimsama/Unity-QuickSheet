@@ -7,7 +7,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 using UnityEngine;
 using UnityEditor;
-
 using System.Collections;
 
 /// <summary>
@@ -18,33 +17,11 @@ public class GoogleDataSettingsEditor : Editor
 {
     GoogleDataSettings setting;
 
-    bool hasCorrectPath = false;
-
     public void OnEnable()
     {
-
         setting = target as GoogleDataSettings;
-        hasCorrectPath = CheckPath();
-        //if (hasCorrectPath)
-        //{
-            
-        //}
     }
 
-    bool CheckPath()
-    {
-        string file = AssetDatabase.GetAssetPath(Selection.activeObject);
-
-        //string file = GoogleDataSettings.AssetPath + GoogleDataSettings.AssetFileName;
-        //GoogleDataSettings inst = (GoogleDataSettings)AssetDatabase.LoadAssetAtPath(file, typeof(GoogleDataSettings));
-        //return inst != null ? true : false;
-
-        string assetFile = setting.AssetPath + GoogleDataSettings.AssetFileName;
-        if (file == assetFile)
-            return true;
-        return false;
-    }
-    
     public override void OnInspectorGUI()
     {
         GUI.changed = false;
@@ -53,18 +30,9 @@ public class GoogleDataSettingsEditor : Editor
         
         // path and asset file name which contains a google account and password.
         setting.AssetPath = GUILayout.TextField(setting.AssetPath, 120);
-        GoogleDataSettings.AssetFileName = GUILayout.TextField(GoogleDataSettings.AssetFileName, 120);
-
-        if (GUI.changed)
-        {
-            EditorUtility.SetDirty(setting);
-            AssetDatabase.SaveAssets();
-
-            hasCorrectPath = CheckPath();
-        }
-
-        //if (hasCorrectPath && setting.Account != null)
-        if (hasCorrectPath )
+        GoogleDataSettings.AssetFileName = GUILayout.TextField(GoogleDataSettings.AssetFileName, 120);		       
+        
+        if (setting.CheckPath())
         {
             // account and passwords setting, this should be specified before you're trying to connect a google spreadsheet.
             setting.Account = GUILayout.TextField(setting.Account, 100);

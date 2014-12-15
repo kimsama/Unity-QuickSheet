@@ -41,10 +41,10 @@ namespace UnityEditor
         }
 
         [SerializeField]
-        private string templatePath = "SpreadSheetPro/SpreadSheetPro/Templates";
+        private string templatePath = "SpreadSheetPro/Templates";
 
         [ExposeProperty]
-        public string ClassPath
+        public string RuntimeClassPath
         {
             get { return scriptFilePath; }
             set { scriptFilePath = value; }
@@ -106,8 +106,8 @@ namespace UnityEditor
             return false;
         }
 
-        private readonly string DEFAULT_CLASS_PATH = "Script/Data/Runtime";
-        private readonly string DEFAULT_EDITOR_PATH = "Script/Data/Editor";
+        private readonly string DEFAULT_CLASS_PATH = "Scripts/Runtime";
+        private readonly string DEFAULT_EDITOR_PATH = "Scripts/Editor";
 
         /// <summary>
         /// Called when the asset file is selected.
@@ -123,8 +123,8 @@ namespace UnityEditor
         /// </summary>
         public void ReInitialize()
         {
-            if (string.IsNullOrEmpty(ClassPath))
-                ClassPath = DEFAULT_CLASS_PATH;
+            if (string.IsNullOrEmpty(RuntimeClassPath))
+                RuntimeClassPath = DEFAULT_CLASS_PATH;
             if (string.IsNullOrEmpty(EditorClassPath))
                 EditorClassPath = DEFAULT_EDITOR_PATH;
 
@@ -144,6 +144,5 @@ namespace UnityEditor
             AssetDatabase.SaveAssets();
             Selection.activeObject = inst;
         }
-
     }
 }

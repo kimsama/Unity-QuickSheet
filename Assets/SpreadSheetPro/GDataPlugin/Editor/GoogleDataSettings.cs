@@ -15,8 +15,8 @@ using System.IO;
 /// </summary>
 public class GoogleDataSettings : ScriptableObject 
 {
-    [SerializeField]
-    public string AssetPath = "Assets/SpreadSheetPro/SpreadSheetPro/GDataPlugin/Editor/";
+    public string AssetPath = "Assets/SpreadSheetPro/GDataPlugin/Editor/";
+
     [SerializeField]
     public static string AssetFileName = "GoogleDataSettings.asset";
 
@@ -25,14 +25,11 @@ public class GoogleDataSettings : ScriptableObject
     /// </summary>
     public string Account
     {
-        get 
-        {
-            return account;
-        }
+        get { return account; }
         set
         {
-            if (s_Instance != null && Instance.account != value)
-                Instance.account = value;
+            if (account != value)
+                account = value;
         }
     }
 
@@ -44,14 +41,11 @@ public class GoogleDataSettings : ScriptableObject
     /// </summary>
     public string Password
     {
-        get 
-        {
-            return password;
-        }
+        get { return password; }
         set
         {
-            if (s_Instance != null && Instance.password != value)
-                Instance.password = value;
+            if (password != value)
+                password = value;
         }
     }
 
@@ -89,6 +83,17 @@ public class GoogleDataSettings : ScriptableObject
     }
     
     /// <summary>
+    /// Checks GoogleDataSetting.asset file exist at the specified path(AssetPath+AssetFileName).
+    /// </summary>
+    public bool CheckPath()
+    {
+        string file = AssetDatabase.GetAssetPath(Selection.activeObject);
+        string assetFile = AssetPath + GoogleDataSettings.AssetFileName;
+
+        return (file == assetFile) ? true : false;
+    }
+
+    /// <summary>
     /// A property for singleton.
     /// </summary>
     public static GoogleDataSettings Instance
@@ -97,26 +102,19 @@ public class GoogleDataSettings : ScriptableObject
         {
             if (s_Instance == null)
             {
-                //string filePath = AssetPath + AssetFileName;
-                string path = AssetDatabase.GetAssetPath(Selection.activeObject);
-                string filePath = path + AssetFileName;
+                // A tricky way to assess non-static member in the static method.
+                GoogleDataSettings temp = new GoogleDataSettings();
+                string path = temp.AssetPath + GoogleDataSettings.AssetFileName;
 
-                s_Instance = (GoogleDataSettings)AssetDatabase.LoadAssetAtPath (filePath, typeof (GoogleDataSettings));
-                
+                s_Instance = (GoogleDataSettings)AssetDatabase.LoadAssetAtPath (path, typeof (GoogleDataSettings));
                 if (s_Instance == null)
                 {
-                    //HACK: DO NOT create googlesettings.asset at the start of the unity editor.
-                    //      If it does, it crashes.
-                    //EditorUtility.DisplayDialog (
-                    //    "Warning",
-                    //    "No account setting file is found. You need to create GoogleDataSettings.asset file.",
-                    //    "OK"
-                    //);
-                    Debug.LogWarning("No account setting file is at " + filePath + " You need to create a new one or modify its path.");
+                    Debug.LogWarning("No account setting file is at " + path + " You need to create a new one or modify its path.");
                 }
             }
             return s_Instance;
         }
+
     }
     
     /// <summary>
@@ -125,7 +123,6 @@ public class GoogleDataSettings : ScriptableObject
     public static GoogleDataSettings Create()
     {
         string filePath = CustomAssetUtility.GetUniqueAssetPathNameOrFallback(AssetFileName);
-        //string filePath = AssetPath + AssetFileName;
         s_Instance = (GoogleDataSettings)AssetDatabase.LoadAssetAtPath(filePath, typeof(GoogleDataSettings));
                         
         if (s_Instance == null)
@@ -157,5 +154,4 @@ public class GoogleDataSettings : ScriptableObject
         
         return s_Instance;
     }
-    
 }
