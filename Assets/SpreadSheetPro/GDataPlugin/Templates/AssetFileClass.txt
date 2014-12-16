@@ -7,10 +7,10 @@ using System.IO;
 /// 
 public partial class GoogleDataAssetUtility
 {
-	[MenuItem("Assets/Create/Google/$ClassName")]
-	public static void $AssetFileCreateFuncName()
-	{
-		CustomAssetUtility.CreateAsset<$ClassName>();
-	}
-	
+    [MenuItem("Assets/Create/Google/$ClassName")]
+    public static void $AssetFileCreateFuncName()
+    {
+        CustomAssetUtility.CreateAsset<$ClassName>();
+    }
+    
 }

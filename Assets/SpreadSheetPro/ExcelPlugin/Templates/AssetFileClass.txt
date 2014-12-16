@@ -7,10 +7,10 @@ using System.IO;
 /// 
 public partial class ExcelDataAssetUtility
 {
-	[MenuItem("Assets/Create/Excel/$ClassName")]
-	public static void $AssetFileCreateFuncName()
-	{
-		CustomAssetUtility.CreateAsset<$ClassName>();
-	}
-	
+    [MenuItem("Assets/Create/Excel/$ClassName")]
+    public static void $AssetFileCreateFuncName()
+    {
+        CustomAssetUtility.CreateAsset<$ClassName>();
+    }
+    
 }
