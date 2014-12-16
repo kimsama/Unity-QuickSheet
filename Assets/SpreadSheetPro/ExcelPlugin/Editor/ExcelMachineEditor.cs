@@ -2,6 +2,7 @@
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using System.IO;
 using Data.Excel;
 
@@ -69,6 +70,19 @@ public class ExcelMachineEditor : BaseMachineEditor
             if (!Generate())
                 Debug.LogError("Failed to create a script from excel.");
         }
+
+        if (GUILayout.Button("Test"))
+        {
+            string path = machine.excelFilePath;
+            string sheet = machine.WorkSheetName;
+
+            var title = new ExcelQuery(path, sheet).GetTitle();
+            foreach (string s in title)
+                Debug.Log("title: " + s);
+
+            var list = new ExcelQuery(path, sheet).Deserialize<FighterData>();
+            int i = 0;
+        }
     }
 
     /// <summary>
@@ -80,19 +94,28 @@ public class ExcelMachineEditor : BaseMachineEditor
 
         ExcelMachine machine = target as ExcelMachine;
 
-        if (string.IsNullOrEmpty(machine.excelFilePath))
-            return;
+        string path = machine.excelFilePath;
+        string sheet = machine.WorkSheetName;
 
-        if (!File.Exists(machine.excelFilePath))
+        if (string.IsNullOrEmpty(path))
         {
+            //TODO: show error
             return;
         }
 
-        //TODO:
+        if (!File.Exists(path))
+        {
+            //TODO: show error
+            return;
+        }
 
-        var excel = ExcelReader.Open(machine.excelFilePath);
+        if (machine.HasHeadColumn())
+            machine.HeaderColumnList.Clear();
 
-        string[] titles = excel.GetTitle(machine.WorkSheetName);
+        //var excel = ExcelReader.Open(machine.excelFilePath);
+        //string[] titles = excel.GetTitle(machine.WorkSheetName);
+
+        var titles = new ExcelQuery(path, sheet).GetTitle();
         foreach(string s in titles)
         {
             HeaderColumn header = new HeaderColumn();
@@ -103,6 +126,5 @@ public class ExcelMachineEditor : BaseMachineEditor
         EditorUtility.SetDirty(machine);
         AssetDatabase.SaveAssets();
     }
-
 
 }
