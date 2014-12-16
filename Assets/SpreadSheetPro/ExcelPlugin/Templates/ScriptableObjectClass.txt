@@ -48,7 +48,6 @@ public class $ClassName : ScriptableObject
 		if (dataArray == null)
 		    dataArray = new $DataClassName[0];
 
-		hideFlags = HideFlags.NotEditable;
 	}
 	
 	//

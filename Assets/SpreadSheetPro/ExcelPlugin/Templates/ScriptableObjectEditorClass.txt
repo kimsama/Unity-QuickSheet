@@ -49,24 +49,11 @@ public class $ClassName : BaseExcelEditor<$WorkSheetClassName>
 	
 	public override bool Load()
 	{
-
 		$WorkSheetClassName targetData = target as $WorkSheetClassName;
-		
-		var excel = ExcelReader.Open (targetData.sheetName);	
 
-		List<$DataClassName> myDataList = new List<$DataClassName>();
-
-		var serializer = new Serializer<$DataClassName>();
-		Row[] row = excel.ReadData();
-		for(int i=0; i<row.Length; i++)
-		{
-			$DataClassName data = new $DataClassName();
-			data = serializer.Deserialize(row[i]);
-
-			myDataList.Add(data);
-		}
-	
-		targetData.dataArray = myDataList.ToArray();
+        string path = targetData.SheetName;
+        string sheet = targetData.WorksheetName;
+        targetData.dataArray = new ExcelQuery(path, sheet).Deserialize<$DataClassName>().ToArray();		
 		
 		EditorUtility.SetDirty(targetData);
 		AssetDatabase.SaveAssets();

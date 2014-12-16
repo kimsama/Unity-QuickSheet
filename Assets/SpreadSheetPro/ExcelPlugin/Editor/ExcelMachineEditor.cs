@@ -1,4 +1,11 @@
-﻿using UnityEngine;
+﻿///////////////////////////////////////////////////////////////////////////////
+///
+/// ExcelMachineEditor.cs
+/// 
+/// (c)2014 Kim, Hyoun Woo
+///
+///////////////////////////////////////////////////////////////////////////////
+using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,6 +13,9 @@ using System;
 using System.IO;
 using Data.Excel;
 
+/// <summary>
+/// 
+/// </summary>
 [CustomEditor(typeof(ExcelMachine))]
 public class ExcelMachineEditor : BaseMachineEditor
 {
@@ -70,19 +80,6 @@ public class ExcelMachineEditor : BaseMachineEditor
             if (!Generate())
                 Debug.LogError("Failed to create a script from excel.");
         }
-
-        if (GUILayout.Button("Test"))
-        {
-            string path = machine.excelFilePath;
-            string sheet = machine.WorkSheetName;
-
-            var title = new ExcelQuery(path, sheet).GetTitle();
-            foreach (string s in title)
-                Debug.Log("title: " + s);
-
-            var list = new ExcelQuery(path, sheet).Deserialize<FighterData>();
-            int i = 0;
-        }
     }
 
     /// <summary>
@@ -111,9 +108,6 @@ public class ExcelMachineEditor : BaseMachineEditor
 
         if (machine.HasHeadColumn())
             machine.HeaderColumnList.Clear();
-
-        //var excel = ExcelReader.Open(machine.excelFilePath);
-        //string[] titles = excel.GetTitle(machine.WorkSheetName);
 
         var titles = new ExcelQuery(path, sheet).GetTitle();
         foreach(string s in titles)
