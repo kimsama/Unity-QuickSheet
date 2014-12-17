@@ -14,6 +14,7 @@ using System;
 using System.ComponentModel;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
 
 /// <summary>
 /// 
@@ -32,7 +33,17 @@ public class ExcelQuery
         {
             using (FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
             {
-                workbook = new HSSFWorkbook(fileStream);
+                string extension = GetSuffix(path);
+
+                if (extension == "xls")
+                    workbook = new HSSFWorkbook(fileStream);
+                else if (extension == "xlsx")
+                    workbook = new XSSFWorkbook(fileStream);
+                else
+                {
+                    throw new Exception("Wrong file.");
+                }
+
                 sheet = workbook.GetSheet(sheetName);
             }
         }
@@ -40,6 +51,18 @@ public class ExcelQuery
         {
             Debug.LogError(e.Message);
         }
+    }
+
+    /// <summary>
+    /// Retrieves file extension only from the given file path.
+    /// </summary>
+    static string GetSuffix(string path)
+    {
+        string[] arg1 = path.Split(new char[] { '\\' });
+        string str1 = arg1[arg1.Length - 1];
+        string[] arg2 = str1.Split(new char[] { '.' });
+
+        return arg2[1];
     }
 
     /// <summary>
