@@ -31,7 +31,7 @@ public class BaseExcelEditor<T> : Editor
     {
         //TODO: show excel file path and worksheet name.
 
-        if (GUILayout.Button("Import"))
+        if (GUILayout.Button("Update"))
         {
             if (!Load())
                 Debug.LogError("Failed to import excel file.");

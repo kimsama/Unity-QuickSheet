@@ -28,10 +28,15 @@ public class ExcelMachineEditor : BaseMachineEditor
 
         GUILayout.BeginHorizontal();
         GUILayout.Label("File:", GUILayout.Width(50));
-        machine.excelFilePath = GUILayout.TextField(machine.excelFilePath, GUILayout.Width(250));
+
+        string path = "";
+        if (string.IsNullOrEmpty(machine.excelFilePath))
+            path = Application.dataPath;
+
+        machine.excelFilePath = GUILayout.TextField(path, GUILayout.Width(250));
         if (GUILayout.Button("...", GUILayout.Width(20)))
         {
-            string path = EditorUtility.OpenFilePanel("Open Excel file", "", "*.xls;*.xlsx;");
+            path = EditorUtility.OpenFilePanel("Open Excel file", "", "*.xls;*.xlsx;");
             if (path.Length != 0)
             {
                 machine.SpreadSheetName = Path.GetFileName(path);
