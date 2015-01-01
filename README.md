@@ -11,6 +11,12 @@ Features
 * It can retrieve data from google spreadsheet.
 * No need to parse any retrieved data, it automatically serializes retrieved data to Unity3D's ScriptableObject.
 
+Usage
+------
+
+* Excel
+* Google Spreadsheet
+
 References
 ----------
 * [Unity Serialization](http://forum.unity3d.com/threads/155352-Serialization-Best-Practices-Megapost) on Unity's forum for details of serialization mechanism.
