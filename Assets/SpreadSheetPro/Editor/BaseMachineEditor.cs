@@ -1,4 +1,11 @@
-﻿using UnityEngine;
+﻿///////////////////////////////////////////////////////////////////////////////
+///
+/// BaseMachineEditor.cs
+/// 
+/// (c)2014 Kim, Hyoun Woo
+///
+///////////////////////////////////////////////////////////////////////////////
+using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
@@ -280,7 +287,10 @@ public class BaseMachineEditor : Editor
 
         if (machine.HasHeadColumn())
         {
-            EditorGUILayout.LabelField("type settings");
+            //EditorGUILayout.LabelField("type settings");
+            GUIStyle headerStyle = MakeHeader();
+            GUILayout.Label("Type Settings:", headerStyle);
+
             //curretScroll = EditorGUILayout.BeginScrollView(curretScroll, false, false);
             EditorGUILayout.BeginVertical("box");
 

@@ -18,7 +18,6 @@ using System.IO;
 [CustomEditor(typeof(ExcelMachine))]
 public class ExcelMachineEditor : BaseMachineEditor
 {
-
     public override void OnInspectorGUI()
     {
         ExcelMachine machine = target as ExcelMachine;
@@ -32,29 +31,28 @@ public class ExcelMachineEditor : BaseMachineEditor
         string path = "";
         if (string.IsNullOrEmpty(machine.excelFilePath))
             path = Application.dataPath;
+        else
+            path = machine.excelFilePath;
 
         machine.excelFilePath = GUILayout.TextField(path, GUILayout.Width(250));
         if (GUILayout.Button("...", GUILayout.Width(20)))
         {
-            path = EditorUtility.OpenFilePanel("Open Excel file", "", "*.xls;*.xlsx;");
+            string folder = Path.GetDirectoryName(path);
+            path = EditorUtility.OpenFilePanel("Open Excel file", folder, "excel files;*.xls;*.xlsx");
             if (path.Length != 0)
             {
                 machine.SpreadSheetName = Path.GetFileName(path);
                 machine.excelFilePath = path;
+
+                machine.SheetNames = new ExcelQuery(path).GetSheetNames();
             }
         }
         GUILayout.EndHorizontal();
 
-        machine.SpreadSheetName = EditorGUILayout.TextField("Spreadsheet: ", machine.SpreadSheetName);
-        machine.WorkSheetName = EditorGUILayout.TextField("Worksheet: ", machine.WorkSheetName);
-
-        EditorGUILayout.Separator();
-
-        GUILayout.Label("Path Settings:", headerStyle);
-
-        machine.TemplatePath = EditorGUILayout.TextField("Template: ", machine.TemplatePath);
-        machine.RuntimeClassPath = EditorGUILayout.TextField("Runtime Class: ", machine.RuntimeClassPath);
-        machine.EditorClassPath = EditorGUILayout.TextField("Editor Class:", machine.EditorClassPath);
+        machine.SpreadSheetName = EditorGUILayout.TextField("Spreadsheet File: ", machine.SpreadSheetName);
+        machine.CurrentSheetIndex = EditorGUILayout.Popup(machine.CurrentSheetIndex, machine.SheetNames);
+        if (machine.SheetNames != null)
+            machine.WorkSheetName = machine.SheetNames[machine.CurrentSheetIndex];
 
         EditorGUILayout.Separator();
 
@@ -67,13 +65,14 @@ public class ExcelMachineEditor : BaseMachineEditor
 
         DrawHeaderSetting(machine);
 
-        if (GUI.changed)
-        {
-            EditorUtility.SetDirty(machine);
-            AssetDatabase.SaveAssets();
-        }
-
         EditorGUILayout.Separator();
+
+        GUILayout.Label("Path Settings:", headerStyle);
+
+        machine.TemplatePath = EditorGUILayout.TextField("Template: ", machine.TemplatePath);
+        machine.RuntimeClassPath = EditorGUILayout.TextField("Runtime: ", machine.RuntimeClassPath);
+        machine.EditorClassPath = EditorGUILayout.TextField("Editor:", machine.EditorClassPath);
+        machine.DataFilePath = EditorGUILayout.TextField("Data:", machine.DataFilePath);
 
         machine.onlyCreateDataClass = EditorGUILayout.Toggle("Only DataClass", machine.onlyCreateDataClass);
 
@@ -84,10 +83,17 @@ public class ExcelMachineEditor : BaseMachineEditor
             if (!Generate())
                 Debug.LogError("Failed to create a script from excel.");
         }
+
+        if (GUI.changed)
+        {
+            EditorUtility.SetDirty(machine);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+        }
     }
 
     /// <summary>
-    /// 
+    /// Import the specified excel file and prepare to set type of each cell.
     /// </summary>
     protected override void Import()
     {
@@ -100,13 +106,21 @@ public class ExcelMachineEditor : BaseMachineEditor
 
         if (string.IsNullOrEmpty(path))
         {
-            //TODO: show error
+            EditorUtility.DisplayDialog(
+                "Error",
+                "You should specify spreadsheet file first!",
+                "OK"
+            );
             return;
         }
 
         if (!File.Exists(path))
         {
-            //TODO: show error
+            EditorUtility.DisplayDialog(
+                "Error",
+                "File at " + path + " does not exist.",
+                "OK"
+            );
             return;
         }
 
@@ -114,11 +128,18 @@ public class ExcelMachineEditor : BaseMachineEditor
             machine.HeaderColumnList.Clear();
 
         var titles = new ExcelQuery(path, sheet).GetTitle();
-        foreach(string s in titles)
+        if (titles != null)
         {
-            HeaderColumn header = new HeaderColumn();
-            header.name = s;
-            machine.HeaderColumnList.Add(header);
+            foreach (string s in titles)
+            {
+                HeaderColumn header = new HeaderColumn();
+                header.name = s;
+                machine.HeaderColumnList.Add(header);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("The WorkSheet [" + sheet + "] may be empty.");
         }
 
         EditorUtility.SetDirty(machine);

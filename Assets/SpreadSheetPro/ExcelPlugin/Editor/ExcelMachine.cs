@@ -1,13 +1,23 @@
-﻿using UnityEngine;
+﻿///////////////////////////////////////////////////////////////////////////////
+///
+/// ExcelMachine.cs
+/// 
+/// (c)2014 Kim, Hyoun Woo
+///
+///////////////////////////////////////////////////////////////////////////////
+using UnityEngine;
 using System.Collections;
 
 namespace UnityEditor
 {
-    
-
     internal class ExcelMachine : BaseMachine
     {
         public string excelFilePath;
+
+        // need for editor
+        public string[] SheetNames = { "" };
+        // need for editor
+        public int CurrentSheetIndex { get; set; }
 
         /// <summary>
         /// A menu item which create a 'ExcelMachine' asset file.

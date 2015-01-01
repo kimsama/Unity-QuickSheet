@@ -27,7 +27,7 @@ public class ExcelQuery
     /// <summary>
     /// 
     /// </summary>
-    public ExcelQuery(string path, string sheetName)
+    public ExcelQuery(string path, string sheetName = "")
     {
         try
         {
@@ -44,7 +44,8 @@ public class ExcelQuery
                     throw new Exception("Wrong file.");
                 }
 
-                sheet = workbook.GetSheet(sheetName);
+                if (!string.IsNullOrEmpty(sheetName))
+                    sheet = workbook.GetSheet(sheetName);
             }
         }
         catch(Exception e)
@@ -116,17 +117,42 @@ public class ExcelQuery
     }
 
     /// <summary>
-    /// 
+    /// Retrieves all sheet names.
+    /// </summary>
+    public string[] GetSheetNames()
+    {
+        List<string> sheetList = new List<string>();
+        if (this.workbook != null)
+        {
+            int numSheets = this.workbook.NumberOfSheets;
+            for (int i=0; i<numSheets; i++)
+            {
+                sheetList.Add(this.workbook.GetSheetName(i));
+            }
+        }
+        else
+            Debug.LogError("Workbook is null. Did you forget to import excel file first?");
+
+        return (sheetList.Count > 0) ? sheetList.ToArray() : null;
+    }
+
+    /// <summary>
+    /// Retrieves all first columns(aka. header) which are needed to determine type of each cell.
     /// </summary>
     public string[] GetTitle(int start = 0)
     {
         List<string> result = new List<string>();
 
         IRow title = sheet.GetRow(start);
-        for (int i = 0; i < title.LastCellNum; i++)
-            result.Add(title.GetCell(i).StringCellValue);
+        if (title != null)
+        {
+            for (int i = 0; i < title.LastCellNum; i++)
+                result.Add(title.GetCell(i).StringCellValue);
 
-        return result.ToArray();
+            return result.ToArray();
+        }
+
+        return null;
     }
 
     /// <summary>

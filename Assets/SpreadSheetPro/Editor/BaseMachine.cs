@@ -1,4 +1,11 @@
-﻿using UnityEngine;
+﻿///////////////////////////////////////////////////////////////////////////////
+///
+/// BaseMachine.cs
+/// 
+/// (c)2014 Kim, Hyoun Woo
+///
+///////////////////////////////////////////////////////////////////////////////
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -34,6 +41,9 @@ namespace UnityEditor
             set { scriptFilePath = value; }
         }
 
+        /// <summary>
+        /// path the created ScriptableObject class file will be located.
+        /// </summary>
         [SerializeField]
         private string scriptFilePath;
 
@@ -44,8 +54,24 @@ namespace UnityEditor
             set { editorScriptFilePath = value; }
         }
 
+        /// <summary>
+        /// path the created editor script files will be located.
+        /// </summary>
         [SerializeField]
         private string editorScriptFilePath;
+
+        [ExposeProperty]
+        public string DataFilePath
+        {
+            get { return dataFilePath; }
+            set { dataFilePath = value; }
+        }
+
+        /// <summary>
+        /// path the created asset file will be located.
+        /// </summary>
+        [SerializeField]
+        private string dataFilePath;
 
         [ExposeProperty]
         public string SpreadSheetName
