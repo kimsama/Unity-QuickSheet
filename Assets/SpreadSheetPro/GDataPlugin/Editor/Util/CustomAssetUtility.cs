@@ -11,7 +11,7 @@ using System.IO;
 
 public static class CustomAssetUtility
 {
-    public static void CreateAsset<T> () where T : ScriptableObject
+    public static T CreateAsset<T> () where T : ScriptableObject
     {
         T asset = ScriptableObject.CreateInstance<T> ();
 
@@ -32,6 +32,8 @@ public static class CustomAssetUtility
         AssetDatabase.SaveAssets ();
         EditorUtility.FocusProjectWindow ();
         Selection.activeObject = asset;
+
+        return asset;
     }
 
     public static string GetUniqueAssetPathNameOrFallback(string filename)
@@ -39,7 +41,7 @@ public static class CustomAssetUtility
         string path;
         try
         {
-            // Private implementation of a filenaming function which puts the file at the selected path.
+            // Private implementation of a file naming function which puts the file at the selected path.
             System.Type assetdatabase = typeof(UnityEditor.AssetDatabase);
             path = (string)assetdatabase.GetMethod("GetUniquePathNameAtSelectedPath",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static).Invoke(assetdatabase, new object[] { filename });

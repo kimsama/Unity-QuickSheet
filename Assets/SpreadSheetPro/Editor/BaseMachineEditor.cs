@@ -35,7 +35,7 @@ public class BaseMachineEditor : Editor
     /// Generate script files with the given templates.
     /// Total four files are generated, two for runtime and others for editor.
     /// </summary>
-    protected virtual bool Generate()
+    protected virtual ScriptPrescription Generate()
     {
         ScriptPrescription sp = new ScriptPrescription();
 
@@ -51,12 +51,11 @@ public class BaseMachineEditor : Editor
             CreateScriptableObjectClassScript(sp);
             CreateScriptableObjectEditorClassScript(sp);
             CreateDataClassScript(sp);
-            CreateAssetFileFunc(sp);
         }
 
         AssetDatabase.Refresh();
 
-        return true;
+        return sp;
     }
 
     /// <summary>
@@ -192,7 +191,7 @@ public class BaseMachineEditor : Editor
     /// 
     /// Create utility class which has menu item function to create an asset file.
     /// 
-    private void CreateAssetFileFunc(ScriptPrescription sp)
+    protected void CreateAssetFileFunc(ScriptPrescription sp)
     {
         sp.className = machine.WorkSheetName;
         sp.worksheetClassName = machine.WorkSheetName;
@@ -238,6 +237,14 @@ public class BaseMachineEditor : Editor
     protected string TargetPathForAssetFileCreateFunc(string worksheetName)
     {
         return Path.Combine("Assets/" + machine.EditorClassPath, worksheetName + "AssetCreator" + "." + "cs");
+    }
+
+    /// <summary>
+    /// AssetPostprocessor class should be under "Editor" folder.
+    /// </summary>
+    protected string TargetPathForAssetPostProcessorFile(string worksheetName)
+    {
+        return Path.Combine("Assets/" + machine.EditorClassPath, worksheetName + "AssetPostProcessor" + "." + "cs");
     }
 
     /// <summary>

@@ -81,6 +81,36 @@ namespace UnityEditor
                 return "Empty_AssetFileCreateFunc_Name";
             }
         }
+
+        private string ImportedFilePath
+        {
+            get
+            {
+                if (m_ScriptPrescription.importedFilePath != string.Empty)
+                    return m_ScriptPrescription.importedFilePath;
+                return "Empty_FilePath";
+            }
+        }
+
+        private string AssetFilePath
+        {
+            get
+            {
+                if (m_ScriptPrescription.assetFilepath != string.Empty)
+                    return m_ScriptPrescription.assetFilepath;
+                return "Empty_AssetFilePath";
+            }
+        }
+
+        private string AssetPostprocessorClass
+        { 
+            get
+            {
+                if (m_ScriptPrescription.assetPostprocessorClass != String.Empty)
+                    return m_ScriptPrescription.assetPostprocessorClass;
+                return "Empty_AssetPostprocessorClass";
+            }
+        }
         
         public NewScriptGenerator (ScriptPrescription scriptPrescription)
         {
@@ -103,7 +133,9 @@ namespace UnityEditor
             m_Text = m_Text.Replace ("$DataClassName", DataClassName);
             m_Text = m_Text.Replace ("$AssetFileCreateFuncName", AssetFileCreateFuncName);
 
-            m_Text = m_Text.Replace ("$NicifiedClassName", ObjectNames.NicifyVariableName (ClassName));
+            m_Text = m_Text.Replace ("$AssetPostprocessorClass", AssetPostprocessorClass);
+            m_Text = m_Text.Replace ("$IMPORT_PATH", ImportedFilePath);
+            m_Text = m_Text.Replace ("$ASSET_PATH", AssetFilePath);
             
             // Other replacements
             foreach (KeyValuePair<string, string> kvp in m_ScriptPrescription.m_StringReplacements)

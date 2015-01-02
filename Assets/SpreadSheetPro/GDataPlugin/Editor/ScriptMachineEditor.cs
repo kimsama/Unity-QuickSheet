@@ -120,7 +120,7 @@ public class ScriptMachineEditor : BaseMachineEditor
 
         if (GUILayout.Button("Generate"))
         {
-            if (!Generate())
+            if (Generate() == null)
                 Debug.LogError("Failed to create a script from Google.");
         }
     }
@@ -234,9 +234,17 @@ public class ScriptMachineEditor : BaseMachineEditor
         }
     }
 
+    /// <summary>
+    /// Generate custom asset creation editor script file.
+    /// </summary>
+    protected override ScriptPrescription Generate()
+    {
+        ScriptPrescription sp = base.Generate();
+        if (sp != null)
+            CreateAssetFileFunc(sp);
 
-
-
+        return sp;
+    }
 
 }
 

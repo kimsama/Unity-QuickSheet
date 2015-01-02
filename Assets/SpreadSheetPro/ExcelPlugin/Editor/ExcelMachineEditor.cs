@@ -13,7 +13,7 @@ using System;
 using System.IO;
 
 /// <summary>
-/// 
+/// Custom editor script class for excel file setting.
 /// </summary>
 [CustomEditor(typeof(ExcelMachine))]
 public class ExcelMachineEditor : BaseMachineEditor
@@ -42,7 +42,10 @@ public class ExcelMachineEditor : BaseMachineEditor
             if (path.Length != 0)
             {
                 machine.SpreadSheetName = Path.GetFileName(path);
-                machine.excelFilePath = path;
+
+                // the path should be relative not absolute one.
+                int index = path.IndexOf("Assets");
+                machine.excelFilePath = path.Substring(index);
 
                 machine.SheetNames = new ExcelQuery(path).GetSheetNames();
             }
@@ -80,7 +83,12 @@ public class ExcelMachineEditor : BaseMachineEditor
 
         if (GUILayout.Button("Generate"))
         {
-            if (!Generate())
+            ScriptPrescription sp = Generate();
+            if (sp != null)
+            {
+                Debug.Log("Successfully generated!");
+            }
+            else
                 Debug.LogError("Failed to create a script from excel.");
         }
 
@@ -146,4 +154,40 @@ public class ExcelMachineEditor : BaseMachineEditor
         AssetDatabase.SaveAssets();
     }
 
+    protected override ScriptPrescription Generate()
+    {
+        ScriptPrescription sp = base.Generate();
+        if (sp != null)
+            CreatePostProcessorScript(sp);
+
+        return sp;
+    }
+
+    /// <summary>
+    /// Generate AssetPostprocessor editor script file.
+    /// </summary>
+    private void CreatePostProcessorScript(ScriptPrescription sp)
+    {
+        ExcelMachine machine = target as ExcelMachine;
+
+        sp.className = machine.WorkSheetName;
+        sp.worksheetClassName = machine.WorkSheetName;
+        
+        // where the imported excel file is.
+        sp.importedFilePath = machine.excelFilePath; 
+
+        // path where the .asset file will be created.
+        string path = Path.GetDirectoryName(machine.excelFilePath);
+        path += "/" + machine.WorkSheetName + ".asset";
+        sp.assetFilepath = path;
+        sp.assetPostprocessorClass = machine.WorkSheetName + "AssetPostprocessor";
+        sp.template = GetTemplate("PostProcessor");
+
+        // write a script to the given folder.		
+        using (var writer = new StreamWriter(TargetPathForAssetPostProcessorFile(machine.WorkSheetName)))
+        {
+            writer.Write(new NewScriptGenerator(sp).ToString());
+            writer.Close();
+        }
+    }
 }

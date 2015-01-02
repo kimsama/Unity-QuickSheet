@@ -23,6 +23,11 @@ namespace UnityEditor
         public string dataClassName           = string.Empty;
         public string assetFileCreateFuncName = string.Empty;
         public string template                = string.Empty;
+
+        public string importedFilePath        = string.Empty; // should start with "Assets" not full path
+        public string assetFilepath           = string.Empty; // should start with "Assets" not full path
+        public string assetPostprocessorClass = string.Empty;
+
         public MemberFieldData[] memberFields;
         public Dictionary<string, string> m_StringReplacements = new Dictionary<string, string> ();
     }

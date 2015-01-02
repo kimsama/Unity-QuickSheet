@@ -52,11 +52,15 @@ public class $ClassName : BaseExcelEditor<$WorkSheetClassName>
 
         string path = targetData.SheetName;
         string sheet = targetData.WorksheetName;
-        targetData.dataArray = new ExcelQuery(path, sheet).Deserialize<$DataClassName>().ToArray();		
-        
-        EditorUtility.SetDirty(targetData);
-        AssetDatabase.SaveAssets();
-        
-        return true;
+        ExcelQuery query = new ExcelQuery(path, sheet);
+        if (query != null && query.IsValid())
+        {
+            targetData.dataArray = query.Deserialize<$DataClassName>().ToArray();
+            EditorUtility.SetDirty(targetData);
+            AssetDatabase.SaveAssets();
+            return true;
+        }
+        else
+            return false;
     }
 }

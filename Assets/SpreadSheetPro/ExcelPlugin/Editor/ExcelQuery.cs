@@ -55,6 +55,17 @@ public class ExcelQuery
     }
 
     /// <summary>
+    /// Determine whether the excel file is successfully read in or not.
+    /// </summary>
+    public bool IsValid()
+    {
+        if (this.workbook != null && this.sheet != null)
+            return true;
+
+        return false;
+    }
+
+    /// <summary>
     /// Retrieves file extension only from the given file path.
     /// </summary>
     static string GetSuffix(string path)
