@@ -7,9 +7,10 @@ Unity-SpreadsheetPro enables you to use google and excel spreadsheet data within
 Features
 --------
 * No need to write any single line of code.
-* It can retrieve data from excel file. (both of xls and xlsx format support.)
+* It can retrieve data from excel file. (both of xls and xlsx format are supported.)
 * It can retrieve data from google spreadsheet.
-* No need to parse any retrieved data, it automatically serializes retrieved data to Unity3D's ScriptableObject.
+* No need to parse any retrieved data, it automatically serializes retrieved data to Unity3D's ScriptableObject and so it is fast than XML format.
+
 
 Usage
 ------
