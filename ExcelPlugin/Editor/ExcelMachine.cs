@@ -16,7 +16,7 @@ namespace UnityEditor
     internal class ExcelMachine : BaseMachine
     {
         /// <summary>
-        /// where the .xsl or .xslx file is. The path should start with "Assets/". 
+        /// where the .xls or .xlsx file is. The path should start with "Assets/". 
         /// </summary>
         public string excelFilePath;
 
