@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 ///
-/// ScriptMachineEditor.cs
+/// GoogleMachineEditor.cs
 /// 
 /// (c)2013 Kim, Hyoun Woo
 ///
@@ -25,12 +25,12 @@ using Google.GData.Client;
 using Google.GData.Spreadsheets;
 
 /// <summary>
-/// An editor script class of ScriptMachine class.
+/// An editor script class of GoogleMachine class.
 /// </summary>
-[CustomEditor(typeof(ScriptMachine))]
-public class ScriptMachineEditor : BaseMachineEditor
+[CustomEditor(typeof(GoogleMachine))]
+public class GoogleMachineEditor : BaseMachineEditor
 {
-    ScriptMachine scriptMachine;
+    GoogleMachine scriptMachine;
     PropertyField[] databaseFields;
 
     
@@ -47,7 +47,7 @@ public class ScriptMachineEditor : BaseMachineEditor
         // to resolve TlsException error
         ServicePointManager.ServerCertificateValidationCallback = Validator;
 
-        scriptMachine = target as ScriptMachine;
+        scriptMachine = target as GoogleMachine;
         scriptMachine.ReInitialize();
 
         databaseFields = ExposeProperties.GetProperties(scriptMachine);

@@ -1,6 +1,6 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
 ///
-/// ScriptMachine.cs
+/// GoogleMachine.cs
 /// 
 /// (c)2013 Kim, Hyoun Woo
 ///
@@ -18,12 +18,12 @@ namespace UnityEditor
     /// <summary>
     /// 
     /// </summary>
-    internal class ScriptMachine : BaseMachine
+    internal class GoogleMachine : BaseMachine
     {
         [SerializeField]
         public static string generatorAssetPath = "Assets/SpreadSheetPro/GDataPlugin/Tool/";
         [SerializeField]
-        public static string assetFileName = "ScriptMachine.asset";
+        public static string assetFileName = "GoogleMachine.asset";
 
 
 
@@ -38,13 +38,13 @@ namespace UnityEditor
 
 
         /// <summary>
-        /// A menu item which create a 'ScriptMachine' asset file.
+        /// A menu item which create a 'GoogleMachine' asset file.
         /// </summary>
         [MenuItem("Assets/Create/Spreadsheet Tools/Goolgle")]
-        public static void CreateScriptMachineAsset()
+        public static void CreateGoogleMachineAsset()
         {
-            ScriptMachine inst = ScriptableObject.CreateInstance<ScriptMachine>();
-            string path = CustomAssetUtility.GetUniqueAssetPathNameOrFallback("New ScriptMachine.asset");
+            GoogleMachine inst = ScriptableObject.CreateInstance<GoogleMachine>();
+            string path = CustomAssetUtility.GetUniqueAssetPathNameOrFallback("New GoogleMachine.asset");
             AssetDatabase.CreateAsset(inst, path);
             AssetDatabase.SaveAssets();
             Selection.activeObject = inst;
