@@ -15,7 +15,7 @@ using System.IO;
 /// </summary>
 public class GoogleDataSettings : ScriptableObject 
 {
-    public string AssetPath = "Assets/SpreadSheetPro/GDataPlugin/Editor/";
+    public string AssetPath = "Assets/QuickSheet/GDataPlugin/Editor/";
 
     [SerializeField]
     public static string AssetFileName = "GoogleDataSettings.asset";

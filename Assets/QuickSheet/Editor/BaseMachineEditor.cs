@@ -264,7 +264,7 @@ public class BaseMachineEditor : Editor
     }
 
     /// <summary>
-    /// e.g. "Assets/SpreadSheetPro/Templates"
+    /// e.g. "Assets/QuickSheet/Templates"
     /// </summary>
     protected string GetAbsoluteCustomTemplatePath()
     {

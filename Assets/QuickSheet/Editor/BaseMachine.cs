@@ -32,7 +32,7 @@ namespace UnityEditor
         }
 
         [SerializeField]
-        private string templatePath = "SpreadSheetPro/Templates";
+        private string templatePath = "QuickSheet/Templates";
 
         [ExposeProperty]
         public string RuntimeClassPath
