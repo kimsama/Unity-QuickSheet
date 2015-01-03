@@ -40,7 +40,7 @@ namespace UnityEditor
         /// <summary>
         /// A menu item which create a 'ScriptMachine' asset file.
         /// </summary>
-        [MenuItem("Assets/Create/ScriptMachine")]
+        [MenuItem("Assets/Create/Spreadsheet Tools/Goolgle")]
         public static void CreateScriptMachineAsset()
         {
             ScriptMachine inst = ScriptableObject.CreateInstance<ScriptMachine>();
