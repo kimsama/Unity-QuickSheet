@@ -1,0 +1,81 @@
+using UnityEngine;
+using UnityEditor;
+using System.Collections;
+using System.Collections.Generic;
+using System.Text;
+
+using GDataDB;
+using GDataDB.Linq;
+
+///
+/// !!! Machine generated code !!!
+///
+[CustomEditor(typeof($WorkSheetClassName))]
+public class $ClassName : BaseGoogleEditor<$WorkSheetClassName>
+{	
+    public override void OnEnable()
+    {
+        base.OnEnable();
+        
+        $WorkSheetClassName data = target as $WorkSheetClassName;
+        
+        databaseFields = ExposeProperties.GetProperties(data);
+        
+        foreach($DataClassName e in data.dataArray)
+        {
+            dataFields = ExposeProperties.GetProperties(e);
+            pInfoList.Add(dataFields);
+        }
+    }
+    
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        
+        //DrawDefaultInspector();
+        if (GUI.changed)
+        {
+            pInfoList.Clear();
+            
+            $WorkSheetClassName data = target as $WorkSheetClassName;
+            foreach($DataClassName e in data.dataArray)
+            {
+                dataFields = ExposeProperties.GetProperties(e);
+                pInfoList.Add(dataFields);
+            }
+            
+            EditorUtility.SetDirty(target);
+            Repaint();
+        }
+    }
+    
+    public override bool Load()
+    {
+        if (!base.Load())
+            return false;
+        
+        $WorkSheetClassName targetData = target as $WorkSheetClassName;
+        
+        var client = new DatabaseClient(username, password);
+        var db = client.GetDatabase(targetData.SheetName) ?? client.CreateDatabase(targetData.SheetName);	
+        var table = db.GetTable<$DataClassName>(targetData.WorksheetName) ?? db.CreateTable<$DataClassName>(targetData.WorksheetName);
+        
+        List<$DataClassName> myDataList = new List<$DataClassName>();
+        
+        var all = table.FindAll();
+        foreach(var elem in all)
+        {
+            $DataClassName data = new $DataClassName();
+            
+            data = Cloner.DeepCopy<$DataClassName>(elem.Element);
+            myDataList.Add(data);
+        }
+                
+        targetData.dataArray = myDataList.ToArray();
+        
+        EditorUtility.SetDirty(targetData);
+        AssetDatabase.SaveAssets();
+        
+        return true;
+    }
+}
