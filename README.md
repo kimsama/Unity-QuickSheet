@@ -1,7 +1,7 @@
-Unity-SpreadsheetPro
+Unity-QuickSheet
 ====================
 
-Unity-SpreadsheetPro enables you to use google and excel spreadsheet data within Unity editor. With Unity-SpreadsheetPro, you can retrieve data from a spreadsheet and save it as an asset file with a scriptableobject format even without writing single line of code.
+Unity-QuickSheet enables you to use google and excel spreadsheet data within Unity editor. With Unity-QuickSheet, you can retrieve data from a spreadsheet and save it as an asset file with a scriptableobject format even without writing single line of code.
 
 
 Features
