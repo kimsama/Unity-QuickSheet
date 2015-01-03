@@ -3,6 +3,7 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 ///
 /// !!! Machine generated code !!!
@@ -51,7 +52,11 @@ public class $ClassName : BaseExcelEditor<$WorkSheetClassName>
         $WorkSheetClassName targetData = target as $WorkSheetClassName;
 
         string path = targetData.SheetName;
+        if (!File.Exists(path))
+            return false;
+
         string sheet = targetData.WorksheetName;
+
         ExcelQuery query = new ExcelQuery(path, sheet);
         if (query != null && query.IsValid())
         {

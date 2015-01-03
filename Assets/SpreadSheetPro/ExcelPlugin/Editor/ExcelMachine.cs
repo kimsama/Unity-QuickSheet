@@ -14,9 +14,8 @@ namespace UnityEditor
     {
         public string excelFilePath;
 
-        // need for editor
+        // both are needed for popup editor control.
         public string[] SheetNames = { "" };
-        // need for editor
         public int CurrentSheetIndex { get; set; }
 
         /// <summary>

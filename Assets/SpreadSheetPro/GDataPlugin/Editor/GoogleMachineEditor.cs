@@ -48,9 +48,12 @@ public class GoogleMachineEditor : BaseMachineEditor
         ServicePointManager.ServerCertificateValidationCallback = Validator;
 
         scriptMachine = target as GoogleMachine;
-        scriptMachine.ReInitialize();
+        if (scriptMachine != null)
+        {
+            scriptMachine.ReInitialize();
 
-        databaseFields = ExposeProperties.GetProperties(scriptMachine);
+            databaseFields = ExposeProperties.GetProperties(scriptMachine);
+        }
     }
 
     private Vector2 curretScroll = Vector2.zero;

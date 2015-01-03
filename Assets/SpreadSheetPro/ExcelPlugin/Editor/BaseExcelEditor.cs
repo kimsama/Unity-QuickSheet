@@ -9,14 +9,15 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 
 /// <summary>
-/// 
+/// Base class of the created .asset ScriptableObject class.
 /// </summary>
 public class BaseExcelEditor<T> : Editor
 {
 
-    // property draw
+    // to reflect properties on the Inspector view.
     protected PropertyField[] databaseFields;
     protected PropertyField[] dataFields;
 
@@ -24,17 +25,23 @@ public class BaseExcelEditor<T> : Editor
 
     public virtual void OnEnable()
     {
-
     }
 
     public override void OnInspectorGUI()
     {
-        //TODO: show excel file path and worksheet name.
-
         if (GUILayout.Button("Update"))
         {
             if (!Load())
-                Debug.LogError("Failed to import excel file.");
+            {
+                const string error1 = "\n- Check the path of the 'Sheet Name' and the file is exist at the path.";
+                const string error2 = "\n- If the excel file is opened, close it first then try again.";
+                const string error3 = "\n- Also check the excel file has sheet match with 'Worksheet Name'.";
+                EditorUtility.DisplayDialog(
+                    "Error",
+                    "Failed to import and update the excel file." + error1 + error2 + error3,
+                    "OK"
+                );
+            }
         }
 
         if (target == null)
@@ -50,12 +57,10 @@ public class BaseExcelEditor<T> : Editor
     }
 
     /// 
-    /// Should be reimplemented in derived class.
+    /// Called when 'Update' button is pressed. It should be reimplemented in the derived class.
     /// 
     public virtual bool Load()
     {
-        //TODO: check file path and worksheet name is valid.
-
-        return true;
+        return false;
     }
 }

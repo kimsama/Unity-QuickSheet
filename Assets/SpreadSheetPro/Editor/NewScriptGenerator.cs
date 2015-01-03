@@ -117,6 +117,9 @@ namespace UnityEditor
             m_ScriptPrescription = scriptPrescription;
         }
         
+        /// <summary>
+        /// Replace markdown keywords in the template text file which is currently read in.
+        /// </summary>
         public override string ToString ()
         {
             m_Text = m_ScriptPrescription.template;
@@ -141,6 +144,7 @@ namespace UnityEditor
             foreach (KeyValuePair<string, string> kvp in m_ScriptPrescription.m_StringReplacements)
                 m_Text = m_Text.Replace (kvp.Key, kvp.Value);
 
+            // Do not change tabs to spcaes of the .txt template files.
             Match match = Regex.Match (m_Text, @"(\t*)\$MemberFields");
             if (match.Success)
             {
@@ -158,10 +162,6 @@ namespace UnityEditor
                     m_Text = m_Text.Replace (match.Value + "\n", m_Writer.ToString ());
                 }
             }
-            
-            // Put curly braces on new line if specified in editor prefs
-            if (EditorPrefs.GetBool ("CurlyBracesOnNewLine"))
-                PutCurveBracesOnNewLine ();
             
             // Return the text of the script
             return m_Text;
