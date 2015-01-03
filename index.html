@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Unity-quicksheet by kimsama</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Unity-quicksheet</h1>
+        <p>Unity-QuickSheet enables you to use spreadsheet file data within Unity editor. </p>
+        <p class="view"><a href="https://github.com/kimsama/Unity-QuickSheet">View the Project on GitHub <small>kimsama/Unity-QuickSheet</small></a></p>
+        <ul>
+          <li><a href="https://github.com/kimsama/Unity-QuickSheet/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/kimsama/Unity-QuickSheet/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/kimsama/Unity-QuickSheet">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="unity-quicksheet" class="anchor" href="#unity-quicksheet" aria-hidden="true"><span class="octicon octicon-link"></span></a>Unity-QuickSheet</h1>
+
+<p>Unity-QuickSheet enables you to use google and excel spreadsheet data within Unity editor. With Unity-QuickSheet, you can retrieve data from a spreadsheet and save it as an asset file with a scriptableobject format even without writing single line of code.</p>
+
+<h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
+
+<ul>
+<li>No need to write any single line of code.</li>
+<li>It can retrieve data from excel file. (both of xls and xlsx format are supported.)</li>
+<li>It can retrieve data from google spreadsheet.</li>
+<li>No need to parse any retrieved data, it automatically serializes retrieved data to Unity3D's ScriptableObject and so it is fast than XML format.</li>
+</ul>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<ul>
+<li>Excel</li>
+<li>Google Spreadsheet</li>
+</ul>
+
+<h2>
+<a id="references" class="anchor" href="#references" aria-hidden="true"><span class="octicon octicon-link"></span></a>References</h2>
+
+<ul>
+<li>
+<a href="http://forum.unity3d.com/threads/155352-Serialization-Best-Practices-Megapost">Unity Serialization</a> on Unity's forum for details of serialization mechanism.</li>
+<li>
+<a href="https://github.com/mausch/GDataDB">GDataDB</a> is used to retrieve data from Google Spreadsheet. Note that <a href="https://github.com/mausch/GDataDB">GDataDB</a> is slightly modified to support <em>enum</em> type.</li>
+<li>
+<a href="http://wiki.unity3d.com/index.php/Expose_properties_in_inspector">ExposeProperties</a> is used to easily expose variables of spreadsheet on the Unity3D's inspector view and let <a href="https://github.com/mausch/GDataDB">GDataDB</a> access through get/set accessors.</li>
+<li>
+<a href="https://npoi.codeplex.com/">NPOI</a> is used to read xls and xlsx file.</li>
+</ul>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>This code is distributed under the terms and conditions of the MIT license.</p>
+
+<p>Copyright (c) 2013 Kim, Hyoun Woo</p>
+      </section>
+    </div>
+    <footer>
+      <p>Project maintained by <a href="https://github.com/kimsama">kimsama</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
