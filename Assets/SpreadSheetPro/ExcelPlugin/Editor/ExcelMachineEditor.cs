@@ -75,7 +75,7 @@ public class ExcelMachineEditor : BaseMachineEditor
         machine.TemplatePath = EditorGUILayout.TextField("Template: ", machine.TemplatePath);
         machine.RuntimeClassPath = EditorGUILayout.TextField("Runtime: ", machine.RuntimeClassPath);
         machine.EditorClassPath = EditorGUILayout.TextField("Editor:", machine.EditorClassPath);
-        machine.DataFilePath = EditorGUILayout.TextField("Data:", machine.DataFilePath);
+        //machine.DataFilePath = EditorGUILayout.TextField("Data:", machine.DataFilePath);
 
         machine.onlyCreateDataClass = EditorGUILayout.Toggle("Only DataClass", machine.onlyCreateDataClass);
 

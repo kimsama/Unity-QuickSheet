@@ -60,18 +60,18 @@ namespace UnityEditor
         [SerializeField]
         private string editorScriptFilePath;
 
-        [ExposeProperty]
-        public string DataFilePath
-        {
-            get { return dataFilePath; }
-            set { dataFilePath = value; }
-        }
+        //[ExposeProperty]
+        //public string DataFilePath
+        //{
+        //    get { return dataFilePath; }
+        //    set { dataFilePath = value; }
+        //}
 
         /// <summary>
         /// path the created asset file will be located.
         /// </summary>
-        [SerializeField]
-        private string dataFilePath;
+        //[SerializeField]
+        //private string dataFilePath;
 
         [ExposeProperty]
         public string SpreadSheetName
