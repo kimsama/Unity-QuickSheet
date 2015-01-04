@@ -13,11 +13,18 @@ Features
 
 Say again, you don't need to write even single line of code.
 
-Usage
-------
+Getting Started
+---------------
 
 * [Excel](http://kimsama.github.io/excel-howto/)
 * [Google Spreadsheet](http://kimsama.github.io/googlehowto/)
+
+Usage
+-----
+
+* Using Linq with QuickSheet
+* NGUI localization with QuickSheet
+* Automation of formula calculation
 
 References
 ----------
