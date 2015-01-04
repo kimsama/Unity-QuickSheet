@@ -23,6 +23,7 @@ Usage
 -----
 
 * Using Linq with QuickSheet
+* Enum with QuickSheet
 * NGUI localization with QuickSheet
 * Automation of formula calculation
 
