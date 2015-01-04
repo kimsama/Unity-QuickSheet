@@ -11,11 +11,12 @@ Features
 * It can retrieve data from google spreadsheet.
 * No need to parse any retrieved data, it automatically serializes retrieved data to Unity3D's ScriptableObject and so it is fast than XML format.
 
+Say again, you don't need to write even single line of code.
 
 Usage
 ------
 
-* Excel
+* [Excel](http://kimsama.github.io/excel-howto/)
 * Google Spreadsheet
 
 References
