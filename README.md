@@ -17,7 +17,7 @@ Usage
 ------
 
 * [Excel](http://kimsama.github.io/excel-howto/)
-* Google Spreadsheet
+* [Google Spreadsheet](http://kimsama.github.io/googlehowto/)
 
 References
 ----------
@@ -31,6 +31,8 @@ License
 -------
 
 This code is distributed under the terms and conditions of the MIT license.
+
+Some codes are borrowed from [GDataDB](https://github.com/mausch/GDataDB) and [ExposeProperties](http://wiki.unity3d.com/index.php/Expose_properties_in_inspector). The license of the that follow theirs.
 
 Copyright (c) 2013 Kim, Hyoun Woo
 
