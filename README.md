@@ -16,8 +16,8 @@ Say again, you don't need to write even single line of code.
 Getting Started
 ---------------
 
-* [Excel](http://kimsama.github.io/excel-howto/)
-* [Google Spreadsheet](http://kimsama.github.io/googlehowto/)
+* [Excel](http://kimsama.github.io/excel-howto/) howto
+* [Google Spreadsheet](http://kimsama.github.io/googlehowto/) howto
 
 Usage
 -----
