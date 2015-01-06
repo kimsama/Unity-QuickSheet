@@ -1,7 +1,7 @@
 Unity-QuickSheet
 ====================
 
-Unity-QuickSheet enables you to use google and excel spreadsheet data within Unity editor. With Unity-QuickSheet, you can retrieve data from a spreadsheet and save it as an asset file with a scriptableobject format even without writing single line of code.
+Unity-QuickSheet enables you to use google and excel spreadsheet data within Unity editor. With Unity-QuickSheet, you can retrieve data from a spreadsheet and save it as an asset file with a [ScriptableObject](http://docs.unity3d.com/ScriptReference/ScriptableObject.html) format even without writing single line of code.
 
 
 Features
@@ -9,7 +9,7 @@ Features
 * No need to write any single line of code.
 * It can retrieve data from excel file. (both of xls and xlsx format are supported.)
 * It can retrieve data from google spreadsheet.
-* No need to write a parser to retrieve data, it automatically serializes retrieved data into Unity3D's ScriptableObject, the binary format and so it is fast than to use XML which is usually ASCII format.
+* No need to write a parser to retrieve data, it automatically serializes retrieved data into Unity3D's [ScriptableObject](http://docs.unity3d.com/ScriptReference/ScriptableObject.html), the binary format and so it is fast than to use XML which is usually ASCII format.
 
 Say again, you don't need to write even single line of code!
 
@@ -32,7 +32,7 @@ Usage
 Limitations
 -----------
 
-* ScritableObject does not allow to save data changed on runtime. So if you need to serialize and save things that changes on runtime, you need to look at other methods of serialization such as JSON, BSON or XML, depending on your platform and/or requirements.
+* *[ScritableObject](http://docs.unity3d.com/ScriptReference/ScriptableObject.html)* does not allow to save data changed on runtime. So if you need to serialize and save things that changes on runtime, you need to look at other methods of serialization such as JSON, BSON or XML, depending on your platform and/or requirements.
 
 * Google Spreadsheet plugin does not work in the Unity web player's security sandbox. You should change the *Platform* to *'Stand Alone'* or something else such as *'iOS'* or *'Android'* platform in the ***Build Setting***.
 
