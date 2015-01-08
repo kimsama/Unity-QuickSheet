@@ -11,7 +11,7 @@ Features
 * It can retrieve data from google spreadsheet.
 * No need to write a parser to retrieve data, it automatically serializes retrieved data into Unity3D's [ScriptableObject](http://docs.unity3d.com/ScriptReference/ScriptableObject.html), the binary format and so it is fast than to use XML which is usually ASCII format.
 
-Say again, you don't need to write even single line of code!
+Saying again, you don't need to write even single line of code!
 
 
 Getting Started
