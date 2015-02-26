@@ -114,7 +114,7 @@ public class ExcelQuery
                     catch(Exception e)
                     {
                         string pos = string.Format("Row[{0}], Cell[{1}]", current.ToString(), i.ToString());
-                        Debug.LogError("Excel Deserialize Exception: " + e.Message + pos);
+                        Debug.LogError("Excel Deserialize Exception: " + e.Message + "" + pos + " Is that cell empty?");
                     }
                 }
             }
