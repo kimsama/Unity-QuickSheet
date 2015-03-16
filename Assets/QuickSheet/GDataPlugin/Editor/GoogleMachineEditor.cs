@@ -30,10 +30,7 @@ using Google.GData.Spreadsheets;
 [CustomEditor(typeof(GoogleMachine))]
 public class GoogleMachineEditor : BaseMachineEditor
 {
-    GoogleMachine scriptMachine;
     PropertyField[] databaseFields;
-
-    
 
     // to resolve TlsException error
     public static bool Validator (object sender, X509Certificate certificate, 
@@ -47,12 +44,12 @@ public class GoogleMachineEditor : BaseMachineEditor
         // to resolve TlsException error
         ServicePointManager.ServerCertificateValidationCallback = Validator;
 
-        scriptMachine = target as GoogleMachine;
-        if (scriptMachine != null)
+        machine = target as GoogleMachine;
+        if (machine != null)
         {
-            scriptMachine.ReInitialize();
+            machine.ReInitialize();
 
-            databaseFields = ExposeProperties.GetProperties(scriptMachine);
+            databaseFields = ExposeProperties.GetProperties(machine);
         }
     }
 
@@ -104,26 +101,25 @@ public class GoogleMachineEditor : BaseMachineEditor
 
         EditorGUILayout.Separator();
 
-        DrawHeaderSetting(scriptMachine);
-
+        DrawHeaderSetting(machine);
 
         // force save changed type.
         if (GUI.changed)
         {
             EditorUtility.SetDirty(GoogleDataSettings.Instance);
-            EditorUtility.SetDirty(scriptMachine);
+            EditorUtility.SetDirty(machine);
             AssetDatabase.SaveAssets();
         }
 
         EditorGUILayout.Separator();
 
-        scriptMachine.onlyCreateDataClass = EditorGUILayout.Toggle ("Only DataClass", scriptMachine.onlyCreateDataClass);
+        machine.onlyCreateDataClass = EditorGUILayout.Toggle("Only DataClass", machine.onlyCreateDataClass);
 
         EditorGUILayout.Separator ();
 
         if (GUILayout.Button("Generate"))
         {
-            if (Generate() == null)
+            if (Generate(this.machine) == null)
                 Debug.LogError("Failed to create a script from Google.");
         }
     }
@@ -144,12 +140,12 @@ public class GoogleMachineEditor : BaseMachineEditor
         var client = new DatabaseClient(GoogleDataSettings.Instance.Account,
                                         GoogleDataSettings.Instance.Password);
 
-        if (string.IsNullOrEmpty(scriptMachine.SpreadSheetName))
+        if (string.IsNullOrEmpty(machine.SpreadSheetName))
             return;
-        if (string.IsNullOrEmpty(scriptMachine.WorkSheetName))
+        if (string.IsNullOrEmpty(machine.WorkSheetName))
             return;
 
-        var db = client.GetDatabase(scriptMachine.SpreadSheetName);
+        var db = client.GetDatabase(machine.SpreadSheetName);
         if (db == null)
         {
             Debug.LogError("The given spreadsheet does not exist.");
@@ -157,7 +153,7 @@ public class GoogleMachineEditor : BaseMachineEditor
         }
 
         // retrieves all cells
-        var worksheet = ((Database)db).GetWorksheetEntry(scriptMachine.WorkSheetName);
+        var worksheet = ((Database)db).GetWorksheetEntry(machine.WorkSheetName);
 
         // Fetch the cell feed of the worksheet.
         CellQuery cellQuery = new CellQuery(worksheet.CellFeedLink);
@@ -176,8 +172,8 @@ public class GoogleMachineEditor : BaseMachineEditor
     /// </summary>
     protected override void Import()
     {
-        if (scriptMachine.HasHeadColumn())
-            scriptMachine.HeaderColumnList.Clear();
+        if (machine.HasHeadColumn())
+            machine.HeaderColumnList.Clear();
 
         Regex re = new Regex(@"\d+");
 
@@ -193,10 +189,10 @@ public class GoogleMachineEditor : BaseMachineEditor
             //fieldList.Add(new MemberFieldData(cell.Value.Replace(" ", "")));
             HeaderColumn header = new HeaderColumn();
             header.name = cell.Value;
-            scriptMachine.HeaderColumnList.Add(header);
+            machine.HeaderColumnList.Add(header);
         });
 
-        EditorUtility.SetDirty(scriptMachine);
+        EditorUtility.SetDirty(machine);
         AssetDatabase.SaveAssets();
     }
 
@@ -223,30 +219,36 @@ public class GoogleMachineEditor : BaseMachineEditor
             // add cell's displayed value to the list.
             fieldList.Add(new MemberFieldData(cell.Value.Replace(" ", "")));
         });
-        
-        sp.className = scriptMachine.WorkSheetName + "Data";
+
+        sp.className = machine.WorkSheetName + "Data";
         sp.template = GetTemplate("DataClass");
 
         sp.memberFields = fieldList.ToArray();
 
         // write a script to the given folder.		
-        using (var writer = new StreamWriter(TargetPathForData(scriptMachine.WorkSheetName)))
+        using (var writer = new StreamWriter(TargetPathForData(machine.WorkSheetName)))
         {
             writer.Write(new NewScriptGenerator(sp).ToString());
             writer.Close();
         }
     }
 
-    /// <summary>
-    /// Generate custom asset creation editor script file.
-    /// </summary>
-    protected override ScriptPrescription Generate()
+    /// 
+    /// Create utility class which has menu item function to create an asset file.
+    /// 
+    protected override void CreateAssetCreationScript(BaseMachine m, ScriptPrescription sp)
     {
-        ScriptPrescription sp = base.Generate();
-        if (sp != null)
-            CreateAssetFileFunc(sp);
+        sp.className = machine.WorkSheetName;
+        sp.worksheetClassName = machine.WorkSheetName;
+        sp.assetFileCreateFuncName = "Create" + machine.WorkSheetName + "AssetFile";
+        sp.template = GetTemplate("AssetFileClass");
 
-        return sp;
+        // write a script to the given folder.		
+        using (var writer = new StreamWriter(TargetPathForAssetFileCreateFunc(machine.WorkSheetName)))
+        {
+            writer.Write(new NewScriptGenerator(sp).ToString());
+            writer.Close();
+        }
     }
 
 }
