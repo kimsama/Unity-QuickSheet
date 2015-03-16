@@ -18,39 +18,36 @@ using System.IO;
 [CustomEditor(typeof(BaseMachine))]
 public class BaseMachineEditor : Editor 
 {
-    BaseMachine machine;
+    protected BaseMachine machine;
 
     protected readonly string NoTemplateString = "No Template File Found";
 
-    void OnEnable()
-    {
-        machine = target as BaseMachine;
-    }
-
     protected virtual void Import()
-    { 
+    {
+        Debug.LogWarning("!!! It should be implemented in the derived class !!!");
     }
 
     /// <summary>
     /// Generate script files with the given templates.
     /// Total four files are generated, two for runtime and others for editor.
     /// </summary>
-    protected virtual ScriptPrescription Generate()
+    protected virtual ScriptPrescription Generate(BaseMachine m)
     {
+        if (m == null)
+            return null;
+
         ScriptPrescription sp = new ScriptPrescription();
 
-        if (machine == null)
-            machine = target as BaseMachine;
-
-        if (machine.onlyCreateDataClass)
+        if (m.onlyCreateDataClass)
         {
-            CreateDataClassScript(sp);
+            CreateDataClassScript(m, sp);
         }
         else
         {
-            CreateScriptableObjectClassScript(sp);
-            CreateScriptableObjectEditorClassScript(sp);
-            CreateDataClassScript(sp);
+            CreateScriptableObjectClassScript(m, sp);
+            CreateScriptableObjectEditorClassScript(m, sp);
+            CreateDataClassScript(m, sp);
+            CreateAssetCreationScript(m, sp);
         }
 
         AssetDatabase.Refresh();
@@ -61,7 +58,7 @@ public class BaseMachineEditor : Editor
     /// <summary>
     /// Create a ScriptableObject class and write it down on the specified folder.
     /// </summary>
-    protected void CreateScriptableObjectClassScript(ScriptPrescription sp)
+    protected void CreateScriptableObjectClassScript(BaseMachine machine, ScriptPrescription sp)
     {
         sp.className = machine.WorkSheetName;
         sp.dataClassName = machine.WorkSheetName + "Data";
@@ -104,7 +101,7 @@ public class BaseMachineEditor : Editor
     /// <summary>
     /// Create a ScriptableObject editor class and write it down on the specified folder.
     /// </summary>
-    protected void CreateScriptableObjectEditorClassScript(ScriptPrescription sp)
+    protected void CreateScriptableObjectEditorClassScript(BaseMachine machine, ScriptPrescription sp)
     {
         sp.className = machine.WorkSheetName + "Editor";
         sp.worksheetClassName = machine.WorkSheetName;
@@ -148,7 +145,7 @@ public class BaseMachineEditor : Editor
     /// <summary>
     /// Create a data class which describes the spreadsheet and write it down on the specified folder.
     /// </summary>
-    protected void CreateDataClassScript(ScriptPrescription sp)
+    protected void CreateDataClassScript(BaseMachine machine, ScriptPrescription sp)
     {
         // check the directory path exists
         string fullPath = TargetPathForData(machine.WorkSheetName);
@@ -188,22 +185,9 @@ public class BaseMachineEditor : Editor
         }
     }
 
-    /// 
-    /// Create utility class which has menu item function to create an asset file.
-    /// 
-    protected void CreateAssetFileFunc(ScriptPrescription sp)
+    protected virtual void CreateAssetCreationScript(BaseMachine m, ScriptPrescription sp)
     {
-        sp.className = machine.WorkSheetName;
-        sp.worksheetClassName = machine.WorkSheetName;
-        sp.assetFileCreateFuncName = "Create" + machine.WorkSheetName + "AssetFile";
-        sp.template = GetTemplate("AssetFileClass");
-
-        // write a script to the given folder.		
-        using (var writer = new StreamWriter(TargetPathForAssetFileCreateFunc(machine.WorkSheetName)))
-        {
-            writer.Write(new NewScriptGenerator(sp).ToString());
-            writer.Close();
-        }
+        Debug.LogWarning("!!! It should be implemented in the derived class !!!");
     }
 
     /// <summary>
@@ -288,11 +272,9 @@ public class BaseMachineEditor : Editor
         return headerStyle;
     }
 
-    protected void DrawHeaderSetting(BaseMachine machine)
+    protected void DrawHeaderSetting(BaseMachine m)
     {
-        //BaseMachine machine = target as BaseMachine;
-
-        if (machine.HasHeadColumn())
+        if (m.HasHeadColumn())
         {
             //EditorGUILayout.LabelField("type settings");
             GUIStyle headerStyle = MakeHeader();
@@ -302,7 +284,7 @@ public class BaseMachineEditor : Editor
             EditorGUILayout.BeginVertical("box");
 
             string lastCellName = string.Empty;
-            foreach (HeaderColumn header in machine.HeaderColumnList)
+            foreach (HeaderColumn header in m.HeaderColumnList)
             {
                 GUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(header.name);

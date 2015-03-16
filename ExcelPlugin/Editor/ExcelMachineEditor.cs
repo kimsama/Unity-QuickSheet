@@ -18,6 +18,11 @@ using System.IO;
 [CustomEditor(typeof(ExcelMachine))]
 public class ExcelMachineEditor : BaseMachineEditor
 {
+    void OnEnable()
+    {
+        machine = target as ExcelMachine;
+    }
+
     public override void OnInspectorGUI()
     {
         ExcelMachine machine = target as ExcelMachine;
@@ -83,7 +88,7 @@ public class ExcelMachineEditor : BaseMachineEditor
 
         if (GUILayout.Button("Generate"))
         {
-            ScriptPrescription sp = Generate();
+            ScriptPrescription sp = Generate(machine);
             if (sp != null)
             {
                 Debug.Log("Successfully generated!");
@@ -154,23 +159,15 @@ public class ExcelMachineEditor : BaseMachineEditor
         AssetDatabase.SaveAssets();
     }
 
-    protected override ScriptPrescription Generate()
-    {
-        ScriptPrescription sp = base.Generate();
-        if (sp != null)
-            CreatePostProcessorScript(sp);
-
-        return sp;
-    }
-
     /// <summary>
     /// Generate AssetPostprocessor editor script file.
     /// </summary>
-    private void CreatePostProcessorScript(ScriptPrescription sp)
+    protected override void CreateAssetCreationScript(BaseMachine m, ScriptPrescription sp)
     {
         ExcelMachine machine = target as ExcelMachine;
 
         sp.className = machine.WorkSheetName;
+        sp.dataClassName = machine.WorkSheetName + "Data";
         sp.worksheetClassName = machine.WorkSheetName;
         
         // where the imported excel file is.
