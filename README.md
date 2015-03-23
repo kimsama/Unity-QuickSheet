@@ -29,6 +29,23 @@ Usage
 * Automation of formula calculation
 
 
+Add QuickSheet via subtree
+-----------------------------
+
+You can add QuickSheet via subtree to your github project like the following:
+
+```
+git subtree add --prefix=Assets/QuickSheet https://github.com/your_github_account/your_project.git QuickSheet 
+```
+
+It creates *QuickSheet* folder under *Assets* unity project folder then put all the neccessary files under the *QuickSheet* folder.
+
+Any changes for the remote repository easily can pull with *git subtree pull* as the following:
+
+```
+git subtree pull --prefix=Assets/QuickSheet https://github.com/kimsama/Unity-QuickSheet.git QuickSheet 
+```
+
 Limitations
 -----------
 
