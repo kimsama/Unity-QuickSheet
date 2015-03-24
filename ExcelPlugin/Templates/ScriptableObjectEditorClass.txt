@@ -1,0 +1,71 @@
+using UnityEngine;
+using UnityEditor;
+using System.Collections;
+using System.Collections.Generic;
+using System.Text;
+using System.IO;
+
+///
+/// !!! Machine generated code !!!
+///
+[CustomEditor(typeof($WorkSheetClassName))]
+public class $ClassName : BaseExcelEditor<$WorkSheetClassName>
+{	
+    public override void OnEnable()
+    {
+        base.OnEnable();
+        
+        $WorkSheetClassName data = target as $WorkSheetClassName;
+        
+        databaseFields = ExposeProperties.GetProperties(data);
+        
+        foreach($DataClassName e in data.dataArray)
+        {
+            dataFields = ExposeProperties.GetProperties(e);
+            pInfoList.Add(dataFields);
+        }
+    }
+    
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        
+        //DrawDefaultInspector();
+        if (GUI.changed)
+        {
+            pInfoList.Clear();
+            
+            $WorkSheetClassName data = target as $WorkSheetClassName;
+            foreach($DataClassName e in data.dataArray)
+            {
+                dataFields = ExposeProperties.GetProperties(e);
+                pInfoList.Add(dataFields);
+            }
+            
+            EditorUtility.SetDirty(target);
+            Repaint();
+        }
+    }
+    
+    public override bool Load()
+    {
+        $WorkSheetClassName targetData = target as $WorkSheetClassName;
+
+        string path = targetData.SheetName;
+        if (!File.Exists(path))
+            return false;
+
+        string sheet = targetData.WorksheetName;
+
+        ExcelQuery query = new ExcelQuery(path, sheet);
+        if (query != null && query.IsValid())
+        {
+            targetData.dataArray = query.Deserialize<$DataClassName>().ToArray();
+            EditorUtility.SetDirty(targetData);
+            AssetDatabase.SaveAssets();
+            return true;
+        }
+        else
+            return false;
+    }
+}
