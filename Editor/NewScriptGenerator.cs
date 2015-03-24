@@ -183,7 +183,12 @@ namespace UnityEditor
         {
             m_Writer.WriteLine (m_Indentation + "[SerializeField]");
 
-            string tmp = field.Type + " " + field.Name.ToLower () + ";";
+            string tmp;
+            if (field.type == CellType.Enum)
+                tmp = field.Name + " " + field.Name.ToLower() + ";";
+            else
+                tmp = field.Type + " " + field.Name.ToLower () + ";";
+
             m_Writer.WriteLine (m_Indentation + tmp);
         }
     
@@ -197,8 +202,14 @@ namespace UnityEditor
             m_Writer.WriteLine (m_Indentation + "[ExposeProperty]");
 
             string tmp = string.Empty;
-            tmp += "public " + field.Type + " " + ti.ToTitleCase(field.Name) + " ";
-            tmp += "{ get {return " + field.Name.ToLower () + "; } set { " + field.Name.ToLower () + " = value;} }";
+
+            if (field.type == CellType.Enum)
+                tmp += "public " + field.Name + " " + field.Name.ToUpper() + " ";
+            else
+                tmp += "public " + field.Type + " " + ti.ToTitleCase(field.Name) + " ";
+
+            tmp += "{ get {return " + field.Name.ToLower() + "; } set { " + field.Name.ToLower() + " = value;} }";
+
             m_Writer.WriteLine (m_Indentation + tmp);
         }
 
