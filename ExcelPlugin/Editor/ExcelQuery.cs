@@ -190,6 +190,7 @@ public class ExcelQuery
         //HACK: modified to return enum.
         if (t.IsEnum)
         {
+            value = cell.StringCellValue;
             return Enum.Parse(t, value.ToString(), true);
         }
         else
