@@ -187,7 +187,12 @@ namespace UnityEditor
             if (field.type == CellType.Enum)
                 tmp = field.Name + " " + field.Name.ToLower() + ";";
             else
-                tmp = field.Type + " " + field.Name.ToLower () + ";";
+            {
+                if (field.IsArrayType)
+                    tmp = field.Type + "[]" + " " + field.Name.ToLower() + " = new " + field.Type + "[0]" +";";
+                else
+                    tmp = field.Type + " " + field.Name.ToLower() + ";";
+            }
 
             m_Writer.WriteLine (m_Indentation + tmp);
         }
@@ -206,7 +211,12 @@ namespace UnityEditor
             if (field.type == CellType.Enum)
                 tmp += "public " + field.Name + " " + field.Name.ToUpper() + " ";
             else
-                tmp += "public " + field.Type + " " + ti.ToTitleCase(field.Name) + " ";
+            {
+                if (field.IsArrayType)
+                    tmp += "public " + field.Type + "[]" + " " + ti.ToTitleCase(field.Name) + " ";
+                else
+                    tmp += "public " + field.Type + " " + ti.ToTitleCase(field.Name) + " ";
+            }
 
             tmp += "{ get {return " + field.Name.ToLower() + "; } set { " + field.Name.ToLower() + " = value;} }";
 

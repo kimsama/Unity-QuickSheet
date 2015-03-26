@@ -83,6 +83,8 @@ namespace UnityEditor
             }
         }
 
+        public bool IsArrayType { get; set; }
+
         public MemberFieldData()
         {
             name = "";

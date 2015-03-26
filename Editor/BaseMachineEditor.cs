@@ -168,6 +168,7 @@ public class BaseMachineEditor : Editor
             MemberFieldData member = new MemberFieldData();
             member.Name = header.name;
             member.type = header.type;
+            member.IsArrayType = header.isArray;
 
             fieldList.Add(member);
         }
@@ -287,8 +288,11 @@ public class BaseMachineEditor : Editor
             foreach (HeaderColumn header in m.HeaderColumnList)
             {
                 GUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField(header.name);
-                header.type = (CellType)EditorGUILayout.EnumPopup(header.type, GUILayout.MaxWidth(100));
+                EditorGUILayout.LabelField(header.name, GUILayout.MaxWidth(250));
+                header.type = (CellType)EditorGUILayout.EnumPopup(header.type, GUILayout.MaxWidth(150));
+                GUILayout.Space(20);
+                EditorGUILayout.LabelField("array:", GUILayout.MaxWidth(40));
+                header.isArray = EditorGUILayout.Toggle(header.isArray, GUILayout.MaxWidth(50));
                 GUILayout.EndHorizontal();
             }
 
