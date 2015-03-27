@@ -57,6 +57,15 @@ public class ExcelMachineEditor : BaseMachineEditor
         }
         GUILayout.EndHorizontal();
 
+        // Failed to get sheet name so we just return not to make any trouble on the editor.
+        if (machine.SheetNames.Length == 0)
+        {
+            EditorGUILayout.Separator();
+            EditorGUILayout.LabelField("Error: Failed to retrieve the specified excel file.");
+            EditorGUILayout.LabelField("If the excel file is opened, close it then reopen it again.");
+            return;
+        }
+
         machine.SpreadSheetName = EditorGUILayout.TextField("Spreadsheet File: ", machine.SpreadSheetName);
         machine.CurrentSheetIndex = EditorGUILayout.Popup(machine.CurrentSheetIndex, machine.SheetNames);
         if (machine.SheetNames != null)
