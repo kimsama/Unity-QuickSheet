@@ -59,7 +59,11 @@ public class ExcelMachineEditor : BaseMachineEditor
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         // Failed to get sheet name so we just return not to make any trouble on the editor.
+=======
+        // Failed to get sheet name so we just return not to make editor on going.
+>>>>>>> QuickSheet
 =======
         // Failed to get sheet name so we just return not to make editor on going.
 >>>>>>> QuickSheet
