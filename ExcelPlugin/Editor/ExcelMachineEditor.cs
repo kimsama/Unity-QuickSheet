@@ -57,7 +57,11 @@ public class ExcelMachineEditor : BaseMachineEditor
         }
         GUILayout.EndHorizontal();
 
+<<<<<<< HEAD
         // Failed to get sheet name so we just return not to make any trouble on the editor.
+=======
+        // Failed to get sheet name so we just return not to make editor on going.
+>>>>>>> QuickSheet
         if (machine.SheetNames.Length == 0)
         {
             EditorGUILayout.Separator();
