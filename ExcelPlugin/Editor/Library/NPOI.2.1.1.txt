@@ -1,3 +1,0 @@
-
-NPOI 2.1.1 can be downloaded from:
-https://npoi.codeplex.com/releases
