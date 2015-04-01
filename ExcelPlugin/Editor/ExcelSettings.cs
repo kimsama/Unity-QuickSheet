@@ -1,8 +1,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 ///
-/// GoogleDataSettings.cs
+/// ExcelSettings.cs
 /// 
-/// (c)2013 Kim, Hyoun Woo
+/// (c)2015 Kim, Hyoun Woo
 ///
 ///////////////////////////////////////////////////////////////////////////////
 using UnityEngine;
@@ -11,46 +11,14 @@ using System.Collections;
 using System.IO;
 
 /// <summary>
-/// A class to manage google account setting.
+/// A class to manage excel setting.
 /// </summary>
-public class GoogleDataSettings : ScriptableObject 
+public class ExcelSettings : ScriptableObject 
 {
-    public string AssetPath = "Assets/QuickSheet/GDataPlugin/Editor/";
+    public string AssetPath = "Assets/QuickSheet/ExcelPlugin/Editor/";
 
     [SerializeField]
-    public static string AssetFileName = "GoogleDataSettings.asset";
-
-    /// <summary>
-    /// A property which specifies or retrieves account.
-    /// </summary>
-    public string Account
-    {
-        get { return account; }
-        set
-        {
-            if (account != value)
-                account = value;
-        }
-    }
-
-    [SerializeField]
-    private string account = "account@gmail.com"; // your google acccount.
-
-    /// <summary>
-    /// A property which specifies or retrieves password.
-    /// </summary>
-    public string Password
-    {
-        get { return password; }
-        set
-        {
-            if (password != value)
-                password = value;
-        }
-    }
-
-    [SerializeField]
-    private string password = "";
+    public static string AssetFileName = "ExcelSettings.asset";
 
     /// <summary>
     /// A property which specifies or retrieves generated runtime class path.
@@ -87,27 +55,27 @@ public class GoogleDataSettings : ScriptableObject
     /// <summary>
     /// A singleton instance.
     /// </summary>
-    private static GoogleDataSettings s_Instance;
+    private static ExcelSettings s_Instance;
 
     /// <summary>
     /// Create new account setting asset file if there is already one then select it.
     /// </summary>
-    [MenuItem("Assets/Create/QuickSheet/Setting/GoogleData Setting")]
-    public static void CreateGoogleDataSetting()
+    [MenuItem("Assets/Create/QuickSheet/Setting/Excel Setting")]
+    public static void CreateExcelSetting()
     {
-        GoogleDataSettings.Create();
+        ExcelSettings.Create();
     }
 
     /// <summary>
     /// Select currently exist account setting asset file.
     /// </summary>
-    [MenuItem("Edit/Project Settings/QuickSheet/Select Google Data Setting")]
+    [MenuItem("Edit/Project Settings/QuickSheet/Select Excel Setting")]
     public static void Edit()
     {
         Selection.activeObject = Instance;
         if (Selection.activeObject == null)
         {
-            Debug.LogError("No GoogleDataSettings.asset file is found. Create setting file first.");
+            Debug.LogError("No ExcelSetting.asset file is found. Create setting file first.");
         }
     }
 
@@ -119,12 +87,12 @@ public class GoogleDataSettings : ScriptableObject
     }
     
     /// <summary>
-    /// Checks GoogleDataSetting.asset file exist at the specified path(AssetPath+AssetFileName).
+    /// Checks ExcelSetting.asset file exist at the specified path(AssetPath+AssetFileName).
     /// </summary>
     public bool CheckPath()
     {
         string file = AssetDatabase.GetAssetPath(Selection.activeObject);
-        string assetFile = AssetPath + GoogleDataSettings.AssetFileName;
+        string assetFile = AssetPath + ExcelSettings.AssetFileName;
 
         return (file == assetFile) ? true : false;
     }
@@ -132,17 +100,17 @@ public class GoogleDataSettings : ScriptableObject
     /// <summary>
     /// A property for singleton.
     /// </summary>
-    public static GoogleDataSettings Instance
+    public static ExcelSettings Instance
     {
         get
         {
             if (s_Instance == null)
             {
                 // A tricky way to assess non-static member in the static method.
-                GoogleDataSettings temp = new GoogleDataSettings();
-                string path = temp.AssetPath + GoogleDataSettings.AssetFileName;
+                ExcelSettings temp = new ExcelSettings();
+                string path = temp.AssetPath + ExcelSettings.AssetFileName;
 
-                s_Instance = (GoogleDataSettings)AssetDatabase.LoadAssetAtPath (path, typeof (GoogleDataSettings));
+                s_Instance = (ExcelSettings)AssetDatabase.LoadAssetAtPath (path, typeof (ExcelSettings));
                 if (s_Instance == null)
                 {
                     Debug.LogWarning("No account setting file is at " + path + " You need to create a new one or modify its path.");
@@ -156,14 +124,14 @@ public class GoogleDataSettings : ScriptableObject
     /// <summary>
     /// Create account setting asset file if it does not exist.
     /// </summary>
-    public static GoogleDataSettings Create()
+    public static ExcelSettings Create()
     {
         string filePath = CustomAssetUtility.GetUniqueAssetPathNameOrFallback(AssetFileName);
-        s_Instance = (GoogleDataSettings)AssetDatabase.LoadAssetAtPath(filePath, typeof(GoogleDataSettings));
+        s_Instance = (ExcelSettings)AssetDatabase.LoadAssetAtPath(filePath, typeof(ExcelSettings));
                         
         if (s_Instance == null)
         {
-            s_Instance = CreateInstance<GoogleDataSettings> ();
+            s_Instance = CreateInstance<ExcelSettings> ();
 
             string path = CustomAssetUtility.GetUniqueAssetPathNameOrFallback(AssetFileName);
             AssetDatabase.CreateAsset(s_Instance, path);
@@ -177,7 +145,7 @@ public class GoogleDataSettings : ScriptableObject
 
             EditorUtility.DisplayDialog (
                 "Validate Settings",
-                "Default google dasa settings have been created for accessing Google project page. You should validate these before proceeding.",
+                "Default excel settings have been created for accessing excel spreadsheet. Set valid runtime editor paths before proceeding.",
                 "OK"
             );
         }

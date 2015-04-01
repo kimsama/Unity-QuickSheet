@@ -21,13 +21,20 @@ public class ExcelMachineEditor : BaseMachineEditor
     void OnEnable()
     {
         machine = target as ExcelMachine;
+        if (machine != null)
+        {
+            if (string.IsNullOrEmpty(ExcelSettings.Instance.RuntimePath) == false)
+                machine.RuntimeClassPath = ExcelSettings.Instance.RuntimePath;
+            if (string.IsNullOrEmpty(ExcelSettings.Instance.EditorPath) == false)
+                machine.EditorClassPath = ExcelSettings.Instance.EditorPath;
+        }
     }
 
     public override void OnInspectorGUI()
     {
         ExcelMachine machine = target as ExcelMachine;
 
-        GUIStyle headerStyle = MakeHeader();
+        GUIStyle headerStyle = GUIHelper.MakeHeader();
         GUILayout.Label("Excel Settings:", headerStyle);
 
         GUILayout.BeginHorizontal();
