@@ -264,21 +264,12 @@ public class BaseMachineEditor : Editor
         return Path.Combine(EditorApplication.applicationContentsPath, machine.TemplatePath);
     }
 
-    protected GUIStyle MakeHeader()
-    {
-        GUIStyle headerStyle = new GUIStyle(GUI.skin.label);
-        headerStyle.fontSize = 12;
-        headerStyle.fontStyle = FontStyle.Bold;
-
-        return headerStyle;
-    }
-
     protected void DrawHeaderSetting(BaseMachine m)
     {
         if (m.HasHeadColumn())
         {
             //EditorGUILayout.LabelField("type settings");
-            GUIStyle headerStyle = MakeHeader();
+            GUIStyle headerStyle = GUIHelper.MakeHeader();
             GUILayout.Label("Type Settings:", headerStyle);
 
             //curretScroll = EditorGUILayout.BeginScrollView(curretScroll, false, false);

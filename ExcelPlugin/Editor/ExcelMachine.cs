@@ -48,7 +48,7 @@ namespace UnityEditor
         /// <summary>
         /// A menu item which create a 'ExcelMachine' asset file.
         /// </summary>
-        [MenuItem("Assets/Create/Spreadsheet Tools/Excel")]
+        [MenuItem("Assets/Create/QuickSheet/Tools/Excel")]
         public static void CreateScriptMachineAsset()
         {
             ExcelMachine inst = ScriptableObject.CreateInstance<ExcelMachine>();

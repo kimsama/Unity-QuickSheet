@@ -50,6 +50,11 @@ public class GoogleMachineEditor : BaseMachineEditor
             machine.ReInitialize();
 
             databaseFields = ExposeProperties.GetProperties(machine);
+
+            if (string.IsNullOrEmpty(GoogleDataSettings.Instance.RuntimePath) == false)
+                machine.RuntimeClassPath = GoogleDataSettings.Instance.RuntimePath;
+            if (string.IsNullOrEmpty(GoogleDataSettings.Instance.EditorPath) == false)
+                machine.EditorClassPath = GoogleDataSettings.Instance.EditorPath;
         }
     }
 
@@ -74,7 +79,7 @@ public class GoogleMachineEditor : BaseMachineEditor
         Rect rc;
         GUIStyle headerStyle = null;
 
-        headerStyle = MakeHeader();
+        headerStyle = GUIHelper.MakeHeader();
 
         GUILayout.Label("GoogleDrive Settings:", headerStyle);
         //rc = GUILayoutUtility.GetLastRect();
