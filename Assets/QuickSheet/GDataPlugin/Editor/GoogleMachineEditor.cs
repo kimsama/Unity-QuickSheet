@@ -219,8 +219,6 @@ public class GoogleMachineEditor : BaseMachineEditor
         AssetDatabase.SaveAssets();
     }
 
-
-
     /// <summary>
     /// Translate type of the member fields directly from google spreadsheet's header column.
     /// NOTE: This needs header column to be formatted with colon.  e.g. "Name : string"
