@@ -185,9 +185,6 @@ public class GoogleMachineEditor : BaseMachineEditor
     {
         base.Import(reimport);
 
-        //if (machine.HasHeadColumn())
-        //    machine.HeaderColumnList.Clear();
-
         Regex re = new Regex(@"\d+");
 
         Dictionary<string, HeaderColumn> headerDic = null;
@@ -214,11 +211,7 @@ public class GoogleMachineEditor : BaseMachineEditor
             }
             else
             {
-                // add cell's displayed value to the list.
-                //fieldList.Add(new MemberFieldData(cell.Value.Replace(" ", "")));
-                HeaderColumn header = new HeaderColumn();
-                header.name = cell.Value;
-                machine.HeaderColumnList.Add(header);
+                machine.HeaderColumnList.Add(new HeaderColumn { name = cell.Value, type = CellType.Undefined });
             }
         });
 
