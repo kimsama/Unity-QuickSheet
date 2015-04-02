@@ -11,6 +11,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.IO;
+using System.Linq;
 
 // to resolve TlsException error.
 using System.Net;
@@ -99,10 +100,15 @@ public class GoogleMachineEditor : BaseMachineEditor
 
         EditorGUILayout.Separator();
 
+        GUILayout.BeginHorizontal();
+
         if (GUILayout.Button("Import"))
-        {
             Import();
-        }
+
+        if (GUILayout.Button("Reimport"))
+            Import(true);
+
+        GUILayout.EndHorizontal();
 
         EditorGUILayout.Separator();
 
@@ -175,14 +181,23 @@ public class GoogleMachineEditor : BaseMachineEditor
     /// <summary>
     /// Connect to the google spreadsheet and retrieves its header columns.
     /// </summary>
-    protected override void Import()
+    protected override void Import(bool reimport = false)
     {
-        if (machine.HasHeadColumn())
-            machine.HeaderColumnList.Clear();
+        base.Import(reimport);
+
+        //if (machine.HasHeadColumn())
+        //    machine.HeaderColumnList.Clear();
 
         Regex re = new Regex(@"\d+");
 
+        Dictionary<string, HeaderColumn> headerDic = null;
+        if (reimport)
+            machine.HeaderColumnList.Clear();
+        else
+            headerDic = machine.HeaderColumnList.ToDictionary(k => k.name);
+
         DoCellQuery( (cell)=>{
+
             // get numerical value from a cell's address in A1 notation
             // only retrieves first column of the worksheet 
             // which is used for member fields of the created data class.
@@ -190,11 +205,21 @@ public class GoogleMachineEditor : BaseMachineEditor
             if (int.Parse(m.Value) > 1)
                 return;
 
-            // add cell's displayed value to the list.
-            //fieldList.Add(new MemberFieldData(cell.Value.Replace(" ", "")));
-            HeaderColumn header = new HeaderColumn();
-            header.name = cell.Value;
-            machine.HeaderColumnList.Add(header);
+            if (machine.HasHeadColumn() && reimport == false)
+            {
+                if (headerDic != null && headerDic.ContainsKey(cell.Value))
+                    machine.HeaderColumnList.Add(new HeaderColumn { name = cell.Value, type = headerDic[cell.Value].type });
+                else
+                    machine.HeaderColumnList.Add(new HeaderColumn { name = cell.Value, type = CellType.Undefined });
+            }
+            else
+            {
+                // add cell's displayed value to the list.
+                //fieldList.Add(new MemberFieldData(cell.Value.Replace(" ", "")));
+                HeaderColumn header = new HeaderColumn();
+                header.name = cell.Value;
+                machine.HeaderColumnList.Add(header);
+            }
         });
 
         EditorUtility.SetDirty(machine);

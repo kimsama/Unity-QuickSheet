@@ -22,7 +22,7 @@ public class BaseMachineEditor : Editor
 
     protected readonly string NoTemplateString = "No Template File Found";
 
-    protected virtual void Import()
+    protected virtual void Import(bool reimport = false)
     {
         Debug.LogWarning("!!! It should be implemented in the derived class !!!");
     }

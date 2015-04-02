@@ -80,10 +80,14 @@ public class ExcelMachineEditor : BaseMachineEditor
 
         EditorGUILayout.Separator();
 
+        GUILayout.BeginHorizontal();
+
         if (GUILayout.Button("Import"))
-        {
             Import();
-        }
+        if (GUILayout.Button("Reimport"))
+            Import(true);
+
+        GUILayout.EndHorizontal();
 
         EditorGUILayout.Separator();
 
@@ -124,9 +128,9 @@ public class ExcelMachineEditor : BaseMachineEditor
     /// <summary>
     /// Import the specified excel file and prepare to set type of each cell.
     /// </summary>
-    protected override void Import()
+    protected override void Import(bool reimport = false)
     {
-        base.Import();
+        base.Import(reimport);
 
         ExcelMachine machine = target as ExcelMachine;
 
@@ -154,7 +158,7 @@ public class ExcelMachineEditor : BaseMachineEditor
         }
 
         var titles = new ExcelQuery(path, sheet).GetTitle();
-        if (machine.HasHeadColumn())
+        if (machine.HasHeadColumn() && reimport == false)
         { 
             var dic1 = machine.HeaderColumnList.ToDictionary(l1 => l1.name);
 
@@ -176,6 +180,8 @@ public class ExcelMachineEditor : BaseMachineEditor
         }
         else
         {
+            machine.HeaderColumnList.Clear();
+
             if (titles != null)
             {
                 foreach (string s in titles)
