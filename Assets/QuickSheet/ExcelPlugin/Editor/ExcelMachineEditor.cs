@@ -7,10 +7,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 using UnityEngine;
 using UnityEditor;
-using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.IO;
+using System.Linq;
 
 /// <summary>
 /// Custom editor script class for excel file setting.
@@ -153,22 +153,42 @@ public class ExcelMachineEditor : BaseMachineEditor
             return;
         }
 
-        if (machine.HasHeadColumn())
-            machine.HeaderColumnList.Clear();
-
         var titles = new ExcelQuery(path, sheet).GetTitle();
-        if (titles != null)
-        {
-            foreach (string s in titles)
-            {
-                HeaderColumn header = new HeaderColumn();
-                header.name = s;
-                machine.HeaderColumnList.Add(header);
-            }
+        if (machine.HasHeadColumn())
+        { 
+            var dic1 = machine.HeaderColumnList.ToDictionary(l1 => l1.name);
+
+            // collect non changed header columns
+            var exist = from t in titles
+                         where dic1.ContainsKey(t) == true
+                         select new HeaderColumn { name = t, type = dic1[t].type };
+
+            // collect newly added or changed header columns
+            var changed = from t in titles
+                         where dic1.ContainsKey(t) == false
+                         select new HeaderColumn { name = t, type = CellType.Undefined };
+
+            // merge two
+            var merged = exist.Union(changed);
+
+            machine.HeaderColumnList.Clear();
+            machine.HeaderColumnList = merged.ToList();
         }
         else
         {
-            Debug.LogWarning("The WorkSheet [" + sheet + "] may be empty.");
+            if (titles != null)
+            {
+                foreach (string s in titles)
+                {
+                    HeaderColumn header = new HeaderColumn();
+                    header.name = s;
+                    machine.HeaderColumnList.Add(header);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("The WorkSheet [" + sheet + "] may be empty.");
+            }
         }
 
         EditorUtility.SetDirty(machine);

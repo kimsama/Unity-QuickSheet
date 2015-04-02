@@ -99,6 +99,7 @@ namespace UnityEditor
         public List<HeaderColumn> HeaderColumnList
         {
             get { return headerColumnList; }
+            set { headerColumnList = value;}
         }
 
         [SerializeField]
