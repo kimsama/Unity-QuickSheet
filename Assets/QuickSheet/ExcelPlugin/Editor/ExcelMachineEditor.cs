@@ -158,22 +158,25 @@ public class ExcelMachineEditor : BaseMachineEditor
         }
 
         var titles = new ExcelQuery(path, sheet).GetTitle();
+        List<string> titleList = titles.ToList();
+
         if (machine.HasHeadColumn() && reimport == false)
         { 
-            var dic1 = machine.HeaderColumnList.ToDictionary(l1 => l1.name);
+            var headerDic = machine.HeaderColumnList.ToDictionary(header => header.name);
 
+            int i = 0;
             // collect non changed header columns
-            var exist = from t in titles
-                         where dic1.ContainsKey(t) == true
-                         select new HeaderColumn { name = t, type = dic1[t].type };
+            var exist = from t in titleList
+                        where headerDic.ContainsKey(t) == true
+                        select new HeaderColumn { name = t, type = headerDic[t].type, OrderNO = headerDic[t].OrderNO };
 
             // collect newly added or changed header columns
-            var changed = from t in titles
-                         where dic1.ContainsKey(t) == false
-                         select new HeaderColumn { name = t, type = CellType.Undefined };
+            var changed = from t in titleList
+                          where headerDic.ContainsKey(t) == false
+                          select new HeaderColumn { name = t, type = CellType.Undefined, OrderNO = titleList.IndexOf(t) };
 
             // merge two
-            var merged = exist.Union(changed);
+            var merged = exist.Union(changed).OrderBy(x => x.OrderNO);
 
             machine.HeaderColumnList.Clear();
             machine.HeaderColumnList = merged.ToList();
@@ -184,11 +187,11 @@ public class ExcelMachineEditor : BaseMachineEditor
 
             if (titles != null)
             {
+                int i = 0;
                 foreach (string s in titles)
                 {
-                    HeaderColumn header = new HeaderColumn();
-                    header.name = s;
-                    machine.HeaderColumnList.Add(header);
+                    machine.HeaderColumnList.Add(new HeaderColumn { name = s, type = CellType.Undefined, OrderNO = i});
+                    i++;
                 }
             }
             else

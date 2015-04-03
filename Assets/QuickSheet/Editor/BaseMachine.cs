@@ -19,6 +19,9 @@ namespace UnityEditor
         public bool isEnable;
         public bool isArray;
         public HeaderColumn nextArrayItem;
+
+        // used to order columns by ascending. (only need on excel-plugin)
+        public int OrderNO { get; set; }
     }
 
     public class BaseMachine : ScriptableObject
