@@ -22,7 +22,14 @@ namespace UnityEditor
 
         // both are needed for popup editor control.
         public string[] SheetNames = { "" };
-        public int CurrentSheetIndex { get; set; }
+        public int CurrentSheetIndex 
+        {
+            get { return currentSelectedSheet; }
+            set { currentSelectedSheet = value;} 
+        }
+
+        [SerializeField]
+        protected int currentSelectedSheet = 0;
 
         // excel and google plugin have its own template files, 
         // so we need to set the different path when the asset file is created.
@@ -41,7 +48,7 @@ namespace UnityEditor
         /// <summary>
         /// A menu item which create a 'ExcelMachine' asset file.
         /// </summary>
-        [MenuItem("Assets/Create/Spreadsheet Tools/Excel")]
+        [MenuItem("Assets/Create/QuickSheet/Tools/Excel")]
         public static void CreateScriptMachineAsset()
         {
             ExcelMachine inst = ScriptableObject.CreateInstance<ExcelMachine>();

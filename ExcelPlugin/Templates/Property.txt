@@ -1,6 +1,0 @@
-    [SerializeField]
-    string $FieldName;
-
-    [ExposeProperty]
-    public string $CapitalFieldName	{ get {return $FieldName; } set { $FieldName = value;} }
-    

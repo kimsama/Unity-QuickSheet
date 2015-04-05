@@ -21,13 +21,20 @@ public class ExcelMachineEditor : BaseMachineEditor
     void OnEnable()
     {
         machine = target as ExcelMachine;
+        if (machine != null)
+        {
+            if (string.IsNullOrEmpty(ExcelSettings.Instance.RuntimePath) == false)
+                machine.RuntimeClassPath = ExcelSettings.Instance.RuntimePath;
+            if (string.IsNullOrEmpty(ExcelSettings.Instance.EditorPath) == false)
+                machine.EditorClassPath = ExcelSettings.Instance.EditorPath;
+        }
     }
 
     public override void OnInspectorGUI()
     {
         ExcelMachine machine = target as ExcelMachine;
 
-        GUIStyle headerStyle = MakeHeader();
+        GUIStyle headerStyle = GUIHelper.MakeHeader();
         GUILayout.Label("Excel Settings:", headerStyle);
 
         GUILayout.BeginHorizontal();
@@ -56,6 +63,15 @@ public class ExcelMachineEditor : BaseMachineEditor
             }
         }
         GUILayout.EndHorizontal();
+
+        // Failed to get sheet name so we just return not to make any trouble on the editor.
+        if (machine.SheetNames.Length == 0)
+        {
+            EditorGUILayout.Separator();
+            EditorGUILayout.LabelField("Error: Failed to retrieve the specified excel file.");
+            EditorGUILayout.LabelField("If the excel file is opened, close it then reopen it again.");
+            return;
+        }
 
         machine.SpreadSheetName = EditorGUILayout.TextField("Spreadsheet File: ", machine.SpreadSheetName);
         machine.CurrentSheetIndex = EditorGUILayout.Popup(machine.CurrentSheetIndex, machine.SheetNames);
