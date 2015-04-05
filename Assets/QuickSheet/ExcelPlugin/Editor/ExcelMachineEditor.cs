@@ -82,10 +82,18 @@ public class ExcelMachineEditor : BaseMachineEditor
 
         GUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("Import"))
-            Import();
-        if (GUILayout.Button("Reimport"))
-            Import(true);
+        if (machine.HasHeadColumn())
+        {
+            if (GUILayout.Button("Update"))
+                Import();
+            if (GUILayout.Button("Reimport"))
+                Import(true);
+        }
+        else
+        {
+            if (GUILayout.Button("Import"))
+                Import();
+        }
 
         GUILayout.EndHorizontal();
 
