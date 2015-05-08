@@ -62,27 +62,24 @@ It will generate array type memeber field of a data class with the specified typ
 
 ### Using Enum type with QuickSheet
 
-Specify enum type for a data class is easy. 
-
-Let's say that you want to set enum type for *'RareType'* on a sheet of excel file as the following image:
+Specify enum type for a data class is easy. Let's say that you want to set enum type for *'RareType'* on a sheet of excel file as the following:
 
 ![Enum type](./images/enum_type.png "Enum Type")
 
-The 'RareType' only can have one of value from three type which are Normal, Rare and Legend. 
+The 'RareType' only can have one of value from three type which are *Normal*, *Rare* and *Legend*. 
 
-Because QuickSheet can not generate enum itself, you should declare an enum type before generating script files.
+Because QuickSheet can not generate enum itself, you should first declare an enum type before generating script files.
 
 Create an empty .cs file which usually contains various enums then declare 'RareType' enum type what for you've set on the spreadsheet.
 
 
-```
+```csharp
 public enum RareType
 {
 	Normal,
 	Rare,
 	Legend,
 }
-
 ```
 
 Now you can generate necessary script files without an error!
