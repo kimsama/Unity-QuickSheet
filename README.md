@@ -103,6 +103,14 @@ Any changes for the remote repository easily can pull with *git subtree pull* as
 git subtree pull --prefix=Assets/QuickSheet https://github.com/kimsama/Unity-QuickSheet.git QuickSheet 
 ```
 
+Tips
+----
+
+### Excel
+
+* Keep as small number of sheet in one excel file. Let's consider a case that an excel file which contains over twenty sheet in one excel file and you've generated all *ScriptableObject* asset files for each sheet. And you've created a new sheet in the same excel file then try to generate necessary script files. What happens? Even you've created only one sheet and want to only import data into the new one but Quicksheet try to reimport all data from all sheets because querying data from excel into newly created *ScriptableObject* done by Unity's reimport. So keep in mind that working with an excel file which has too much sheets can be slow.
+
+
 Limitations
 -----------
 
