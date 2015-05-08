@@ -44,8 +44,21 @@ After importing with the given excel file, specify type of each column-header an
 
 ![Array type setting](./images/arraytype_setting.png "Array Cell setting")
 
-It will generate array type memeber field of a data class with the specified type.
+It will generate array type memeber field of a data class with the specified type as the following code:
 
+```csharp
+	[SerializeField]
+	int[] intarray = new int[0];
+	
+	[ExposeProperty]
+	public int[] Intarray { get {return intarray; } set { intarray = value;} }
+	
+	[SerializeField]
+	string[] stringarray = new string[0];
+	
+	[ExposeProperty]
+	public string[] Stringarray { get {return stringarray; } set { stringarray = value;} }
+```
 
 Add QuickSheet via subtree
 -----------------------------
