@@ -62,7 +62,7 @@ It will generate array type memeber field of a data class with the specified typ
 
 ### Using Enum type with QuickSheet
 
-Specify enum type for a data class is easy. Let's say that you want to set enum type for *'RareType'* on a sheet of excel file as the following:
+Specify enum type for a data class is easy. Let's say that you want to set enum type for *'RareType'* on a spreadsheet as the following:
 
 ![Enum type](./images/enum_type.png "Enum Type")
 
