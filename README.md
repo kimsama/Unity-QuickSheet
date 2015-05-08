@@ -28,7 +28,7 @@ Usage
 * NGUI localization with QuickSheet
 * Automation of formula calculation
 
-### Using Array 
+### Using Array type with QuickSheet
 
 You can use array type with comma sperated values in a cell as the following:
 
@@ -60,6 +60,35 @@ It will generate array type memeber field of a data class with the specified typ
 	public string[] Stringarray { get {return stringarray; } set { stringarray = value;} }
 ```
 
+### Using Enum type with QuickSheet
+
+Specify enum type for a data class is easy. 
+
+Let's say that you want to set enum type for *'RareType'* on a sheet of excel file as the following image:
+
+![Enum type](./images/enum_type.png "Enum Type")
+
+The 'RareType' only can have one of value from three type which are Normal, Rare and Legend. 
+
+Because QuickSheet can not generate enum itself, you should declare an enum type before generating script files.
+
+Create an empty .cs file which usually contains various enums then declare 'RareType' enum type what for you've set on the spreadsheet.
+
+
+```
+public enum RareType
+{
+	Normal,
+	Rare,
+	Legend,
+}
+
+```
+
+Now you can generate necessary script files without an error!
+
+
+
 Add QuickSheet via subtree
 -----------------------------
 
@@ -82,7 +111,7 @@ Limitations
 
 * *[ScritableObject](http://docs.unity3d.com/ScriptReference/ScriptableObject.html)* does not allow to save data changed on runtime. So if you need to serialize and save things that changes on runtime, you need to look at other methods of serialization such as JSON, BSON or XML, depending on your platform and/or requirements.
 
-* Google Spreadsheet plugin does not work in the Unity web player's security sandbox. You should change the *Platform* to *'Stand Alone'* or something else such as *'iOS'* or *'Android'* platform in the ***Build Setting***.
+* Google Spreadsheet plugin does not work in the Unity web player's security sandbox. You should change the *Platform* to *'Stand Alone'* or something else such as *'iOS'* or *'Android'* platform in the Unity's [Build Setting](http://docs.unity3d.com/Manual/PublishingBuilds.html).
 
 
 References
