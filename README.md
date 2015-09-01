@@ -28,6 +28,63 @@ Usage
 * NGUI localization with QuickSheet
 * Automation of formula calculation
 
+### Using Array type with QuickSheet
+
+You can use array type with comma sperated values in a cell as the following:
+
+![Array type](./images/array_cell.png "Array Cell")
+
+Note that don't miss the last comma which should be after a last value in a cell.
+
+```
+1,2,3,4,5, -> Don't miss the comma right after '5' if not, the value '5' will not imported to an asset file.
+```
+
+After importing with the given excel file, specify type of each column-header and check *array* option for an array type.
+
+![Array type setting](./images/arraytype_setting.png "Array Cell setting")
+
+It will generate array type memeber field of a data class with the specified type as the following code:
+
+```csharp
+	[SerializeField]
+	int[] intarray = new int[0];
+	
+	[ExposeProperty]
+	public int[] Intarray { get {return intarray; } set { intarray = value;} }
+	
+	[SerializeField]
+	string[] stringarray = new string[0];
+	
+	[ExposeProperty]
+	public string[] Stringarray { get {return stringarray; } set { stringarray = value;} }
+```
+
+### Using Enum type with QuickSheet
+
+Specify enum type for a data class is easy. Let's say that you want to set enum type for *'RareType'* on a spreadsheet as the following:
+
+![Enum type](./images/enum_type.png "Enum Type")
+
+The 'RareType' only can have one of value from three type which are *Normal*, *Rare* and *Legend*. 
+
+Because QuickSheet can not generate enum itself, you should first declare an enum type before generating script files.
+
+Create an empty .cs file which usually contains various enums then declare 'RareType' enum type what for you've set on the spreadsheet.
+
+
+```csharp
+public enum RareType
+{
+	Normal,
+	Rare,
+	Legend,
+}
+```
+
+Now you can generate necessary script files without an error!
+
+
 
 Add QuickSheet via subtree
 -----------------------------
@@ -46,12 +103,20 @@ Any changes for the remote repository easily can pull with *git subtree pull* as
 git subtree pull --prefix=Assets/QuickSheet https://github.com/kimsama/Unity-QuickSheet.git QuickSheet 
 ```
 
+Tips
+----
+
+### Excel
+
+* Keep as small number of sheet in one excel file. Let's consider a case that an excel file which contains over twenty sheet in one excel file and you've generated all *ScriptableObject* asset files for each sheet. And you've created a new sheet in the same excel file then try to generate necessary script files. What happens? Even you've created only one sheet and want to only import data into the new one but Quicksheet try to reimport all data from all sheets because querying data from excel into newly created *ScriptableObject* done by Unity's reimport. So keep in mind that working with an excel file which has too much sheets can be slow.
+
+
 Limitations
 -----------
 
 * *[ScritableObject](http://docs.unity3d.com/ScriptReference/ScriptableObject.html)* does not allow to save data changed on runtime. So if you need to serialize and save things that changes on runtime, you need to look at other methods of serialization such as JSON, BSON or XML, depending on your platform and/or requirements.
 
-* Google Spreadsheet plugin does not work in the Unity web player's security sandbox. You should change the *Platform* to *'Stand Alone'* or something else such as *'iOS'* or *'Android'* platform in the ***Build Setting***.
+* Google Spreadsheet plugin does not work in the Unity web player's security sandbox. You should change the *Platform* to *'Stand Alone'* or something else such as *'iOS'* or *'Android'* platform in the Unity's [Build Setting](http://docs.unity3d.com/Manual/PublishingBuilds.html).
 
 
 References
