@@ -32,7 +32,7 @@ public class ExcelQuery
     {
         try
         {
-            using (FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
+            using (FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 string extension = GetSuffix(path);
 
