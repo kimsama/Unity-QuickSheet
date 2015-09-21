@@ -34,10 +34,10 @@ public class BaseExcelEditor<T> : Editor
             if (!Load())
             {
                 const string error1 = "\n- Check the path of the 'Sheet Name' and the file is exist at the path.";
-                const string error3 = "\n- Also check the excel file has the sheet which matches with 'Worksheet Name'.";
+                const string error2 = "\n- Also check the excel file has the sheet which matches with 'Worksheet Name'.";
                 EditorUtility.DisplayDialog(
                     "Error",
-                    "Failed to import and update the excel file." + error1 + error2 + error3,
+                    "Failed to import and update the excel file." + error1 + error2,
                     "OK"
                 );
             }
