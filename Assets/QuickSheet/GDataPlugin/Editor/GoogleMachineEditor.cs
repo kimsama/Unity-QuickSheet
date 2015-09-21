@@ -59,7 +59,7 @@ public class GoogleMachineEditor : BaseMachineEditor
         }
     }
 
-    private Vector2 curretScroll = Vector2.zero;
+    //private Vector2 curretScroll = Vector2.zero;
 
     /// <summary>
     /// Draw custom UI.
@@ -77,7 +77,7 @@ public class GoogleMachineEditor : BaseMachineEditor
             GUILayout.EndHorizontal();
         }
 
-        Rect rc;
+        //Rect rc;
         GUIStyle headerStyle = null;
 
         headerStyle = GUIHelper.MakeHeader();

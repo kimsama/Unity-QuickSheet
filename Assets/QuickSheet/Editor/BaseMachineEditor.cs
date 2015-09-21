@@ -275,7 +275,7 @@ public class BaseMachineEditor : Editor
             //curretScroll = EditorGUILayout.BeginScrollView(curretScroll, false, false);
             EditorGUILayout.BeginVertical("box");
 
-            string lastCellName = string.Empty;
+            //string lastCellName = string.Empty;
             foreach (HeaderColumn header in m.HeaderColumnList)
             {
                 GUILayout.BeginHorizontal();

@@ -172,7 +172,6 @@ public class ExcelMachineEditor : BaseMachineEditor
         { 
             var headerDic = machine.HeaderColumnList.ToDictionary(header => header.name);
 
-            int i = 0;
             // collect non changed header columns
             var exist = from t in titleList
                         where headerDic.ContainsKey(t) == true

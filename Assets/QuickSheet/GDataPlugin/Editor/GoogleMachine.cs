@@ -30,7 +30,7 @@ namespace UnityEditor
         /// <summary>
         /// Note: Called when the asset file is selected.
         /// </summary>
-        void OnEnable()
+        protected new void OnEnable()
         {
             base.OnEnable();
 
