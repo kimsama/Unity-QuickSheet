@@ -50,7 +50,11 @@ public class ExcelMachineEditor : BaseMachineEditor
         if (GUILayout.Button("...", GUILayout.Width(20)))
         {
             string folder = Path.GetDirectoryName(path);
+#if UNITY_EDITOR_WIN
             path = EditorUtility.OpenFilePanel("Open Excel file", folder, "excel files;*.xls;*.xlsx");
+#else
+            path = EditorUtility.OpenFilePanel("Open Excel file", folder, "xls");
+#endif
             if (path.Length != 0)
             {
                 machine.SpreadSheetName = Path.GetFileName(path);

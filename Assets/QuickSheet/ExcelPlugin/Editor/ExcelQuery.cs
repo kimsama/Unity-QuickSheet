@@ -39,7 +39,13 @@ public class ExcelQuery
                 if (extension == "xls")
                     workbook = new HSSFWorkbook(fileStream);
                 else if (extension == "xlsx")
+                {
+#if UNITY_MAC
+                    throw new Exception("xlsx is not supported on OSX.");
+#else
                     workbook = new XSSFWorkbook(fileStream);
+#endif
+                }
                 else
                 {
                     throw new Exception("Wrong file.");
