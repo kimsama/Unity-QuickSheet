@@ -103,6 +103,11 @@ Any changes for the remote repository easily can pull with *git subtree pull* as
 git subtree pull --prefix=Assets/QuickSheet https://github.com/kimsama/Unity-QuickSheet.git QuickSheet 
 ```
 
+Setting up OAuth2 for accessing Google Drive
+---------------------------------------------
+Google has changed the authentication scheme since those articles were written. Now it requires OAuth2. 
+To set this up visit http://console.developers.google.com , create a new project, enable the Drive API, create a new client ID of type "service account" and download json file.
+
 Tips
 ----
 
@@ -125,6 +130,8 @@ References
 * [GDataDB](https://github.com/mausch/GDataDB) is used to retrieve data from Google Spreadsheet. Note that [GDataDB](https://github.com/mausch/GDataDB) is slightly modified to support *enum* type.
 * [ExposeProperties](http://wiki.unity3d.com/index.php/Expose_properties_in_inspector) is used to easily expose variables of spreadsheet on the Unity3D's inspector view and let [GDataDB](https://github.com/mausch/GDataDB) access through get/set accessors.
 * [NPOI](https://npoi.codeplex.com/) is used to read xls and xlsx file.
+* All "*.dll" files of Google Data SDK are available at [Google Data API SDK](https://code.google.com/p/google-gdata/downloads/detail?name=libgoogle-data-mono-2.1.0.0.tar.gz&can=2&q=)
+* Newtonsoft.Json source code for net 2.0 is available at [here](https://github.com/JamesNK/Newtonsoft.Json)
 * [Unity-GoogleData](https://github.com/kimsama/Unity-GoogleData), my previous effort to import a spreadsheet data to Unity.
 
 License
