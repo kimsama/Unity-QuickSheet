@@ -8,6 +8,29 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using System;
+using System.IO;
+using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
+
+public class UnsafeSecurityPolicy
+{
+    public static bool Validator( object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors policyErrors)
+    {
+        Debug.Log("Validation successful!");
+        return true;
+    }
+
+    public static void Instate()
+    {
+        ServicePointManager.ServerCertificateValidationCallback = Validator;
+    }
+}
 
 /// <summary>
 /// Editor script class for GoogleDataSettings scriptable object to hide password of google account.
@@ -20,6 +43,8 @@ public class GoogleDataSettingsEditor : Editor
     public void OnEnable()
     {
         setting = target as GoogleDataSettings;
+
+        UnsafeSecurityPolicy.Instate();
     }
 
     public override void OnInspectorGUI()
@@ -48,16 +73,77 @@ public class GoogleDataSettingsEditor : Editor
         {
             const int LabelWidth = 90;
 
-            // account and passwords setting, this should be specified before you're trying to connect a google spreadsheet.
+            GUILayout.BeginHorizontal(); // Begin json file setting
+            GUILayout.Label("JSON File:", GUILayout.Width(LabelWidth));
+
+            string path = "";
+            if (string.IsNullOrEmpty(setting.JsonFilePath))
+                path = Application.dataPath;
+            else
+                path = setting.JsonFilePath;
+
+            setting.JsonFilePath = GUILayout.TextField(path, GUILayout.Width(250));
+            if (GUILayout.Button("...", GUILayout.Width(20)))
+            {
+                string folder = Path.GetDirectoryName(path);
+                path = EditorUtility.OpenFilePanel("Open JSON file", folder, "json");
+                if (path.Length != 0)
+                {
+                    StringBuilder builder = new StringBuilder();
+                    using (StreamReader sr = new StreamReader(path))
+                    {
+                        string s = "";
+                        while (s != null)
+                        {
+                            s = sr.ReadLine();
+                            builder.Append(s);
+                        }
+                    }
+
+                    string jsonData = builder.ToString();
+
+                    var oauthData = JObject.Parse(jsonData).SelectToken("installed").ToString();
+                    GoogleDataSettings.Instance.OAuth2Data = JsonConvert.DeserializeObject<GoogleDataSettings.OAuth2JsonData>(oauthData);
+
+                    setting.JsonFilePath = path;
+
+                    // force to save the setting.
+                    EditorUtility.SetDirty(setting);
+                    AssetDatabase.SaveAssets();
+                }
+            }
+            GUILayout.EndHorizontal(); // End json file setting.
+
+            if (setting.OAuth2Data.client_id == null)
+                setting.OAuth2Data.client_id = string.Empty;
+            if (setting.OAuth2Data.client_secret == null)
+                setting.OAuth2Data.client_secret = string.Empty;
+
+            // client_id for OAuth2
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Account: ", GUILayout.Width(LabelWidth));
-            setting.Account = GUILayout.TextField(setting.Account);
+            GUILayout.Label("Client ID: ", GUILayout.Width(LabelWidth));
+            setting.OAuth2Data.client_id = GUILayout.TextField(setting.OAuth2Data.client_id);
             GUILayout.EndHorizontal();
 
+            // client_secret for OAuth2
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Password: ", GUILayout.Width(LabelWidth));
-            setting.Password = GUILayout.PasswordField(setting.Password, "*"[0], 25);
+            GUILayout.Label("Client Secret: ", GUILayout.Width(LabelWidth));
+            setting.OAuth2Data.client_secret = GUILayout.TextField(setting.OAuth2Data.client_secret);
             GUILayout.EndHorizontal();
+
+            EditorGUILayout.Separator();
+
+            if (GUILayout.Button("Start Authenticate"))
+            {
+                GDataDB.Impl.GDataDBRequestFactory.InitAuthenticate();
+            }
+
+            GoogleDataSettings.Instance._AccessCode = EditorGUILayout.TextField("AccessCode", GoogleDataSettings.Instance._AccessCode);
+            if (GUILayout.Button("Finish Authenticate"))
+            {
+                GDataDB.Impl.GDataDBRequestFactory.FinishAuthenticate();
+            }
+            EditorGUILayout.Separator();
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("Runtime Path: ", GUILayout.Width(LabelWidth));

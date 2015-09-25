@@ -27,6 +27,8 @@ namespace UnityEditor
         // so we need to set the different path when the asset file is created.
         private readonly string gDataTemplatePath = "QuickSheet/GDataPlugin/Templates";
 
+        public string AccessCode = "";
+
         /// <summary>
         /// Note: Called when the asset file is selected.
         /// </summary>

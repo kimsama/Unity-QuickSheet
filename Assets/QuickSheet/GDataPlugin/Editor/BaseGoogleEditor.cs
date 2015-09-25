@@ -28,9 +28,6 @@ using Google.GData.Spreadsheets;
 /// 
 public class BaseGoogleEditor<T> : Editor //where T : BaseDatabase
 {	
-    protected string username;
-    protected string password;
-    
     // custom data 
     //protected BaseDatabase database; 
     
@@ -59,8 +56,12 @@ public class BaseGoogleEditor<T> : Editor //where T : BaseDatabase
         GoogleDataSettings settings = GoogleDataSettings.Instance;		
         if (settings != null)
         {
-            username = settings.Account;
-            password = settings.Password;
+            if (string.IsNullOrEmpty(settings.OAuth2Data.client_id) ||
+                string.IsNullOrEmpty(settings.OAuth2Data.client_secret))
+                Debug.LogWarning("Client_ID and Client_Sceret is empty. Reload .json file.");
+
+            if (string.IsNullOrEmpty(settings._AccessCode))
+                Debug.LogWarning("AccessCode is empty. Redo authenticate again.");
         }
         else
         {
@@ -74,11 +75,17 @@ public class BaseGoogleEditor<T> : Editor //where T : BaseDatabase
 
     public override void OnInspectorGUI()
     { 		
-        ShowAuthenticastion();
-        
         if (target == null)
             return;
-        
+
+        if (GUILayout.Button("Download"))
+        {
+            if (!Load())
+                Debug.LogError("Failed to Load data from Google.");
+        }
+
+        EditorGUILayout.Separator();
+
         //this.DrawDefaultInspector();
         ExposeProperties.Expose(databaseFields);
  
@@ -86,7 +93,6 @@ public class BaseGoogleEditor<T> : Editor //where T : BaseDatabase
         {
             ExposeProperties.Expose( p );	
         }
-
     }
     
     /// 
@@ -94,12 +100,6 @@ public class BaseGoogleEditor<T> : Editor //where T : BaseDatabase
     /// 
     public virtual bool Load()
     {
-        if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-        {
-            Debug.LogError("User account or password is empty.");
-            return false;
-        }
-        
         return true;
     }
     
@@ -118,18 +118,6 @@ public class BaseGoogleEditor<T> : Editor //where T : BaseDatabase
         return tmp;
     }	
 
-    void ShowAuthenticastion()
-    {		
-        username = EditorGUILayout.TextField("Username", username);
-        password = EditorGUILayout.PasswordField("Password", password);
-        
-        if (GUILayout.Button("Download"))
-        {
-            if (!Load ())
-                Debug.LogError("Failed to Load data from Google.");
-        }
-    }
-        
     /*
     static string[] SplitCamelCase(string stringToSplit)
     {

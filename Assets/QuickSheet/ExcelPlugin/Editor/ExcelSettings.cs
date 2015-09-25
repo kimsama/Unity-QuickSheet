@@ -75,7 +75,7 @@ public class ExcelSettings : ScriptableObject
         Selection.activeObject = Instance;
         if (Selection.activeObject == null)
         {
-            Debug.LogError("No ExcelSetting.asset file is found. Create setting file first.");
+            Debug.LogError("No ExcelSetting.asset file is found. Create setting file first. See the menu at 'Assets/Create/QuickSheet/Setting/Excel Setting'.");
         }
     }
 
@@ -110,10 +110,10 @@ public class ExcelSettings : ScriptableObject
                 ExcelSettings temp = new ExcelSettings();
                 string path = temp.AssetPath + ExcelSettings.AssetFileName;
 
-                s_Instance = (ExcelSettings)AssetDatabase.LoadAssetAtPath (path, typeof (ExcelSettings));
+                s_Instance = AssetDatabase.LoadAssetAtPath (path, typeof (ExcelSettings)) as ExcelSettings;
                 if (s_Instance == null)
                 {
-                    Debug.LogWarning("No account setting file is at " + path + " You need to create a new one or modify its path.");
+                    Debug.LogWarning("No exel setting file is at " + path + " You need to create a new one or modify its path.");
                 }
             }
             return s_Instance;
@@ -145,7 +145,7 @@ public class ExcelSettings : ScriptableObject
 
             EditorUtility.DisplayDialog (
                 "Validate Settings",
-                "Default excel settings have been created for accessing excel spreadsheet. Set valid runtime editor paths before proceeding.",
+                "Default excel settings file has been created for accessing excel spreadsheet. Set valid runtime editor paths before proceeding.",
                 "OK"
             );
         }
@@ -159,3 +159,4 @@ public class ExcelSettings : ScriptableObject
         return s_Instance;
     }
 }
+

@@ -86,10 +86,7 @@ public class GoogleMachineEditor : BaseMachineEditor
         //rc = GUILayoutUtility.GetLastRect();
         //GUI.skin.box.Draw(rc, GUIContent.none, 0);
 
-        GoogleDataSettings.Instance.Account = EditorGUILayout.TextField("Username", GoogleDataSettings.Instance.Account);
-        GoogleDataSettings.Instance.Password = EditorGUILayout.PasswordField("Password", GoogleDataSettings.Instance.Password);
-
-        EditorGUILayout.Separator ();
+        EditorGUILayout.Separator();
 
         GUILayout.Label("Script Path Settings:", headerStyle);
         //rc = GUILayoutUtility.GetLastRect();
@@ -156,8 +153,7 @@ public class GoogleMachineEditor : BaseMachineEditor
     {
         // first we need to connect to the google-spreadsheet to get all the first row of the cells
         // which are used for the properties of data class.
-        var client = new DatabaseClient(GoogleDataSettings.Instance.Account,
-                                        GoogleDataSettings.Instance.Password);
+        var client = new DatabaseClient("", "");
 
         if (string.IsNullOrEmpty(machine.SpreadSheetName))
             return;

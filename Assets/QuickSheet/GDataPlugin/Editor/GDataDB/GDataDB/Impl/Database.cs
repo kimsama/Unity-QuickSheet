@@ -38,40 +38,31 @@ namespace GDataDB.Impl {
             return new Table<T>(client.SpreadsheetService, (WorksheetEntry) wsFeed.Entries[0]);
         }
 
-		public WorksheetEntry GetWorksheetEntry(string name)
-		{
-			var link = entry.Links.FindService(GDataSpreadsheetsNameTable.WorksheetRel, null);
-			var wsFeed = (WorksheetFeed) client.SpreadsheetService.Query(new WorksheetQuery(link.HRef.ToString()) {Title = name, Exact = true});
-			if (wsFeed.Entries.Count == 0)
-				return null;
+        public WorksheetEntry GetWorksheetEntry(string name)
+        {
+            /*
+            var link = entry.Links.FindService(GDataSpreadsheetsNameTable.WorksheetRel, null);
+            var wsFeed = (WorksheetFeed) client.SpreadsheetService.Query(new WorksheetQuery(link.HRef.ToString()) {Title = name, Exact = true});
+            if (wsFeed.Entries.Count == 0)
+                return null;
 
-			return (WorksheetEntry)wsFeed.Entries [0];
-/*
-			WorksheetEntry worksheet = (WorksheetEntry)wsFeed.Entries [0];
+            return (WorksheetEntry)wsFeed.Entries [0];
+            */
 
-			// Fetch the cell feed of the worksheet.
-			CellQuery cellQuery = new CellQuery(worksheet.CellFeedLink);
-			CellFeed cellFeed = client.SpreadsheetService.Query(cellQuery);
+            SpreadsheetEntry spreadsheet = this.entry as SpreadsheetEntry;
+            WorksheetFeed wsFeed = spreadsheet.Worksheets;
 
-			// Iterate through each cell, printing its value.
-			foreach (CellEntry cell in cellFeed.Entries)
-			{
+            // Iterate through each worksheet in the spreadsheet.
+            WorksheetEntry worksheetEntry = null;
+            foreach(WorksheetEntry entry in wsFeed.Entries)
+            {
+                // Retrieve worksheet with the given name.
+                if (entry.Title.Text == name)
+                    worksheetEntry = entry;
+            }
 
-				// Print the cell's address in A1 notation
-				Console.WriteLine(cell.Title.Text);
-				// Print the cell's address in R1C1 notation
-				Console.WriteLine(cell.Id.Uri.Content.Substring(cell.Id.Uri.Content.LastIndexOf("/") + 1));
-				// Print the cell's formula or text value
-				Console.WriteLine(cell.InputValue);
-				// Print the cell's calculated value if the cell's value is numeric
-				// Prints empty string if cell's value is not numeric
-				Console.WriteLine(cell.NumericValue);
-				// Print the cell's displayed value (useful if the cell has a formula)
-				Console.WriteLine(cell.Value);
-
-			}
-*/
-		}
+            return worksheetEntry;
+        }
 
         public void Delete() {
             // cannot call "entry.Delete()" directly after modification as the EditUri is invalid

@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.IO;
+using System.Collections.Generic;
 
 /// <summary>
 /// A class to manage google account setting.
@@ -20,37 +21,16 @@ public class GoogleDataSettings : ScriptableObject
     [SerializeField]
     public static string AssetFileName = "GoogleDataSettings.asset";
 
-    /// <summary>
-    /// A property which specifies or retrieves account.
-    /// </summary>
-    public string Account
+    public string JsonFilePath
     {
-        get { return account; }
+        get { return jsonFilePath; }
         set
         {
-            if (account != value)
-                account = value;
+            if (string.IsNullOrEmpty(value) == false)
+                jsonFilePath = value;
         }
     }
-
-    [SerializeField]
-    private string account = "account@gmail.com"; // your google acccount.
-
-    /// <summary>
-    /// A property which specifies or retrieves password.
-    /// </summary>
-    public string Password
-    {
-        get { return password; }
-        set
-        {
-            if (password != value)
-                password = value;
-        }
-    }
-
-    [SerializeField]
-    private string password = "";
+    private string jsonFilePath = string.Empty;
 
     /// <summary>
     /// A property which specifies or retrieves generated runtime class path.
@@ -84,6 +64,29 @@ public class GoogleDataSettings : ScriptableObject
     [SerializeField]
     private string editorPath = string.Empty;
 
+    [System.Serializable]
+    public struct OAuth2JsonData
+    {
+        public string client_id;
+        public string auth_uri;
+        public string token_uri;
+        public string auth_provider_x509_cert_url;
+        public string client_secret;
+        public List<string> redirect_uris;
+    };
+
+    public OAuth2JsonData OAuth2Data;
+
+    // enter Access Code after getting it from auth url
+    [SerializeField]
+    public string _AccessCode = "Paste AcecessCode here!";
+
+    // enter Auth 2.0 Refresh Token and AccessToken after succesfully authorizing with Access Code
+    [SerializeField]
+    public string _RefreshToken = "";
+    [SerializeField]
+    public string _AccessToken = "";
+
     /// <summary>
     /// A singleton instance.
     /// </summary>
@@ -116,6 +119,8 @@ public class GoogleDataSettings : ScriptableObject
     /// </summary>
     void OnEnable()
     {
+        //if (OAuth2Data.client_id == null)
+        //    OAuth2Data = new OAuth2JsonData();
     }
     
     /// <summary>
@@ -177,7 +182,7 @@ public class GoogleDataSettings : ScriptableObject
 
             EditorUtility.DisplayDialog (
                 "Validate Settings",
-                "Default google dasa settings have been created for accessing Google project page. You should validate these before proceeding.",
+                "Default google data settings file has been created for accessing Google project page. You should validate these before proceeding.",
                 "OK"
             );
         }
