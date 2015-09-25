@@ -105,7 +105,7 @@ git subtree pull --prefix=Assets/QuickSheet https://github.com/kimsama/Unity-Qui
 
 Setting up OAuth2 for accessing Google Drive
 ---------------------------------------------
-Google has changed the authentication scheme since those articles were written. Now it requires OAuth2. 
+Google has changed the authentication scheme since May 5, 2015. Now it requires OAuth2. 
 To set this up visit http://console.developers.google.com , create a new project, enable the Drive API, create a new client ID of type "service account" and download json file.
 
 Tips
