@@ -43,7 +43,6 @@ namespace GDataDB.Impl
                 AccessType = "offline",
                 TokenType = "refresh"
             };
-            string authUrl = OAuthUtil.CreateOAuth2AuthorizationUrl(parameters);
             return new GOAuth2RequestFactory("spreadsheet", "MySpreadsheetIntegration-v1", parameters);
         }
 
