@@ -217,7 +217,14 @@ public class ExcelQuery
         if (t == typeof(float) || t == typeof(double) || t == typeof(int))
             value = cell.NumericCellValue;
         else if (t == typeof(string) || t.IsArray)
-            value = cell.StringCellValue;
+        {
+            // HACK: handles the case that a cell contains numeric value 
+            //       but a member field in a data class is defined as string type.
+            if (cell.CellType == CellType.Numeric) 
+                value = cell.NumericCellValue;
+            else
+                value = cell.StringCellValue;
+        }
         else if (t == typeof(bool))
             value = cell.BooleanCellValue;
 
