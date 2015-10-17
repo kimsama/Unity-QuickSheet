@@ -121,6 +121,8 @@ Limitations
 
 * *[ScritableObject](http://docs.unity3d.com/ScriptReference/ScriptableObject.html)* does not allow to save data changed on runtime. So if you need to serialize and save things that changes on runtime, you need to look at other methods of serialization such as JSON, BSON or XML, depending on your platform and/or requirements.
 
+* Excel versions 97/2000/XP/2003 are suppported for .xls (Note that NPOI of Unity-QuickSheet does not support Excel versions 5.0/95 for .xls)
+
 * Google Spreadsheet plugin does not work in the Unity web player's security sandbox. You should change the *Platform* to *'Stand Alone'* or something else such as *'iOS'* or *'Android'* platform in the Unity's [Build Setting](http://docs.unity3d.com/Manual/PublishingBuilds.html).
 
 
