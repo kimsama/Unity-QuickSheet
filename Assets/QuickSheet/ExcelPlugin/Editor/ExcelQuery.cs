@@ -77,11 +77,17 @@ public class ExcelQuery
     /// </summary>
     static string GetSuffix(string path)
     {
-        string[] arg1 = path.Split(new char[] { '\\' });
-        string str1 = arg1[arg1.Length - 1];
-        string[] arg2 = str1.Split(new char[] { '.' });
+        string ext = Path.GetExtension(path);
+        string[] arg = ext.Split(new char[] { '.' });
+        return arg[1];
+    }
 
-        return arg2[1];
+    string GetHeaderColumnName(int cellnum)
+    {
+        ICell headerCell = sheet.GetRow(0).GetCell(cellnum);
+        if (headerCell != null)
+            return headerCell.StringCellValue;
+        return string.Empty;
     }
 
     /// <summary>
@@ -154,7 +160,7 @@ public class ExcelQuery
                     }
                     catch(Exception e)
                     {
-                        string pos = string.Format("Row[{0}], Cell[{1}]", current.ToString(), i.ToString());
+                        string pos = string.Format("Row[{0}], Cell[{1}]", current.ToString(), GetHeaderColumnName(i + 1));
                         Debug.LogError("Excel Deserialize Exception: " + e.Message + " " + pos);
                     }
                 }
