@@ -268,9 +268,20 @@ public class BaseMachineEditor : Editor
     {
         if (m.HasHeadColumn())
         {
-            //EditorGUILayout.LabelField("type settings");
             GUIStyle headerStyle = GUIHelper.MakeHeader();
             GUILayout.Label("Type Settings:", headerStyle);
+
+            const int MEMBER_WIDTH = 100;
+            GUILayout.BeginHorizontal(EditorStyles.toolbar);
+            GUILayout.Label("Member", GUILayout.MinWidth(MEMBER_WIDTH));
+            GUILayout.FlexibleSpace();
+            string[] names = { "Type", "Array" };
+            int[] widths = { 55, 40 };
+            for (int i=0; i<names.Length; i++)
+            {
+                GUILayout.Label(new GUIContent(names[i]), GUILayout.Width(widths[i]));
+            }
+            GUILayout.EndHorizontal();//EditorStyles.toolbar
 
             //curretScroll = EditorGUILayout.BeginScrollView(curretScroll, false, false);
             EditorGUILayout.BeginVertical("box");
@@ -279,15 +290,22 @@ public class BaseMachineEditor : Editor
             foreach (HeaderColumn header in m.HeaderColumnList)
             {
                 GUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField(header.name, GUILayout.MaxWidth(250));
-                header.type = (CellType)EditorGUILayout.EnumPopup(header.type, GUILayout.MaxWidth(150));
+
+                // member field label
+                EditorGUILayout.LabelField(header.name, GUILayout.MinWidth(MEMBER_WIDTH));
+                GUILayout.FlexibleSpace();
+
+                // type enum popup
+                header.type = (CellType)EditorGUILayout.EnumPopup(header.type, GUILayout.Width(60));
                 GUILayout.Space(20);
-                EditorGUILayout.LabelField("array:", GUILayout.MaxWidth(40));
-                header.isArray = EditorGUILayout.Toggle(header.isArray, GUILayout.MaxWidth(50));
+
+                // array toggle
+                header.isArray = EditorGUILayout.Toggle(header.isArray, GUILayout.Width(20));
+                GUILayout.Space(10);
                 GUILayout.EndHorizontal();
             }
 
-            EditorGUILayout.EndVertical();
+            EditorGUILayout.EndVertical(); //box
             //EditorGUILayout.EndScrollView();
         }
     }
