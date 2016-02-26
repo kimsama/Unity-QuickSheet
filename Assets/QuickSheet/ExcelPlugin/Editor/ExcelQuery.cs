@@ -160,7 +160,7 @@ public class ExcelQuery
                     }
                     catch(Exception e)
                     {
-                        string pos = string.Format("Row[{0}], Cell[{1}]", current.ToString(), GetHeaderColumnName(i + 1));
+                        string pos = string.Format("Row[{0}], Cell[{1}]", (current + 1).ToString(), GetHeaderColumnName(i));
                         Debug.LogError("Excel Deserialize Exception: " + e.Message + " " + pos);
                     }
                 }
