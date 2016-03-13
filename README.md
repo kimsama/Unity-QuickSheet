@@ -20,7 +20,7 @@ Getting Started
 * [Excel Howto](http://kimsama.github.io/excel-howto/) 
 * [Google Spreadsheet Howto](http://kimsama.github.io/googlehowto/) 
 
-See [FAQ](https://github.com/kimsama/Unity-QuickSheet/wiki/FAQ) for more information.
+See [FAQ](https://github.com/kimsama/Unity-QuickSheet/wiki/FAQ) page for more information.
 
 Usage
 -----
