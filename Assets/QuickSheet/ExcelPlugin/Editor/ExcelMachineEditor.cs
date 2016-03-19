@@ -78,9 +78,16 @@ public class ExcelMachineEditor : BaseMachineEditor
         }
 
         machine.SpreadSheetName = EditorGUILayout.TextField("Spreadsheet File: ", machine.SpreadSheetName);
-        machine.CurrentSheetIndex = EditorGUILayout.Popup(machine.CurrentSheetIndex, machine.SheetNames);
-        if (machine.SheetNames != null)
-            machine.WorkSheetName = machine.SheetNames[machine.CurrentSheetIndex];
+
+        EditorGUILayout.Space();
+
+        using (new GUILayout.HorizontalScope())
+        {
+            EditorGUILayout.LabelField("Worksheet: ", GUILayout.Width(100));
+            machine.CurrentSheetIndex = EditorGUILayout.Popup(machine.CurrentSheetIndex, machine.SheetNames);
+            if (machine.SheetNames != null)
+                machine.WorkSheetName = machine.SheetNames[machine.CurrentSheetIndex];
+        }
 
         EditorGUILayout.Separator();
 
