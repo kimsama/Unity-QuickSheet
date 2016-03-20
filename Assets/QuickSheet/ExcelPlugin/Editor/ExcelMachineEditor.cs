@@ -40,7 +40,7 @@ public class ExcelMachineEditor : BaseMachineEditor
         GUILayout.BeginHorizontal();
         GUILayout.Label("File:", GUILayout.Width(50));
 
-        string path = "";
+        string path = string.Empty;
         if (string.IsNullOrEmpty(machine.excelFilePath))
             path = Application.dataPath;
         else
@@ -59,11 +59,20 @@ public class ExcelMachineEditor : BaseMachineEditor
             {
                 machine.SpreadSheetName = Path.GetFileName(path);
 
-                // the path should be relative not absolute one.
+                // the path should be relative not absolute one to make it work on any platform.
                 int index = path.IndexOf("Assets");
-                machine.excelFilePath = path.Substring(index);
+                if (index >= 0)
+                {
+                    // set relative path 
+                    machine.excelFilePath = path.Substring(index);
 
-                machine.SheetNames = new ExcelQuery(path).GetSheetNames();
+                    // pass absolute path 
+                    machine.SheetNames = new ExcelQuery(path).GetSheetNames();
+                }
+                else
+                {
+                    Debug.LogErrorFormat("Wrong folder is selected. Set a folder under the 'Assets' folder! {0}", path);
+                }
             }
         }
         GUILayout.EndHorizontal();
