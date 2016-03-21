@@ -1,7 +1,7 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
 ///
 /// ExcelMachineEditor.cs
-/// 
+///
 /// (c)2014 Kim, Hyoun Woo
 ///
 ///////////////////////////////////////////////////////////////////////////////
@@ -63,15 +63,19 @@ public class ExcelMachineEditor : BaseMachineEditor
                 int index = path.IndexOf("Assets");
                 if (index >= 0)
                 {
-                    // set relative path 
+                    // set relative path
                     machine.excelFilePath = path.Substring(index);
 
-                    // pass absolute path 
+                    // pass absolute path
                     machine.SheetNames = new ExcelQuery(path).GetSheetNames();
                 }
                 else
                 {
-                    Debug.LogErrorFormat("Wrong folder is selected. Set a folder under the 'Assets' folder! {0}", path);
+                  EditorUtility.DisplayDialog("Error",
+                      @"Wrong folder is selected.
+                        Set a folder under the 'Assets' folder! \n
+                        The excel file should be anywhere under  the 'Assets' folder", "OK");
+                  return;
                 }
             }
         }
@@ -189,7 +193,7 @@ public class ExcelMachineEditor : BaseMachineEditor
         List<string> titleList = titles.ToList();
 
         if (machine.HasHeadColumn() && reimport == false)
-        { 
+        {
             var headerDic = machine.HeaderColumnList.ToDictionary(header => header.name);
 
             // collect non changed header columns
@@ -241,9 +245,9 @@ public class ExcelMachineEditor : BaseMachineEditor
         sp.className = machine.WorkSheetName;
         sp.dataClassName = machine.WorkSheetName + "Data";
         sp.worksheetClassName = machine.WorkSheetName;
-        
+
         // where the imported excel file is.
-        sp.importedFilePath = machine.excelFilePath; 
+        sp.importedFilePath = machine.excelFilePath;
 
         // path where the .asset file will be created.
         string path = Path.GetDirectoryName(machine.excelFilePath);
@@ -252,7 +256,7 @@ public class ExcelMachineEditor : BaseMachineEditor
         sp.assetPostprocessorClass = machine.WorkSheetName + "AssetPostprocessor";
         sp.template = GetTemplate("PostProcessor");
 
-        // write a script to the given folder.		
+        // write a script to the given folder.
         using (var writer = new StreamWriter(TargetPathForAssetPostProcessorFile(machine.WorkSheetName)))
         {
             writer.Write(new NewScriptGenerator(sp).ToString());
