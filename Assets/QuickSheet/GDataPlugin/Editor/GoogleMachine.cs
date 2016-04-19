@@ -42,7 +42,7 @@ namespace UnityEditor
         /// <summary>
         /// A menu item which create a 'GoogleMachine' asset file.
         /// </summary>
-        [MenuItem("Assets/Create/QuickSheet/Tools/Goolgle")]
+        [MenuItem("Assets/Create/QuickSheet/Tools/Google")]
         public static void CreateGoogleMachineAsset()
         {
             GoogleMachine inst = ScriptableObject.CreateInstance<GoogleMachine>();
