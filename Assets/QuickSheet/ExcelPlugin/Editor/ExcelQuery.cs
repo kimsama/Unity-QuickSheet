@@ -24,6 +24,7 @@ public class ExcelQuery
 {
     private readonly IWorkbook workbook = null;
     private readonly ISheet sheet = null;
+    private string filepath = string.Empty;
 
     /// <summary>
     /// Constructor.
@@ -32,6 +33,8 @@ public class ExcelQuery
     {
         try
         {
+            this.filepath = path;
+
             using (FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 string extension = GetSuffix(path);
@@ -161,7 +164,7 @@ public class ExcelQuery
                     catch(Exception e)
                     {
                         string pos = string.Format("Row[{0}], Cell[{1}]", (current + 1).ToString(), GetHeaderColumnName(i));
-                        Debug.LogError("Excel Deserialize Exception: " + e.Message + " " + pos);
+                        Debug.LogError(string.Format("Excel File {0} Deserialize Exception: {1} at {2}", this.filepath, e.Message, pos));
                     }
                 }
             }
