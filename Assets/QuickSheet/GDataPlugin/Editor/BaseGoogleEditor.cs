@@ -26,17 +26,16 @@ using Google.GData.Spreadsheets;
 /// 
 /// A BaseEditor class.
 /// 
-public class BaseGoogleEditor<T> : Editor //where T : BaseDatabase
+public class BaseGoogleEditor<T> : Editor 
 {	
-    // custom data 
-    //protected BaseDatabase database; 
-    
     // property draw
     protected PropertyField[] databaseFields;
     protected PropertyField[] dataFields;
     
     protected List<PropertyField[]> pInfoList = new List<PropertyField[]>();
-        
+
+    GUIStyle brown;
+
     /// 
     /// Actively ignore security concerns to resolve TlsException error.
     /// 
@@ -69,8 +68,11 @@ public class BaseGoogleEditor<T> : Editor //where T : BaseDatabase
             return;
         }
                 
-        //database = target as BaseDatabase;
-        //Debug.Log ("Target type: " + database.GetType().ToString());
+        brown = new GUIStyle("box");
+        brown.normal.background = Resources.Load("brown", typeof(Texture2D)) as Texture2D;
+        brown.border = new RectOffset(4, 4, 4, 4);
+        brown.margin = new RectOffset(3, 3, 3, 3);
+        brown.padding = new RectOffset(4, 4, 4, 4);
     }
 
     public override void OnInspectorGUI()
@@ -91,7 +93,9 @@ public class BaseGoogleEditor<T> : Editor //where T : BaseDatabase
  
         foreach(PropertyField[] p in pInfoList)
         {
-            ExposeProperties.Expose( p );	
+            GUILayout.BeginVertical(brown);
+            ExposeProperties.Expose( p );
+            GUILayout.EndVertical();
         }
     }
     

@@ -23,8 +23,15 @@ public class BaseExcelEditor<T> : Editor
 
     protected List<PropertyField[]> pInfoList = new List<PropertyField[]>();
 
+    GUIStyle brown;
+
     public virtual void OnEnable()
     {
+        brown = new GUIStyle("box");
+        brown.normal.background = Resources.Load("brown", typeof(Texture2D)) as Texture2D;
+        brown.border = new RectOffset(4, 4, 4, 4);
+        brown.margin = new RectOffset(3, 3, 3, 3);
+        brown.padding = new RectOffset(4, 4, 4, 4);
     }
 
     public override void OnInspectorGUI()
@@ -51,7 +58,9 @@ public class BaseExcelEditor<T> : Editor
 
         foreach (PropertyField[] p in pInfoList)
         {
+            GUILayout.BeginVertical(brown);
             ExposeProperties.Expose(p);
+            GUILayout.EndVertical();
         }
     }
 
