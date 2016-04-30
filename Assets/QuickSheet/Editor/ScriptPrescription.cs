@@ -37,6 +37,7 @@ namespace UnityEditor
         Undefined,
         String,
         Int,
+        Long,
         Float,
         Double,
         Enum,
@@ -69,6 +70,8 @@ namespace UnityEditor
                     return "string";
                 case CellType.Int:
                     return "int";
+                case CellType.Long:
+                    return "long";
                 case CellType.Float:
                     return "float";
                 case CellType.Double:
@@ -101,6 +104,8 @@ namespace UnityEditor
 
                 if (string.Compare(typedef, "integer") == 0)
                     type = CellType.Int;
+                if (string.Compare(typedef, "long") == 0)
+                    type = CellType.Long;
                 else if (string.Compare(typedef,"string") == 0)
                     type = CellType.String;
                 else if (string.Compare(typedef, "float") == 0)
