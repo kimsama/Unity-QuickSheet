@@ -24,8 +24,13 @@ public class BaseExcelEditor<T> : Editor
     protected List<PropertyField[]> pInfoList = new List<PropertyField[]>();
 
     GUIStyle brown;
+    bool isInitialized = false;
 
     public virtual void OnEnable()
+    {
+    }
+
+    private void InitGUISkin()
     {
         brown = new GUIStyle("box");
         brown.normal.background = Resources.Load("brown", typeof(Texture2D)) as Texture2D;
@@ -36,6 +41,12 @@ public class BaseExcelEditor<T> : Editor
 
     public override void OnInspectorGUI()
     {
+        if (!isInitialized)
+        {
+            isInitialized = true;
+            InitGUISkin();
+        }
+
         if (GUILayout.Button("Update"))
         {
             if (!Load())

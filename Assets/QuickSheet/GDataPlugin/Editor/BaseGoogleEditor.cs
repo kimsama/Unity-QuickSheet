@@ -35,6 +35,7 @@ public class BaseGoogleEditor<T> : Editor
     protected List<PropertyField[]> pInfoList = new List<PropertyField[]>();
 
     GUIStyle brown;
+    bool isInitialized = false;
 
     /// 
     /// Actively ignore security concerns to resolve TlsException error.
@@ -67,7 +68,10 @@ public class BaseGoogleEditor<T> : Editor
             Debug.LogError("Failed to get google data settings. See the google data setting if it has correct path.");
             return;
         }
-                
+    }
+
+    private void InitGUISkin()
+    {
         brown = new GUIStyle("box");
         brown.normal.background = Resources.Load("brown", typeof(Texture2D)) as Texture2D;
         brown.border = new RectOffset(4, 4, 4, 4);
@@ -79,6 +83,12 @@ public class BaseGoogleEditor<T> : Editor
     { 		
         if (target == null)
             return;
+
+        if (!isInitialized)
+        {
+            isInitialized = true;
+            InitGUISkin();
+        }
 
         if (GUILayout.Button("Download"))
         {
