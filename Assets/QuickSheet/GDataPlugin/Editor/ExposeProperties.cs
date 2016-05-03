@@ -23,11 +23,21 @@ public static class ExposeProperties
             switch (field.Type)
             {
                 case SerializedPropertyType.Integer:
-                    field.SetValue(EditorGUILayout.IntField(field.Name, (int)field.GetValue(), emptyOptions));
+                    {
+                        if (field.Info.PropertyType == typeof(Int32))
+                            field.SetValue(EditorGUILayout.IntField(field.Name, (int)field.GetValue(), emptyOptions));
+                        else if (field.Info.PropertyType == typeof(Int64))
+                            field.SetValue(EditorGUILayout.LongField(field.Name, (long)field.GetValue(), emptyOptions));
+                    }
                     break;
 
                 case SerializedPropertyType.Float:
-                    field.SetValue(EditorGUILayout.FloatField(field.Name, (float)field.GetValue(), emptyOptions));
+                    {
+                        if (field.Info.PropertyType == typeof(Single))
+                            field.SetValue(EditorGUILayout.FloatField(field.Name, (float)field.GetValue(), emptyOptions));
+                        else if (field.Info.PropertyType == typeof(Double))
+                            field.SetValue(EditorGUILayout.DoubleField(field.Name, (double)field.GetValue(), emptyOptions));
+                    }
                     break;
 
                 case SerializedPropertyType.Boolean:
@@ -121,6 +131,22 @@ public class PropertyField
     MethodInfo m_Getter;
     MethodInfo m_Setter;
 
+    public System.Object Instance
+    {
+        get
+        {
+            return m_Instance;
+        }
+    }
+
+    public PropertyInfo Info
+    {
+        get
+        {
+            return m_Info;
+        }
+    }
+
     public SerializedPropertyType Type
     {
         get
@@ -165,13 +191,13 @@ public class PropertyField
 
         Type type = info.PropertyType;
 
-        if (type == typeof(int))
+        if (type == typeof(int) || type == typeof(long))
         {
             propertyType = SerializedPropertyType.Integer;
             return true;
         }
 
-        if (type == typeof(float))
+        if (type == typeof(float) || type == typeof(double))
         {
             propertyType = SerializedPropertyType.Float;
             return true;

@@ -223,13 +223,28 @@ public class ExcelQuery
     {
         object value = null;
 
-        if (t == typeof(float) || t == typeof(double) || t == typeof(int))
-            value = cell.NumericCellValue;
+        if (t == typeof(float) || t == typeof(double) || t == typeof(int) || t == typeof(long))
+        {
+            if (cell.CellType == CellType.Numeric)
+                value = cell.NumericCellValue;
+            else if (cell.CellType == CellType.String)
+            {
+                //Get correct numeric value even the cell is string type but defined with a numeric type in a data class.
+                if (t == typeof(float))
+                    value = Convert.ToSingle(cell.StringCellValue);
+                if (t == typeof(double))
+                    value = Convert.ToDouble(cell.StringCellValue);
+                if (t == typeof(int))
+                    value = Convert.ToInt32(cell.StringCellValue);
+                if (t == typeof(long))
+                    value = Convert.ToInt64(cell.StringCellValue);
+            }
+        }
         else if (t == typeof(string) || t.IsArray)
         {
             // HACK: handles the case that a cell contains numeric value 
             //       but a member field in a data class is defined as string type.
-            if (cell.CellType == CellType.Numeric) 
+            if (cell.CellType == CellType.Numeric)
                 value = cell.NumericCellValue;
             else
                 value = cell.StringCellValue;
