@@ -7,16 +7,22 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 using UnityEngine;
-using System.Collections;
+using UnityEditor;
+using System;
 using System.Collections.Generic;
 using Google.GData.Client;
 using Google.GData.Spreadsheets;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace GDataDB.Impl
 {
+    /// <summary>
+    /// Handles OAuth2 credentials to access on google spreadsheets. 
+    /// 
+    /// Note that it needs json type of private key to get access code.
+    /// 
+    /// </summary>
     public class GDataDBRequestFactory
     {
         const string SCOPE = "https://www.googleapis.com/auth/drive https://spreadsheets.google.com/feeds https://docs.google.com/feeds";
@@ -60,21 +66,36 @@ namespace GDataDB.Impl
 
             // Retrieves the Authorization URL
             parameters.Scope = SCOPE;
-            parameters.AccessType = "offline"; // IMPORTANT and was missing in the original
-            parameters.TokenType = TOKEN_TYPE; // IMPORTANT and was missing in the original
+            parameters.AccessType = "offline"; // IMPORTANT 
+            parameters.TokenType = TOKEN_TYPE; // IMPORTANT 
 
             string authorizationUrl = OAuthUtil.CreateOAuth2AuthorizationUrl(parameters);
             Debug.Log(authorizationUrl);
-            Debug.Log("Please visit the URL above to authorize your OAuth "
-                  + "request token.  Once that is complete, type in your access code to "
-                  + "continue...");
+            //Debug.Log("Please visit the URL above to authorize your OAuth "
+            //      + "request token.  Once that is complete, type in your access code to "
+            //      + "continue...");
 
             parameters.AccessCode = accessCode;
 
-            if (string.IsNullOrEmpty(parameters.AccessCode))
+            if (IsValidURL(authorizationUrl))
             {
                 Application.OpenURL(authorizationUrl);
+                const string message = @"Copy the 'Access Code' on your browser into the access code textfield.";
+                EditorUtility.DisplayDialog("Info", message, "OK");
             }
+            else
+                EditorUtility.DisplayDialog("Error", "Invalid URL: " + authorizationUrl, "OK");
+        }
+
+        /// <summary>
+        ///  Check whether the given string is a valid http or https URL.
+        /// </summary>
+        private static bool IsValidURL(string url)
+        {
+            Uri uriResult;
+            return (Uri.TryCreate(url, UriKind.Absolute, out uriResult) && 
+                                (uriResult.Scheme == Uri.UriSchemeHttp || 
+                                 uriResult.Scheme == Uri.UriSchemeHttps));
         }
 
         public static void FinishAuthenticate()
@@ -85,8 +106,8 @@ namespace GDataDB.Impl
             parameters.RedirectUri = REDIRECT_URI;
 
             parameters.Scope = SCOPE;
-            parameters.AccessType = "offline"; // IMPORTANT and was missing in the original
-            parameters.TokenType = TOKEN_TYPE; // IMPORTANT and was missing in the original
+            parameters.AccessType = "offline"; // IMPORTANT 
+            parameters.TokenType = TOKEN_TYPE; // IMPORTANT 
 
             parameters.AccessCode = GoogleDataSettings.Instance._AccessCode;
 
