@@ -163,7 +163,9 @@ public class GoogleMachineEditor : BaseMachineEditor
         var db = client.GetDatabase(machine.SpreadSheetName);
         if (db == null)
         {
-            Debug.LogError("The given spreadsheet does not exist.");
+            string message = string.Format(@"The given spreadsheet '{0}' or worksheet '{1}' does not exist. Note that the name is case sensitive.", 
+                                           machine.SpreadSheetName, machine.WorkSheetName);
+            EditorUtility.DisplayDialog("Error", message, "OK");
             return;
         }
 
