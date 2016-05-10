@@ -1,9 +1,6 @@
 Unity-QuickSheet
 ====================
 
-![](https://img.shields.io/badge/pod-v0.9.6-green.svg)
-![](https://img.shields.io/badge/license-MIT-orange.svg)
-
 <p align="left">
     <a href="https://github.com/kimsama/Unity-QuickSheet/releases">
         <img src="https://img.shields.io/badge/pod-v0.9.6-green.svg"
