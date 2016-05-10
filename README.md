@@ -2,7 +2,7 @@ Unity-QuickSheet
 ====================
 
 ![](https://img.shields.io/badge/pod-v0.9.6-green.svg)
-![](https://img.shields.io/badge/pod-v0.1.7-blue.svg)
+![](https://img.shields.io/badge/license-MIT-orange.svg)
 
 
 Unity-QuickSheet enables you to use google and excel spreadsheet data within Unity editor. With Unity-QuickSheet, you can retrieve data from a spreadsheet and save it as an asset file with a [ScriptableObject](http://docs.unity3d.com/ScriptReference/ScriptableObject.html) format even without writing single line of code.
