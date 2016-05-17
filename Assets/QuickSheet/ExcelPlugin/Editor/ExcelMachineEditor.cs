@@ -55,6 +55,7 @@ public class ExcelMachineEditor : BaseMachineEditor
 #else
             path = EditorUtility.OpenFilePanel("Open Excel file", folder, "xls");
 #endif
+
             if (path.Length != 0)
             {
                 machine.SpreadSheetName = Path.GetFileName(path);
@@ -100,6 +101,12 @@ public class ExcelMachineEditor : BaseMachineEditor
             machine.CurrentSheetIndex = EditorGUILayout.Popup(machine.CurrentSheetIndex, machine.SheetNames);
             if (machine.SheetNames != null)
                 machine.WorkSheetName = machine.SheetNames[machine.CurrentSheetIndex];
+
+            if (GUILayout.Button("Refresh", GUILayout.Width(60)))
+            {
+                // reopen the excel file e.g) new worksheet is added so need to reopen.
+                machine.SheetNames = new ExcelQuery(machine.excelFilePath).GetSheetNames();
+            }
         }
 
         EditorGUILayout.Separator();
