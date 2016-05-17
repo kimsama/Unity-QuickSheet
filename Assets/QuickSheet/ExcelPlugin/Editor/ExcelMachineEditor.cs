@@ -106,6 +106,16 @@ public class ExcelMachineEditor : BaseMachineEditor
             {
                 // reopen the excel file e.g) new worksheet is added so need to reopen.
                 machine.SheetNames = new ExcelQuery(machine.excelFilePath).GetSheetNames();
+
+                // one of worksheet was removed, so reset the selected worksheet index
+                // to prevent the index out of range error.
+                if (machine.SheetNames.Length <= machine.CurrentSheetIndex)
+                {
+                    machine.CurrentSheetIndex = 0;
+
+                    string message = "Worksheet was changed. Check the 'Worksheet' and 'Update' it again if it is necessary.";
+                    EditorUtility.DisplayDialog("Info", message, "OK");
+                }
             }
         }
 
