@@ -8,14 +8,17 @@
 using UnityEngine;
 using UnityEditor;
 
-public static class GUIHelper
+namespace UnityQuicksheet
 {
-    public static GUIStyle MakeHeader()
+    public static class GUIHelper
     {
-        GUIStyle headerStyle = new GUIStyle(GUI.skin.label);
-        headerStyle.fontSize = 12;
-        headerStyle.fontStyle = FontStyle.Bold;
+        public static GUIStyle MakeHeader()
+        {
+            GUIStyle headerStyle = new GUIStyle(GUI.skin.label);
+            headerStyle.fontSize = 12;
+            headerStyle.fontStyle = FontStyle.Bold;
 
-        return headerStyle;
+            return headerStyle;
+        }
     }
 }

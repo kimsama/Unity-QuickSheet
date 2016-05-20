@@ -6,9 +6,10 @@
 ///
 ///////////////////////////////////////////////////////////////////////////////
 using UnityEngine;
+using UnityEditor;
 using System.Collections;
 
-namespace UnityEditor
+namespace UnityQuicksheet
 {
     /// <summary>
     /// A class for various setting to read excel file and generated related script files.

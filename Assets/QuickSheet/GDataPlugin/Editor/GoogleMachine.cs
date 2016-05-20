@@ -11,7 +11,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-namespace UnityEditor
+namespace UnityQuicksheet
 {
     /// <summary>
     /// A class for various setting to import google spreadsheet data and generated related script files.

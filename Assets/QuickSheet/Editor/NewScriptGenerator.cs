@@ -7,6 +7,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 using System;
 using UnityEngine;
+using UnityEditor;
 using System.Linq;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -15,7 +16,7 @@ using System.Globalization;
 
 using Object = UnityEngine.Object;
 
-namespace UnityEditor
+namespace UnityQuicksheet
 {
     internal class NewScriptGenerator
     {
