@@ -7,7 +7,7 @@ using System.Text;
 using GDataDB;
 using GDataDB.Linq;
 
-using UnityQuicksheet;
+using UnityQuickSheet;
 
 ///
 /// !!! Machine generated code !!!

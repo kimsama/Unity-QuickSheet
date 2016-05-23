@@ -10,7 +10,7 @@ using UnityEditor;
 using System.Collections;
 using System.IO;
 
-namespace UnityQuicksheet
+namespace UnityQuickSheet
 {
     /// <summary>
     /// A class to manage excel setting.

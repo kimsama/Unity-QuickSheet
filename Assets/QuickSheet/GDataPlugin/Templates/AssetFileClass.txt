@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.IO;
-using UnityQuicksheet;
+using UnityQuickSheet;
 
 ///
 /// !!! Machine generated code !!!

@@ -23,7 +23,7 @@ using System.Security.Cryptography.X509Certificates;
 using Google.GData.Client;
 using Google.GData.Spreadsheets;
 
-namespace UnityQuicksheet
+namespace UnityQuickSheet
 {
     /// 
     /// A BaseEditor class.

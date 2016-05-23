@@ -2,7 +2,7 @@
 using UnityEditor;
 using System.Collections;
 using System.IO;
-using UnityQuicksheet;
+using UnityQuickSheet;
 
 ///
 /// !!! Machine generated code !!!

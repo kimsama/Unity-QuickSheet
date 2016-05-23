@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UnityQuicksheet
+namespace UnityQuickSheet
 {
     /// <summary>
     /// Singleton base class.

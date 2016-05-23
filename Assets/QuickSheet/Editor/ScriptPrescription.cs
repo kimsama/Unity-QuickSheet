@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Object = UnityEngine.Object;
 
-namespace UnityQuicksheet
+namespace UnityQuickSheet
 {
     [Serializable]
     public class ScriptPrescription

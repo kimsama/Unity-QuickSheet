@@ -12,7 +12,7 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace UnityQuicksheet
+namespace UnityQuickSheet
 {
     /// <summary>
     /// Custom editor script class for excel file setting.

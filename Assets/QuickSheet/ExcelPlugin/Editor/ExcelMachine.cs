@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
-namespace UnityQuicksheet
+namespace UnityQuickSheet
 {
     /// <summary>
     /// A class for various setting to read excel file and generated related script files.

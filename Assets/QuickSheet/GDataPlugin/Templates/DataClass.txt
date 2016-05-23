@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using UnityQuicksheet;
+using UnityQuickSheet;
 
 ///
 /// !!! Machine generated code !!!

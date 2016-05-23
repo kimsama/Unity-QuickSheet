@@ -10,7 +10,7 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace UnityQuicksheet
+namespace UnityQuickSheet
 {
     [System.Serializable]
     public class HeaderColumn

@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
-namespace UnityQuicksheet
+namespace UnityQuickSheet
 {
     /// <summary>
     /// Editor script class for ExcelSettings scriptable object to hide password of google account.

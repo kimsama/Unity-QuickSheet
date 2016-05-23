@@ -16,7 +16,7 @@ using System.Globalization;
 
 using Object = UnityEngine.Object;
 
-namespace UnityQuicksheet
+namespace UnityQuickSheet
 {
     internal class NewScriptGenerator
     {

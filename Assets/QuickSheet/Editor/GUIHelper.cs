@@ -8,7 +8,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace UnityQuicksheet
+namespace UnityQuickSheet
 {
     public static class GUIHelper
     {

@@ -25,7 +25,7 @@ using GDataDB.Impl;
 using Google.GData.Client;
 using Google.GData.Spreadsheets;
 
-namespace UnityQuicksheet
+namespace UnityQuickSheet
 {
     /// <summary>
     /// An editor script class of GoogleMachine class.

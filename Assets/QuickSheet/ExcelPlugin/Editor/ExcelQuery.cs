@@ -17,7 +17,7 @@ using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 
-namespace UnityQuicksheet
+namespace UnityQuickSheet
 {
     /// <summary>
     /// Query each of cell data from the given excel sheet and deserialize it to the ScriptableObject's data array.

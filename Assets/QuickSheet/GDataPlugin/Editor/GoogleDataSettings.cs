@@ -11,7 +11,7 @@ using System.Collections;
 using System.IO;
 using System.Collections.Generic;
 
-namespace UnityQuicksheet
+namespace UnityQuickSheet
 {
     /// <summary>
     /// A class to manage google account setting.

@@ -14,7 +14,7 @@ using Google.GData.Client;
 using Google.GData.Spreadsheets;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using UnityQuicksheet;
+using UnityQuickSheet;
 
 namespace GDataDB.Impl
 {
