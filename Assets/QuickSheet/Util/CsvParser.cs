@@ -4,130 +4,133 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-public enum TokenType
+namespace UnityQuicksheet
 {
-    Comma,
-    Quote,
-    Value
-}
-
-public class Token
-{
-    public Token(TokenType type, string value)
+    public enum TokenType
     {
-        Value = value;
-        Type = type;
+        Comma,
+        Quote,
+        Value
     }
 
-    public String Value { get; private set; }
-    public TokenType Type { get; private set; }
-}
-
-public class StreamTokenizer : IEnumerable<Token>
-{
-    private TextReader _reader;
-
-    public StreamTokenizer(TextReader reader)
+    public class Token
     {
-        _reader = reader;    
-    }
-
-    public IEnumerator<Token> GetEnumerator()
-    {
-        String line;
-        StringBuilder value = new StringBuilder();
-
-        while ((line = _reader.ReadLine()) != null)
+        public Token(TokenType type, string value)
         {
-            foreach (Char c in line)
+            Value = value;
+            Type = type;
+        }
+
+        public String Value { get; private set; }
+        public TokenType Type { get; private set; }
+    }
+
+    public class StreamTokenizer : IEnumerable<Token>
+    {
+        private TextReader _reader;
+
+        public StreamTokenizer(TextReader reader)
+        {
+            _reader = reader;
+        }
+
+        public IEnumerator<Token> GetEnumerator()
+        {
+            String line;
+            StringBuilder value = new StringBuilder();
+
+            while ((line = _reader.ReadLine()) != null)
             {
-                switch (c)
+                foreach (Char c in line)
                 {
-                    case '\'':
-                    case '"':
-                        if (value.Length > 0)
-                        {
-                            yield return new Token(TokenType.Value, value.ToString());
-                            value.Length = 0;
-                        }
-                        yield return new Token(TokenType.Quote, c.ToString());
-                        break;
-                    case ',':
-                       if (value.Length > 0)
-                        {
-                            yield return new Token(TokenType.Value, value.ToString());
-                            value.Length = 0;
-                        }
-                        yield return new Token(TokenType.Comma, c.ToString());
-                        break;
-                    default:
-                        value.Append(c);
-                        break;
+                    switch (c)
+                    {
+                        case '\'':
+                        case '"':
+                            if (value.Length > 0)
+                            {
+                                yield return new Token(TokenType.Value, value.ToString());
+                                value.Length = 0;
+                            }
+                            yield return new Token(TokenType.Quote, c.ToString());
+                            break;
+                        case ',':
+                            if (value.Length > 0)
+                            {
+                                yield return new Token(TokenType.Value, value.ToString());
+                                value.Length = 0;
+                            }
+                            yield return new Token(TokenType.Comma, c.ToString());
+                            break;
+                        default:
+                            value.Append(c);
+                            break;
+                    }
                 }
             }
         }
-    }
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
-    }
-}
-
-public class CsvParser : IEnumerable<String>
-{
-    private StreamTokenizer _tokenizer;
-
-    public CsvParser(Stream data)
-    {
-        _tokenizer = new StreamTokenizer(new StreamReader(data));
-    }
-
-    public CsvParser(String data)
-    {
-        _tokenizer = new StreamTokenizer(new StringReader(data));
-    }
-
-    public IEnumerator<string> GetEnumerator()
-    {
-        Boolean inQuote = false;
-        StringBuilder result = new StringBuilder();
-
-        foreach (Token token in _tokenizer)
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            switch (token.Type)
+            return GetEnumerator();
+        }
+    }
+
+    public class CsvParser : IEnumerable<String>
+    {
+        private StreamTokenizer _tokenizer;
+
+        public CsvParser(Stream data)
+        {
+            _tokenizer = new StreamTokenizer(new StreamReader(data));
+        }
+
+        public CsvParser(String data)
+        {
+            _tokenizer = new StreamTokenizer(new StringReader(data));
+        }
+
+        public IEnumerator<string> GetEnumerator()
+        {
+            Boolean inQuote = false;
+            StringBuilder result = new StringBuilder();
+
+            foreach (Token token in _tokenizer)
             {
-                case TokenType.Comma:
-                    if (inQuote)
-                    {
+                switch (token.Type)
+                {
+                    case TokenType.Comma:
+                        if (inQuote)
+                        {
+                            result.Append(token.Value);
+                        }
+                        else
+                        {
+                            yield return result.ToString();
+                            result.Length = 0;
+                        }
+                        break;
+                    case TokenType.Quote:
+                        // Toggle quote state
+                        inQuote = !inQuote;
+                        break;
+                    case TokenType.Value:
                         result.Append(token.Value);
-                    }
-                    else
-                    {
-                        yield return result.ToString();
-                        result.Length = 0;
-                    }
-                    break;
-                case TokenType.Quote:
-                    // Toggle quote state
-                    inQuote = !inQuote;
-                    break;
-                case TokenType.Value:
-                    result.Append(token.Value);
-                    break;
-                default:
-                    throw new InvalidOperationException("Unknown token type: " +    token.Type);
+                        break;
+                    default:
+                        throw new InvalidOperationException("Unknown token type: " + token.Type);
+                }
+            }
+
+            if (result.Length > 0)
+            {
+                yield return result.ToString();
             }
         }
 
-        if (result.Length > 0)
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            yield return result.ToString();
+            return GetEnumerator();
         }
-    }
-
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
     }
 }
