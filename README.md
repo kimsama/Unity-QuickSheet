@@ -24,6 +24,7 @@ Features
 
 Saying again, you don't need to write even single line of code!
 
+See the [Release](https://github.com/kimsama/Unity-QuickSheet/releases) page for change logs.
 
 Getting Started
 ---------------
