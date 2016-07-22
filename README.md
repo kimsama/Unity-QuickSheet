@@ -34,6 +34,8 @@ Getting Started
 
 See [FAQ](https://github.com/kimsama/Unity-QuickSheet/wiki/FAQ) page for more information.
 
+You can also find it on the Unity forum page which can be found on [here](http://forum.unity3d.com/threads/released-unity-quicksheet.289146/).
+
 Usage
 -----
 
