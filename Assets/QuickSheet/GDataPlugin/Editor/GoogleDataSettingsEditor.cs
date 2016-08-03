@@ -8,6 +8,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 using System.IO;
 using System.Text;
@@ -104,8 +105,18 @@ namespace UnityQuickSheet
 
                         string jsonData = builder.ToString();
 
-                        var oauthData = JObject.Parse(jsonData).SelectToken("installed").ToString();
-                        GoogleDataSettings.Instance.OAuth2Data = JsonConvert.DeserializeObject<GoogleDataSettings.OAuth2JsonData>(oauthData);
+                        //HACK: reported a json file which has no "installed" property
+                        //var oauthData = JObject.Parse(jsonData).SelectToken("installed").ToString();
+                        //GoogleDataSettings.Instance.OAuth2Data = JsonConvert.DeserializeObject<GoogleDataSettings.OAuth2JsonData>(oauthData);
+
+                        //HACK: assume the parsed json string contains only one property value: JObject.Parse(jsonData).Count == 1
+                        JObject jo = JObject.Parse(jsonData);
+                        var propertyValues = jo.PropertyValues();
+                        foreach (JToken token in propertyValues)
+                        {
+                            string val = token.ToString();
+                            GoogleDataSettings.Instance.OAuth2Data = JsonConvert.DeserializeObject<GoogleDataSettings.OAuth2JsonData>(val);
+                        }
 
                         setting.JsonFilePath = path;
 
