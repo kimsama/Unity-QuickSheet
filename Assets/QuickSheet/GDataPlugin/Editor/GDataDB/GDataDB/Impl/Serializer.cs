@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
-
 using System;
+using System.Linq;
 using System.ComponentModel;
 using System.Reflection;
 using Google.GData.Spreadsheets;
@@ -62,8 +62,60 @@ namespace GDataDB.Impl {
 					
 					try
 					{
-						var value = ConvertFrom(c.Value, property.PropertyType);
-						property.SetValue(r, value, null);
+                        // Note: original code.
+                        //var value = ConvertFrom(c.Value, property.PropertyType);
+                        //property.SetValue(r, value, null);
+
+                        if (property.PropertyType.IsArray) 
+                        {
+                            const char DELIMETER = ','; // '\n'
+
+                            if (property.PropertyType.GetElementType().IsEnum) 
+                            {
+                                var values = c.Value.Split(DELIMETER)
+                                      .Select(s => s.Replace(" ", string.Empty))
+                                      .Select(i => Enum.Parse(property.PropertyType.GetElementType(), i))
+                                      .ToArray();
+
+                                Array array = (Array)Activator.CreateInstance(property.PropertyType, values.Length);
+
+                                // copy the object values to the array
+                                int l = 0;
+                                foreach (var value in values) 
+                                {
+                                    array.SetValue(value, l++);
+                                }
+
+                                property.SetValue(r, array, null);
+                            } 
+                            else 
+                            {
+                                object[] temp = c.Value.Split(DELIMETER);
+                                Array array = (Array)Activator.CreateInstance(property.PropertyType, temp.Length);
+
+                                for (int i = 0; i < array.Length; i++) 
+                                {
+                                    array.SetValue(Convert.ChangeType(temp[i], property.PropertyType.GetElementType()), i);
+                                }
+
+                                property.SetValue(r, array, null);
+                            }
+                        } 
+                        else 
+                        {
+                            object value = new object();
+                            if (property.PropertyType.IsEnum) 
+                            {
+                                value = c.Value.Replace(" ", string.Empty);
+                                value = Enum.Parse(property.PropertyType, value.ToString());
+                            } 
+                            else 
+                            {
+                                value = ConvertFrom(c.Value, property.PropertyType);
+                            }
+
+                            property.SetValue(r, value, null);
+                        }
 					}
 					catch(Exception exc)
 					{
