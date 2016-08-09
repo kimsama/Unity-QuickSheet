@@ -74,6 +74,13 @@ namespace UnityQuickSheet
 
             if (setting.CheckPath())
             {
+                EditorGUILayout.Separator();
+
+                GUIStyle helpBoxStyle = GUI.skin.GetStyle("HelpBox");
+                helpBoxStyle.richText = true;
+                const string infoMsg = "Copying <b>'client_id'</b> and <b>'client_secret'</b> from Google Developer Console and pasting that into the textfields without specifying json file is also working, if you don't want to install oauth2 json file on the local disk.";
+                GUIHelper.HelpBox(infoMsg, MessageType.Info);
+
                 const int LabelWidth = 90;
 
                 GUILayout.BeginHorizontal(); // Begin json file setting
@@ -126,6 +133,8 @@ namespace UnityQuickSheet
                     }
                 }
                 GUILayout.EndHorizontal(); // End json file setting.
+
+                EditorGUILayout.Separator();
 
                 if (setting.OAuth2Data.client_id == null)
                     setting.OAuth2Data.client_id = string.Empty;
