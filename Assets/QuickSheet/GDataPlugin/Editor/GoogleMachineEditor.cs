@@ -137,8 +137,10 @@ namespace UnityQuickSheet
 
             if (GUILayout.Button("Generate"))
             {
-                if (Generate(this.machine) == null)
-                    Debug.LogError("Failed to create a script from Google.");
+                if (Generate(this.machine) != null)
+                    Debug.Log("Successfully generated!");
+                else
+                    Debug.LogError("Failed to create a script from Google Spreadsheet.");
             }
         }
 
