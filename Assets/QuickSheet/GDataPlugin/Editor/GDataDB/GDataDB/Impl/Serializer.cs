@@ -62,10 +62,6 @@ namespace GDataDB.Impl {
 					
 					try
 					{
-                        // Note: original code.
-                        //var value = ConvertFrom(c.Value, property.PropertyType);
-                        //property.SetValue(r, value, null);
-
                         if (property.PropertyType.IsArray) 
                         {
                             const char DELIMETER = ','; // '\n'

@@ -115,8 +115,8 @@ namespace GDataDB.Impl
             OAuthUtil.GetAccessToken(parameters);
             string accessToken = parameters.AccessToken;
             string refreshToken = parameters.RefreshToken;
-            Debug.Log("OAuth Access Token: " + accessToken + "\n");
-            Debug.Log("OAuth Refresh Token: " + refreshToken + "\n");
+            //Debug.Log("OAuth Access Token: " + accessToken + "\n");
+            //Debug.Log("OAuth Refresh Token: " + refreshToken + "\n");
 
             GoogleDataSettings.Instance._RefreshToken = refreshToken;
             GoogleDataSettings.Instance._AccessToken = accessToken;

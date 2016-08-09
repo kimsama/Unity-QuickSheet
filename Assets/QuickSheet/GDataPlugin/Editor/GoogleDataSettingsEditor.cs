@@ -83,56 +83,75 @@ namespace UnityQuickSheet
 
                 const int LabelWidth = 90;
 
-                GUILayout.BeginHorizontal(); // Begin json file setting
-                GUILayout.Label("JSON File:", GUILayout.Width(LabelWidth));
-
-                string path = "";
-                if (string.IsNullOrEmpty(setting.JsonFilePath))
-                    path = Application.dataPath;
-                else
-                    path = setting.JsonFilePath;
-
-                setting.JsonFilePath = GUILayout.TextField(path, GUILayout.Width(250));
-                if (GUILayout.Button("...", GUILayout.Width(20)))
+                using (new GUILayout.HorizontalScope())
                 {
-                    string folder = Path.GetDirectoryName(path);
-                    path = EditorUtility.OpenFilePanel("Open JSON file", folder, "json");
-                    if (path.Length != 0)
+                    GoogleDataSettings.useOAuth2JsonFile = GUILayout.Toggle(GoogleDataSettings.useOAuth2JsonFile, " I have OAuth2 JSON file");
+
+                    // reset client_id and client_secret and empty its textfields.
+                    if (GUILayout.Button("Reset", GUILayout.Width(60)))
                     {
-                        StringBuilder builder = new StringBuilder();
-                        using (StreamReader sr = new StreamReader(path))
-                        {
-                            string s = "";
-                            while (s != null)
-                            {
-                                s = sr.ReadLine();
-                                builder.Append(s);
-                            }
-                        }
+                        setting.OAuth2Data.client_id = string.Empty;
+                        setting.OAuth2Data.client_secret = string.Empty;
+                        GoogleDataSettings.Instance._AccessCode = string.Empty;
 
-                        string jsonData = builder.ToString();
-
-                        //HACK: reported a json file which has no "installed" property
-                        //var oauthData = JObject.Parse(jsonData).SelectToken("installed").ToString();
-                        //GoogleDataSettings.Instance.OAuth2Data = JsonConvert.DeserializeObject<GoogleDataSettings.OAuth2JsonData>(oauthData);
-
-                        //HACK: assume the parsed json string contains only one property value: JObject.Parse(jsonData).Count == 1
-                        JObject jo = JObject.Parse(jsonData);
-                        var propertyValues = jo.PropertyValues();
-                        foreach (JToken token in propertyValues)
-                        {
-                            string val = token.ToString();
-                            GoogleDataSettings.Instance.OAuth2Data = JsonConvert.DeserializeObject<GoogleDataSettings.OAuth2JsonData>(val);
-                        }
-
-                        setting.JsonFilePath = path;
-
-                        // force to save the setting.
-                        EditorUtility.SetDirty(setting);
-                        AssetDatabase.SaveAssets();
+                        // retrieves from google developer center.
+                        GoogleDataSettings.Instance._RefreshToken = string.Empty;
+                        GoogleDataSettings.Instance._AccessToken = string.Empty;
                     }
                 }
-                GUILayout.EndHorizontal(); // End json file setting.
+                if (GoogleDataSettings.useOAuth2JsonFile)
+                {
+                    GUILayout.BeginHorizontal(); // Begin json file setting
+                    GUILayout.Label("JSON File:", GUILayout.Width(LabelWidth));
+
+                    string path = "";
+                    if (string.IsNullOrEmpty(setting.JsonFilePath))
+                        path = Application.dataPath;
+                    else
+                        path = setting.JsonFilePath;
+
+                    setting.JsonFilePath = GUILayout.TextField(path, GUILayout.Width(250));
+                    if (GUILayout.Button("...", GUILayout.Width(20)))
+                    {
+                        string folder = Path.GetDirectoryName(path);
+                        path = EditorUtility.OpenFilePanel("Open JSON file", folder, "json");
+                        if (path.Length != 0)
+                        {
+                            StringBuilder builder = new StringBuilder();
+                            using (StreamReader sr = new StreamReader(path))
+                            {
+                                string s = "";
+                                while (s != null)
+                                {
+                                    s = sr.ReadLine();
+                                    builder.Append(s);
+                                }
+                            }
+
+                            string jsonData = builder.ToString();
+
+                            //HACK: reported a json file which has no "installed" property
+                            //var oauthData = JObject.Parse(jsonData).SelectToken("installed").ToString();
+                            //GoogleDataSettings.Instance.OAuth2Data = JsonConvert.DeserializeObject<GoogleDataSettings.OAuth2JsonData>(oauthData);
+
+                            //HACK: assume the parsed json string contains only one property value: JObject.Parse(jsonData).Count == 1
+                            JObject jo = JObject.Parse(jsonData);
+                            var propertyValues = jo.PropertyValues();
+                            foreach (JToken token in propertyValues)
+                            {
+                                string val = token.ToString();
+                                GoogleDataSettings.Instance.OAuth2Data = JsonConvert.DeserializeObject<GoogleDataSettings.OAuth2JsonData>(val);
+                            }
+
+                            setting.JsonFilePath = path;
+
+                            // force to save the setting.
+                            EditorUtility.SetDirty(setting);
+                            AssetDatabase.SaveAssets();
+                        }
+                    }
+                    GUILayout.EndHorizontal(); // End json file setting.
+                }
 
                 EditorGUILayout.Separator();
 
@@ -155,13 +174,13 @@ namespace UnityQuickSheet
 
                 EditorGUILayout.Separator();
 
-                if (GUILayout.Button("Start Authenticate"))
+                if (GUILayout.Button("Start Authentication"))
                 {
                     GDataDB.Impl.GDataDBRequestFactory.InitAuthenticate();
                 }
 
                 GoogleDataSettings.Instance._AccessCode = EditorGUILayout.TextField("AccessCode", GoogleDataSettings.Instance._AccessCode);
-                if (GUILayout.Button("Finish Authenticate"))
+                if (GUILayout.Button("Finish Authentication"))
                 {
                     GDataDB.Impl.GDataDBRequestFactory.FinishAuthenticate();
                 }

@@ -23,6 +23,9 @@ namespace UnityQuickSheet
         [SerializeField]
         public static string AssetFileName = "GoogleDataSettings.asset";
 
+        // A flag which indicates use local installed oauth2 json file for authentication or not.
+        static public bool useOAuth2JsonFile = false;
+
         public string JsonFilePath
         {
             get { return jsonFilePath; }
