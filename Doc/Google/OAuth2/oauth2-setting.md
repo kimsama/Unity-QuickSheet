@@ -15,7 +15,7 @@ which are necessary for oauth2 credentials step by step.
 Select *1)* `Credentials` on the left panel and `Credential` tab on the top menu 
 then click *2)* `Create credentials` button which open a dialogue shows credential types you can create.
 
-Select *3)* `OAuth client ID` otherwise you may have wrong format of json file.
+Note that you should select *3)* `OAuth client ID` otherwise you may have wrong format of json file.
 
 ![credential-01](./google-credentials_02.png)
 
@@ -24,11 +24,11 @@ then press *3)* *'Create'* button will create a credential.
 
 ![credential-01](./google-credentials_03.png)
 
-You can now see *'client_ID'* and *'client_secret'* for newly created credential.
+Now you can see *'client_ID'* and *'client_secret'* for newly created credential.
 
 At this moment you can directly copy and paste those *'client_ID'* and *'client_secret'* 
 into **Unity-Quicksheet**'s google setting or download oauth2 json file which 
-contains *'client_ID'* and *'client_secret'*. 
+contains *'client_ID'* and *'client_secret'* are necessary on Unity-Quicksheet setting. 
 
 ![credential-01](./google-credentials_04.png)
 
