@@ -59,7 +59,8 @@ public class $ClassName : BaseGoogleEditor<$WorkSheetClassName>
         $WorkSheetClassName targetData = target as $WorkSheetClassName;
         
         var client = new DatabaseClient("", "");
-        var db = client.GetDatabase(targetData.SheetName) ?? client.CreateDatabase(targetData.SheetName);	
+        string error = string.Empty;
+        var db = client.GetDatabase(targetData.SheetName, ref error);	
         var table = db.GetTable<$DataClassName>(targetData.WorksheetName) ?? db.CreateTable<$DataClassName>(targetData.WorksheetName);
         
         List<$DataClassName> myDataList = new List<$DataClassName>();

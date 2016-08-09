@@ -162,11 +162,15 @@ namespace UnityQuickSheet
             if (string.IsNullOrEmpty(machine.WorkSheetName))
                 return;
 
-            var db = client.GetDatabase(machine.SpreadSheetName);
+            string error = string.Empty;
+            var db = client.GetDatabase(machine.SpreadSheetName, ref error);
             if (db == null)
             {
-                string message = string.Format(@"The given spreadsheet '{0}' or worksheet '{1}' does not exist. Note that the name is case sensitive.",
-                                               machine.SpreadSheetName, machine.WorkSheetName);
+                string message = string.Empty;
+                if (string.IsNullOrEmpty(error))
+                    message = @"Unknown error.";
+                else
+                    message = string.Format(@"{0}", error);
                 EditorUtility.DisplayDialog("Error", message, "OK");
                 return;
             }
