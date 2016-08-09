@@ -207,6 +207,9 @@ namespace UnityQuickSheet
             else
                 headerDic = machine.HeaderColumnList.ToDictionary(k => k.name);
 
+            List<HeaderColumn> tmpColumnList = new List<HeaderColumn>();
+
+            // query the first columns only.
             DoCellQuery((cell) =>
             {
 
@@ -217,18 +220,28 @@ namespace UnityQuickSheet
                 if (int.Parse(m.Value) > 1)
                     return;
 
-                if (machine.HasHeadColumn() && reimport == false)
+                HeaderColumn column = new HeaderColumn();
+                column.name = cell.Value;
+                if (headerDic != null && headerDic.ContainsKey(cell.Value))
                 {
-                    if (headerDic != null && headerDic.ContainsKey(cell.Value))
-                        machine.HeaderColumnList.Add(new HeaderColumn { name = cell.Value, type = headerDic[cell.Value].type });
+                    // if the column is already exist, copy its name and type from the exist one.
+                    HeaderColumn h = machine.HeaderColumnList.Find(x => x.name == column.name);
+                    if (h != null)
+                    {
+                        column.type = h.type;
+                        column.isArray = h.isArray;
+                    }
                     else
-                        machine.HeaderColumnList.Add(new HeaderColumn { name = cell.Value, type = CellType.Undefined });
+                        column.type = CellType.Undefined;
                 }
                 else
-                {
-                    machine.HeaderColumnList.Add(new HeaderColumn { name = cell.Value, type = CellType.Undefined });
-                }
+                    column.type = CellType.Undefined;
+
+                tmpColumnList.Add(column);
             });
+
+            // update (all of settings are reset when it reimports)
+            machine.HeaderColumnList = tmpColumnList;
 
             EditorUtility.SetDirty(machine);
             AssetDatabase.SaveAssets();
