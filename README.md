@@ -124,7 +124,7 @@ Setting up OAuth2 for accessing Google Drive
 Google has changed the authentication scheme since May 5, 2015. Now it requires OAuth2. 
 To set this up visit [Google Developer Console](http://console.developers.google.com), create a new project, enable the Drive API, create a new client ID of type "service account" and download json file. See the **OAuth2 Google Service Account** section on the [Google Spreadsheet Howto](http://kimsama.github.io/googlehowto/) page for more details. 
 
-See [the page](./Doc/Google/OAuth2/aouth2-setting.md) for setting up credentials and getting OAuth2 *`'client_ID'`* and *`'client_secret'`*.
+See [the page](./Doc/Google/OAuth2/oauth2-setting.md) for setting up credentials and getting OAuth2 *`'client_ID'`* and *`'client_secret'`*.
 
 Tips
 ----
@@ -162,5 +162,3 @@ This code is distributed under the terms and conditions of the MIT license.
 Some codes are borrowed from [GDataDB](https://github.com/mausch/GDataDB) and [ExposeProperties](http://wiki.unity3d.com/index.php/Expose_properties_in_inspector). The license of the that follow theirs.
 
 Copyright (c) 2013 Kim, Hyoun Woo
-
-
