@@ -20,5 +20,14 @@ namespace UnityQuickSheet
 
             return headerStyle;
         }
+
+        /// <summary>
+        /// A wrapper put help message on the Inspector.
+        /// </summary>
+        public static void HelpBox(string message, MessageType msgType)
+        {
+            EditorGUILayout.HelpBox(message, msgType);                
+        }
+
     }
 }

@@ -8,6 +8,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 using System.IO;
 using System.Text;
@@ -73,6 +74,13 @@ namespace UnityQuickSheet
 
             if (setting.CheckPath())
             {
+                EditorGUILayout.Separator();
+
+                GUIStyle helpBoxStyle = GUI.skin.GetStyle("HelpBox");
+                helpBoxStyle.richText = true;
+                const string infoMsg = "Copying <b>'client_id'</b> and <b>'client_secret'</b> from Google Developer Console and pasting that into the textfields without specifying json file is also working, if you don't want to install oauth2 json file on the local disk.";
+                GUIHelper.HelpBox(infoMsg, MessageType.Info);
+
                 const int LabelWidth = 90;
 
                 GUILayout.BeginHorizontal(); // Begin json file setting
@@ -104,8 +112,18 @@ namespace UnityQuickSheet
 
                         string jsonData = builder.ToString();
 
-                        var oauthData = JObject.Parse(jsonData).SelectToken("installed").ToString();
-                        GoogleDataSettings.Instance.OAuth2Data = JsonConvert.DeserializeObject<GoogleDataSettings.OAuth2JsonData>(oauthData);
+                        //HACK: reported a json file which has no "installed" property
+                        //var oauthData = JObject.Parse(jsonData).SelectToken("installed").ToString();
+                        //GoogleDataSettings.Instance.OAuth2Data = JsonConvert.DeserializeObject<GoogleDataSettings.OAuth2JsonData>(oauthData);
+
+                        //HACK: assume the parsed json string contains only one property value: JObject.Parse(jsonData).Count == 1
+                        JObject jo = JObject.Parse(jsonData);
+                        var propertyValues = jo.PropertyValues();
+                        foreach (JToken token in propertyValues)
+                        {
+                            string val = token.ToString();
+                            GoogleDataSettings.Instance.OAuth2Data = JsonConvert.DeserializeObject<GoogleDataSettings.OAuth2JsonData>(val);
+                        }
 
                         setting.JsonFilePath = path;
 
@@ -115,6 +133,8 @@ namespace UnityQuickSheet
                     }
                 }
                 GUILayout.EndHorizontal(); // End json file setting.
+
+                EditorGUILayout.Separator();
 
                 if (setting.OAuth2Data.client_id == null)
                     setting.OAuth2Data.client_id = string.Empty;
