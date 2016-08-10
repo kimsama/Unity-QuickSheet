@@ -21,6 +21,6 @@ namespace GDataDB {
         /// </summary>
         /// <param name="name"></param>
         /// <returns>IDocument instance or null if not found</returns>
-        IDatabase GetDatabase(string name);
+        IDatabase GetDatabase(string name, ref string error);
     }
 }
