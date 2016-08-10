@@ -207,8 +207,14 @@ namespace UnityQuickSheet
                 );
                 return;
             }
+            string error = string.Empty;
+            var titles = new ExcelQuery(path, sheet).GetTitle(0, ref error);
+            if (titles == null || !string.IsNullOrEmpty(error))
+            {
+                EditorUtility.DisplayDialog("Error", error, "OK");
+                return;
+            }
 
-            var titles = new ExcelQuery(path, sheet).GetTitle();
             List<string> titleList = titles.ToList();
 
             if (machine.HasHeadColumn() && reimport == false)

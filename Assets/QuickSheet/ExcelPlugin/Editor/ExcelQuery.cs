@@ -45,11 +45,11 @@ namespace UnityQuickSheet
                         workbook = new HSSFWorkbook(fileStream);
                     else if (extension == "xlsx")
                     {
-#if UNITY_MAC
-                    throw new Exception("xlsx is not supported on OSX.");
-#else
+                    #if UNITY_EDITOR_OSX
+                        throw new Exception("xlsx is not supported on OSX.");
+                    #else
                         workbook = new XSSFWorkbook(fileStream);
-#endif
+                    #endif
                     }
                     else
                     {
@@ -200,9 +200,9 @@ namespace UnityQuickSheet
         }
 
         /// <summary>
-        /// Retrieves all first columns(aka. header) which are needed to determine type of each cell.
+        /// Retrieves all first columns(aka. header column) which are needed to determine each type of a cell.
         /// </summary>
-        public string[] GetTitle(int start = 0)
+        public string[] GetTitle(int start, ref string error)
         {
             List<string> result = new List<string>();
 
@@ -210,12 +210,45 @@ namespace UnityQuickSheet
             if (title != null)
             {
                 for (int i = 0; i < title.LastCellNum; i++)
-                    result.Add(title.GetCell(i).StringCellValue);
+                {
+                    string value = title.GetCell(i).StringCellValue;
+                    if (string.IsNullOrEmpty(value))
+                    {
+                        error = string.Format(@"Empty column is found at {0}.", i);
+                        return null;
+                    }
+                    else
+                    {
+                        if (IsValidHeader(value))
+                            result.Add(value);
+                        else
+                        {
+                            error = string.Format(@"Error at column {0}, {1} is invalid name as header column.", i, value);
+                            return null;
+                        }
+                    }
+                }
 
                 return result.ToArray();
             }
-
+            
+            error = string.Format(@"Empty row at {0}", start);
             return null;
+        }
+
+        /// <summary>
+        /// Check the given header column has valid name which should not be any c# keywords.
+        /// </summary>
+        private bool IsValidHeader(string s)
+        {
+            // no case sensitive!
+            string comp = s.ToLower();
+
+            string found = Array.Find(Util.Keywords, x => x == comp);
+            if (string.IsNullOrEmpty(found))
+                return true;
+
+            return false;
         }
 
         /// <summary>
