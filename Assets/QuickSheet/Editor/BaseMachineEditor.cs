@@ -180,7 +180,7 @@ namespace UnityQuickSheet
             List<MemberFieldData> fieldList = new List<MemberFieldData>();
 
             //FIXME: replace ValueType to CellType and support Enum type.
-            foreach (HeaderColumn header in machine.HeaderColumnList)
+            foreach (ColumnHeader header in machine.ColumnHeaderList)
             {
                 MemberFieldData member = new MemberFieldData();
                 member.Name = header.name;
@@ -283,7 +283,7 @@ namespace UnityQuickSheet
 
         protected void DrawHeaderSetting(BaseMachine m)
         {
-            if (m.HasHeadColumn())
+            if (m.HasColumnHeader())
             {
                 GUIStyle headerStyle = GUIHelper.MakeHeader();
                 GUILayout.Label("Type Settings:", headerStyle);
@@ -304,7 +304,7 @@ namespace UnityQuickSheet
                 EditorGUILayout.BeginVertical("box");
 
                 //string lastCellName = string.Empty;
-                foreach (HeaderColumn header in m.HeaderColumnList)
+                foreach (ColumnHeader header in m.ColumnHeaderList)
                 {
                     GUILayout.BeginHorizontal();
 

@@ -101,7 +101,7 @@ namespace UnityQuickSheet
 
             GUILayout.BeginHorizontal();
 
-            if (machine.HasHeadColumn())
+            if (machine.HasColumnHeader())
             {
                 if (GUILayout.Button("Update"))
                     Import();
@@ -201,13 +201,13 @@ namespace UnityQuickSheet
 
             Regex re = new Regex(@"\d+");
 
-            Dictionary<string, HeaderColumn> headerDic = null;
+            Dictionary<string, ColumnHeader> headerDic = null;
             if (reimport)
-                machine.HeaderColumnList.Clear();
+                machine.ColumnHeaderList.Clear();
             else
-                headerDic = machine.HeaderColumnList.ToDictionary(k => k.name);
+                headerDic = machine.ColumnHeaderList.ToDictionary(k => k.name);
 
-            List<HeaderColumn> tmpColumnList = new List<HeaderColumn>();
+            List<ColumnHeader> tmpColumnList = new List<ColumnHeader>();
 
             // query the first columns only.
             DoCellQuery((cell) =>
@@ -228,12 +228,12 @@ namespace UnityQuickSheet
                     return;
                 }
 
-                HeaderColumn column = new HeaderColumn();
+                ColumnHeader column = new ColumnHeader();
                 column.name = cell.Value;
                 if (headerDic != null && headerDic.ContainsKey(cell.Value))
                 {
                     // if the column is already exist, copy its name and type from the exist one.
-                    HeaderColumn h = machine.HeaderColumnList.Find(x => x.name == column.name);
+                    ColumnHeader h = machine.ColumnHeaderList.Find(x => x.name == column.name);
                     if (h != null)
                     {
                         column.type = h.type;
@@ -249,7 +249,7 @@ namespace UnityQuickSheet
             });
 
             // update (all of settings are reset when it reimports)
-            machine.HeaderColumnList = tmpColumnList;
+            machine.ColumnHeaderList = tmpColumnList;
 
             EditorUtility.SetDirty(machine);
             AssetDatabase.SaveAssets();

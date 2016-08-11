@@ -13,13 +13,13 @@ using System.Collections.Generic;
 namespace UnityQuickSheet
 {
     [System.Serializable]
-    public class HeaderColumn
+    public class ColumnHeader
     {
         public CellType type;
         public string name;
         public bool isEnable;
         public bool isArray;
-        public HeaderColumn nextArrayItem;
+        public ColumnHeader nextArrayItem;
 
         // used to order columns by ascending. (only need on excel-plugin)
         public int OrderNO { get; set; }
@@ -100,22 +100,22 @@ namespace UnityQuickSheet
         [System.NonSerialized]
         public bool onlyCreateDataClass = false;
 
-        public List<HeaderColumn> HeaderColumnList
+        public List<ColumnHeader> ColumnHeaderList
         {
-            get { return headerColumnList; }
-            set { headerColumnList = value;}
+            get { return columnHeaderList; }
+            set { columnHeaderList = value; }
         }
 
         [SerializeField]
-        protected List<HeaderColumn> headerColumnList;
+        protected List<ColumnHeader> columnHeaderList;
 
         /// <summary>
         /// Return true, if the list is instantiated and has any its item more than one.
         /// </summary>
         /// <returns></returns>
-        public bool HasHeadColumn()
+        public bool HasColumnHeader()
         {
-            if (headerColumnList != null && headerColumnList.Count > 0)
+            if (columnHeaderList != null && columnHeaderList.Count > 0)
                 return true;
 
             return false;
@@ -126,8 +126,8 @@ namespace UnityQuickSheet
 
         protected void OnEnable()
         {
-            if (headerColumnList == null)
-                headerColumnList = new List<HeaderColumn>();
+            if (columnHeaderList == null)
+                columnHeaderList = new List<ColumnHeader>();
         }
 
         /// <summary>

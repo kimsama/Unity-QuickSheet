@@ -125,7 +125,7 @@ namespace UnityQuickSheet
 
             GUILayout.BeginHorizontal();
 
-            if (machine.HasHeadColumn())
+            if (machine.HasColumnHeader())
             {
                 if (GUILayout.Button("Update"))
                     Import();
@@ -232,36 +232,36 @@ namespace UnityQuickSheet
 
             List<string> titleList = titles.ToList();
 
-            if (machine.HasHeadColumn() && reimport == false)
+            if (machine.HasColumnHeader() && reimport == false)
             {
-                var headerDic = machine.HeaderColumnList.ToDictionary(header => header.name);
+                var headerDic = machine.ColumnHeaderList.ToDictionary(header => header.name);
 
                 // collect non-changed column headers
                 var exist = from t in titleList
                             where headerDic.ContainsKey(t) == true
-                            select new HeaderColumn { name = t, type = headerDic[t].type, isArray = headerDic[t].isArray, OrderNO = headerDic[t].OrderNO };
+                            select new ColumnHeader { name = t, type = headerDic[t].type, isArray = headerDic[t].isArray, OrderNO = headerDic[t].OrderNO };
 
                 // collect newly added or changed column headers
                 var changed = from t in titleList
                               where headerDic.ContainsKey(t) == false
-                              select new HeaderColumn { name = t, type = CellType.Undefined, OrderNO = titleList.IndexOf(t) };
+                              select new ColumnHeader { name = t, type = CellType.Undefined, OrderNO = titleList.IndexOf(t) };
 
                 // merge two list via LINQ
                 var merged = exist.Union(changed).OrderBy(x => x.OrderNO);
 
-                machine.HeaderColumnList.Clear();
-                machine.HeaderColumnList = merged.ToList();
+                machine.ColumnHeaderList.Clear();
+                machine.ColumnHeaderList = merged.ToList();
             }
             else
             {
-                machine.HeaderColumnList.Clear();
+                machine.ColumnHeaderList.Clear();
 
                 if (titles != null)
                 {
                     int i = 0;
                     foreach (string s in titles)
                     {
-                        machine.HeaderColumnList.Add(new HeaderColumn { name = s, type = CellType.Undefined, OrderNO = i });
+                        machine.ColumnHeaderList.Add(new ColumnHeader { name = s, type = CellType.Undefined, OrderNO = i });
                         i++;
                     }
                 }
