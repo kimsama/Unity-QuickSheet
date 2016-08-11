@@ -207,12 +207,27 @@ namespace UnityQuickSheet
                 );
                 return;
             }
+
+            int startRowIndex = 0;
             string error = string.Empty;
-            var titles = new ExcelQuery(path, sheet).GetTitle(0, ref error);
+            var titles = new ExcelQuery(path, sheet).GetTitle(startRowIndex, ref error);
             if (titles == null || !string.IsNullOrEmpty(error))
             {
                 EditorUtility.DisplayDialog("Error", error, "OK");
                 return;
+            }
+            else
+            {
+                // check the column header is valid
+                foreach(string column in titles)
+                {
+                    if (!IsValidHeader(column))
+                    {
+                        error = string.Format(@"Invalid column header name {0}. Any c# keyword should not be used for column header. Note it is not case sensitive.", column);
+                        EditorUtility.DisplayDialog("Error", error, "OK");
+                        return;
+                    }
+                }
             }
 
             List<string> titleList = titles.ToList();
@@ -221,17 +236,17 @@ namespace UnityQuickSheet
             {
                 var headerDic = machine.HeaderColumnList.ToDictionary(header => header.name);
 
-                // collect non changed header columns
+                // collect non-changed column headers
                 var exist = from t in titleList
                             where headerDic.ContainsKey(t) == true
-                            select new HeaderColumn { name = t, type = headerDic[t].type, OrderNO = headerDic[t].OrderNO };
+                            select new HeaderColumn { name = t, type = headerDic[t].type, isArray = headerDic[t].isArray, OrderNO = headerDic[t].OrderNO };
 
-                // collect newly added or changed header columns
+                // collect newly added or changed column headers
                 var changed = from t in titleList
                               where headerDic.ContainsKey(t) == false
                               select new HeaderColumn { name = t, type = CellType.Undefined, OrderNO = titleList.IndexOf(t) };
 
-                // merge two
+                // merge two list via LINQ
                 var merged = exist.Union(changed).OrderBy(x => x.OrderNO);
 
                 machine.HeaderColumnList.Clear();

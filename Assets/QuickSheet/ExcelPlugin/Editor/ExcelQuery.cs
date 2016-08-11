@@ -219,13 +219,8 @@ namespace UnityQuickSheet
                     }
                     else
                     {
-                        if (IsValidHeader(value))
-                            result.Add(value);
-                        else
-                        {
-                            error = string.Format(@"Error at column {0}, {1} is invalid name as header column.", i, value);
-                            return null;
-                        }
+                        // column header is not an empty string, we check its validation later.
+                        result.Add(value);
                     }
                 }
 
@@ -234,21 +229,6 @@ namespace UnityQuickSheet
             
             error = string.Format(@"Empty row at {0}", start);
             return null;
-        }
-
-        /// <summary>
-        /// Check the given header column has valid name which should not be any c# keywords.
-        /// </summary>
-        private bool IsValidHeader(string s)
-        {
-            // no case sensitive!
-            string comp = s.ToLower();
-
-            string found = Array.Find(Util.Keywords, x => x == comp);
-            if (string.IsNullOrEmpty(found))
-                return true;
-
-            return false;
         }
 
         /// <summary>

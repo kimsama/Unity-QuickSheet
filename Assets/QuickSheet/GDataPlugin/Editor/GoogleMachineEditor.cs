@@ -220,6 +220,14 @@ namespace UnityQuickSheet
                 if (int.Parse(m.Value) > 1)
                     return;
 
+                // check the column header is valid
+                if (!IsValidHeader(cell.Value))
+                {
+                    string error = string.Format(@"Invalid column header name {0}. Any c# keyword should not be used for column header. Note it is not case sensitive.", cell.Value);
+                    EditorUtility.DisplayDialog("Error", error, "OK");
+                    return;
+                }
+
                 HeaderColumn column = new HeaderColumn();
                 column.name = cell.Value;
                 if (headerDic != null && headerDic.ContainsKey(cell.Value))

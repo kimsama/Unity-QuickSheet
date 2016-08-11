@@ -7,9 +7,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 using UnityEngine;
 using UnityEditor;
+using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 
 namespace UnityQuickSheet
 {
@@ -26,6 +27,21 @@ namespace UnityQuickSheet
         protected virtual void Import(bool reimport = false)
         {
             Debug.LogWarning("!!! It should be implemented in the derived class !!!");
+        }
+
+        /// <summary>
+        /// Check the given header column has valid name which should not be any c# keywords.
+        /// </summary>
+        protected bool IsValidHeader(string s)
+        {
+            // no case sensitive!
+            string comp = s.ToLower();
+
+            string found = Array.Find(Util.Keywords, x => x == comp);
+            if (string.IsNullOrEmpty(found))
+                return true;
+
+            return false;
         }
 
         /// <summary>
