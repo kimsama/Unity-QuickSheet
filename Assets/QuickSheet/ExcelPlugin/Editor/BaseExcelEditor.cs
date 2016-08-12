@@ -16,7 +16,7 @@ namespace UnityQuickSheet
     /// <summary>
     /// Base class of the created .asset ScriptableObject class.
     /// </summary>
-    public class BaseExcelEditor<T> : Editor
+    public class BaseExcelEditor<T> : Editor where T : UnityEngine.Object
     {
 
         // to reflect properties on the Inspector view.
@@ -28,8 +28,16 @@ namespace UnityQuickSheet
         GUIStyle brown;
         bool isInitialized = false;
 
+        protected SerializedObject serializedObject;
+        protected SerializedProperty serializedData;
+
         public virtual void OnEnable()
         {
+            T t = (T)target;
+
+            serializedObject = new SerializedObject(t);
+            serializedData = serializedObject.FindProperty("dataArray");
+
         }
 
         private void InitGUISkin()
@@ -69,12 +77,14 @@ namespace UnityQuickSheet
             //this.DrawDefaultInspector();
             ExposeProperties.Expose(databaseFields);
 
-            foreach (PropertyField[] p in pInfoList)
-            {
-                GUILayout.BeginVertical(brown);
-                ExposeProperties.Expose(p);
-                GUILayout.EndVertical();
-            }
+            //foreach (PropertyField[] p in pInfoList)
+            //{
+            //    GUILayout.BeginVertical(brown);
+            //    ExposeProperties.Expose(p);
+            //    GUILayout.EndVertical();
+            //}
+
+            GUIHelper.DrawSerializedProperty(serializedData);
         }
 
         /// 
