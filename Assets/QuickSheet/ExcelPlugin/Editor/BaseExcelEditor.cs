@@ -14,48 +14,37 @@ using System.IO;
 namespace UnityQuickSheet
 {
     /// <summary>
-    /// Base class of the created .asset ScriptableObject class.
+    /// Base class of .asset ScriptableObject class created from excel.
     /// </summary>
-    public class BaseExcelEditor<T> : Editor where T : UnityEngine.Object
+    public class BaseExcelEditor<T> : BaseEditor<T> where T : ScriptableObject
     {
-
         // to reflect properties on the Inspector view.
-        protected PropertyField[] databaseFields;
-        protected PropertyField[] dataFields;
+        //protected PropertyField[] databaseFields;
+        //protected PropertyField[] dataFields;
 
-        protected List<PropertyField[]> pInfoList = new List<PropertyField[]>();
-
-        GUIStyle brown;
-        bool isInitialized = false;
-
-        protected SerializedObject serializedObject;
-        protected SerializedProperty serializedData;
+        //protected List<PropertyField[]> pInfoList = new List<PropertyField[]>();
 
         public virtual void OnEnable()
         {
-            T t = (T)target;
-
-            serializedObject = new SerializedObject(t);
-            serializedData = serializedObject.FindProperty("dataArray");
-
+            base.OnEnable();
         }
 
-        private void InitGUISkin()
-        {
-            brown = new GUIStyle("box");
-            brown.normal.background = Resources.Load("brown", typeof(Texture2D)) as Texture2D;
-            brown.border = new RectOffset(4, 4, 4, 4);
-            brown.margin = new RectOffset(3, 3, 3, 3);
-            brown.padding = new RectOffset(4, 4, 4, 4);
-        }
-
+        /// <summary>
+        /// Draw Inspector view.
+        /// </summary>
         public override void OnInspectorGUI()
         {
-            if (!isInitialized)
-            {
-                isInitialized = true;
-                InitGUISkin();
-            }
+            if (target == null)
+                return;
+
+            //if (!isGUISkinInitialized)
+            //{
+            //    isGUISkinInitialized = true;
+            //    InitGUISkin();
+            //}
+
+            // Update SerializedObject
+            targetObject.Update();
 
             if (GUILayout.Button("Update"))
             {
@@ -71,11 +60,10 @@ namespace UnityQuickSheet
                 }
             }
 
-            if (target == null)
-                return;
+            EditorGUILayout.Separator();
 
             //this.DrawDefaultInspector();
-            ExposeProperties.Expose(databaseFields);
+            //ExposeProperties.Expose(databaseFields);
 
             //foreach (PropertyField[] p in pInfoList)
             //{
@@ -84,7 +72,10 @@ namespace UnityQuickSheet
             //    GUILayout.EndVertical();
             //}
 
-            GUIHelper.DrawSerializedProperty(serializedData);
+            DrawProperties();
+
+            // Be sure to call [your serialized object].ApplyModifiedProperties()to save any changes.  
+            targetObject.ApplyModifiedProperties();
         }
 
         /// 

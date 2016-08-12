@@ -23,8 +23,8 @@ public class $AssetPostprocessorClass : AssetPostprocessor
             $ClassName data = ($ClassName)AssetDatabase.LoadAssetAtPath (assetFilePath, typeof($ClassName));
             if (data == null) {
                 data = ScriptableObject.CreateInstance<$ClassName> ();
-                data.sheetName = filePath;
-                data.worksheetName = sheetName;
+                data.SheetName = filePath;
+                data.WorksheetName = sheetName;
                 AssetDatabase.CreateAsset ((ScriptableObject)data, assetFilePath);
                 //data.hideFlags = HideFlags.NotEditable;
             }

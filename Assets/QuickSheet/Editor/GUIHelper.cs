@@ -36,7 +36,7 @@ namespace UnityQuickSheet
         /// <summary>
         /// Recursively draw properties of the given SerializedProperty data.
         /// </summary>
-        public static void DrawSerializedProperty(SerializedProperty prop)
+        public static void DrawSerializedProperty(SerializedProperty prop, GUIStyle guiStyle = null)
         {
             switch (prop.propertyType)
             {
@@ -71,7 +71,14 @@ namespace UnityQuickSheet
                         var showCount = Mathf.Min(prop.arraySize, maxVisibleArrayElements);
                         for (int i = 0; i < showCount; i++)
                         {
-                            DrawSerializedProperty(prop.GetArrayElementAtIndex(i));
+                            if (guiStyle != null)
+                            {
+                                GUILayout.BeginVertical(guiStyle);
+                                DrawSerializedProperty(prop.GetArrayElementAtIndex(i));
+                                GUILayout.EndVertical();
+                            }
+                            else
+                                DrawSerializedProperty(prop.GetArrayElementAtIndex(i));
                         }
                         // Hide elements if it exceeds defined show count.
                         if (prop.arraySize > showCount)

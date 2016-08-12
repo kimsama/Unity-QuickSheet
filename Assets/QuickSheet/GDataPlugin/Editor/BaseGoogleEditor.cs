@@ -25,19 +25,16 @@ using Google.GData.Spreadsheets;
 
 namespace UnityQuickSheet
 {
-    /// 
-    /// A BaseEditor class.
-    /// 
-    public class BaseGoogleEditor<T> : Editor
+    /// <summary>
+    /// Base class of .asset ScriptableObject class created from google spreadsheet.
+    /// </summary>
+    public class BaseGoogleEditor<T> : BaseEditor<T> where T : ScriptableObject
     {
         // property draw
-        protected PropertyField[] databaseFields;
-        protected PropertyField[] dataFields;
+        //protected PropertyField[] databaseFields;
+        //protected PropertyField[] dataFields;
 
-        protected List<PropertyField[]> pInfoList = new List<PropertyField[]>();
-
-        GUIStyle brown;
-        bool isInitialized = false;
+        //protected List<PropertyField[]> pInfoList = new List<PropertyField[]>();
 
         /// 
         /// Actively ignore security concerns to resolve TlsException error.
@@ -52,6 +49,8 @@ namespace UnityQuickSheet
 
         public virtual void OnEnable()
         {
+            base.OnEnable();
+
             // resolves TlsException error
             ServicePointManager.ServerCertificateValidationCallback = Validator;
 
@@ -72,25 +71,22 @@ namespace UnityQuickSheet
             }
         }
 
-        private void InitGUISkin()
-        {
-            brown = new GUIStyle("box");
-            brown.normal.background = Resources.Load("brown", typeof(Texture2D)) as Texture2D;
-            brown.border = new RectOffset(4, 4, 4, 4);
-            brown.margin = new RectOffset(3, 3, 3, 3);
-            brown.padding = new RectOffset(4, 4, 4, 4);
-        }
-
+        /// <summary>
+        /// Draw Inspector view.
+        /// </summary>
         public override void OnInspectorGUI()
         {
             if (target == null)
                 return;
 
-            if (!isInitialized)
-            {
-                isInitialized = true;
-                InitGUISkin();
-            }
+            //if (!isGUISkinInitialized)
+            //{
+            //    isGUISkinInitialized = true;
+            //    InitGUISkin();
+            //}
+
+            // Update SerializedObject
+            targetObject.Update();
 
             if (GUILayout.Button("Download"))
             {
@@ -101,14 +97,19 @@ namespace UnityQuickSheet
             EditorGUILayout.Separator();
 
             //this.DrawDefaultInspector();
-            ExposeProperties.Expose(databaseFields);
+            //ExposeProperties.Expose(databaseFields);
 
-            foreach (PropertyField[] p in pInfoList)
-            {
-                GUILayout.BeginVertical(brown);
-                ExposeProperties.Expose(p);
-                GUILayout.EndVertical();
-            }
+            //foreach (PropertyField[] p in pInfoList)
+            //{
+            //    GUILayout.BeginVertical(brown);
+            //    ExposeProperties.Expose(p);
+            //    GUILayout.EndVertical();
+            //}
+
+            DrawProperties();
+
+            // Be sure to call [your serialized object].ApplyModifiedProperties()to save any changes.  
+            targetObject.ApplyModifiedProperties();
         }
 
         /// 

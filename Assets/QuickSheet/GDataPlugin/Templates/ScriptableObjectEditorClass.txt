@@ -19,6 +19,7 @@ public class $ClassName : BaseGoogleEditor<$WorkSheetClassName>
     {
         base.OnEnable();
         
+        /*
         $WorkSheetClassName data = target as $WorkSheetClassName;
         
         databaseFields = ExposeProperties.GetProperties(data);
@@ -28,6 +29,7 @@ public class $ClassName : BaseGoogleEditor<$WorkSheetClassName>
             dataFields = ExposeProperties.GetProperties(e);
             pInfoList.Add(dataFields);
         }
+        */
     }
     
     public override void OnInspectorGUI()
@@ -35,6 +37,7 @@ public class $ClassName : BaseGoogleEditor<$WorkSheetClassName>
         base.OnInspectorGUI();
         
         //DrawDefaultInspector();
+        /*
         if (GUI.changed)
         {
             pInfoList.Clear();
@@ -49,6 +52,7 @@ public class $ClassName : BaseGoogleEditor<$WorkSheetClassName>
             EditorUtility.SetDirty(target);
             Repaint();
         }
+        */
     }
     
     public override bool Load()
