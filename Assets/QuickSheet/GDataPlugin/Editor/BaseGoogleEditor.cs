@@ -30,12 +30,6 @@ namespace UnityQuickSheet
     /// </summary>
     public class BaseGoogleEditor<T> : BaseEditor<T> where T : ScriptableObject
     {
-        // property draw
-        //protected PropertyField[] databaseFields;
-        //protected PropertyField[] dataFields;
-
-        //protected List<PropertyField[]> pInfoList = new List<PropertyField[]>();
-
         /// 
         /// Actively ignore security concerns to resolve TlsException error.
         /// 
@@ -47,7 +41,7 @@ namespace UnityQuickSheet
             return true;
         }
 
-        public virtual void OnEnable()
+        public override void OnEnable()
         {
             base.OnEnable();
 
@@ -79,12 +73,6 @@ namespace UnityQuickSheet
             if (target == null)
                 return;
 
-            //if (!isGUISkinInitialized)
-            //{
-            //    isGUISkinInitialized = true;
-            //    InitGUISkin();
-            //}
-
             // Update SerializedObject
             targetObject.Update();
 
@@ -95,16 +83,6 @@ namespace UnityQuickSheet
             }
 
             EditorGUILayout.Separator();
-
-            //this.DrawDefaultInspector();
-            //ExposeProperties.Expose(databaseFields);
-
-            //foreach (PropertyField[] p in pInfoList)
-            //{
-            //    GUILayout.BeginVertical(brown);
-            //    ExposeProperties.Expose(p);
-            //    GUILayout.EndVertical();
-            //}
 
             DrawInspector();
 

@@ -11,48 +11,7 @@ using UnityQuickSheet;
 ///
 [CustomEditor(typeof($WorkSheetClassName))]
 public class $ClassName : BaseExcelEditor<$WorkSheetClassName>
-{	
-    public override void OnEnable()
-    {
-        base.OnEnable();
-        
-        /*
-        $WorkSheetClassName data = target as $WorkSheetClassName;
-        
-
-        databaseFields = ExposeProperties.GetProperties(data);
-        
-        foreach($DataClassName e in data.dataArray)
-        {
-            dataFields = ExposeProperties.GetProperties(e);
-            pInfoList.Add(dataFields);
-        }
-        */
-    }
-    
-    public override void OnInspectorGUI()
-    {
-        base.OnInspectorGUI();
-        
-        //DrawDefaultInspector();
-        /*
-        if (GUI.changed)
-        {
-            pInfoList.Clear();
-            
-            $WorkSheetClassName data = target as $WorkSheetClassName;
-            foreach($DataClassName e in data.dataArray)
-            {
-                dataFields = ExposeProperties.GetProperties(e);
-                pInfoList.Add(dataFields);
-            }
-            
-            EditorUtility.SetDirty(target);
-            Repaint();
-        }
-        */
-    }
-    
+{	    
     public override bool Load()
     {
         $WorkSheetClassName targetData = target as $WorkSheetClassName;

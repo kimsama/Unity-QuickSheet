@@ -18,13 +18,7 @@ namespace UnityQuickSheet
     /// </summary>
     public class BaseExcelEditor<T> : BaseEditor<T> where T : ScriptableObject
     {
-        // to reflect properties on the Inspector view.
-        //protected PropertyField[] databaseFields;
-        //protected PropertyField[] dataFields;
-
-        //protected List<PropertyField[]> pInfoList = new List<PropertyField[]>();
-
-        public virtual void OnEnable()
+        public override void OnEnable()
         {
             base.OnEnable();
         }
@@ -36,12 +30,6 @@ namespace UnityQuickSheet
         {
             if (target == null)
                 return;
-
-            //if (!isGUISkinInitialized)
-            //{
-            //    isGUISkinInitialized = true;
-            //    InitGUISkin();
-            //}
 
             // Update SerializedObject
             targetObject.Update();
@@ -61,16 +49,6 @@ namespace UnityQuickSheet
             }
 
             EditorGUILayout.Separator();
-
-            //this.DrawDefaultInspector();
-            //ExposeProperties.Expose(databaseFields);
-
-            //foreach (PropertyField[] p in pInfoList)
-            //{
-            //    GUILayout.BeginVertical(brown);
-            //    ExposeProperties.Expose(p);
-            //    GUILayout.EndVertical();
-            //}
 
             DrawInspector();
 
