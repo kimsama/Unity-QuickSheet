@@ -139,7 +139,7 @@ namespace UnityQuickSheet
                 EditorUtility.SetDirty(GoogleDataSettings.Instance);
                 EditorUtility.SetDirty(machine);
                 //AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
+                //AssetDatabase.Refresh();
             }
         }
 
