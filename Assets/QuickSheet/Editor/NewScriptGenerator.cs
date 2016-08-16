@@ -47,9 +47,19 @@ namespace UnityQuickSheet
         {
             get
             {
-                if (m_ScriptPrescription.className != string.Empty)
+                if (!string.IsNullOrEmpty(m_ScriptPrescription.className))
                     return m_ScriptPrescription.className;
-                return "Example";
+                return "Error_Empty_ClassName";
+            }
+        }
+
+        private string SpreadSheetName
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(m_ScriptPrescription.spreadsheetName))
+                    return m_ScriptPrescription.spreadsheetName;
+                return "Error_Empty_SpreadSheetName";
             }
         }
 
@@ -57,9 +67,9 @@ namespace UnityQuickSheet
         {
             get
             {
-                if (m_ScriptPrescription.worksheetClassName != string.Empty)
+                if (!string.IsNullOrEmpty(m_ScriptPrescription.worksheetClassName))
                     return m_ScriptPrescription.worksheetClassName;
-                return "Empty_WorkSheetClass_Name";
+                return "Error_Empty_WorkSheet_ClassName";
             }
         }
 
@@ -67,9 +77,9 @@ namespace UnityQuickSheet
         {
             get
             {
-                if (m_ScriptPrescription.dataClassName != string.Empty)
+                if (!string.IsNullOrEmpty(m_ScriptPrescription.dataClassName))
                     return m_ScriptPrescription.dataClassName;
-                return "Empty_DataClass_Name";
+                return "Error_Empty_DataClassName";
             }
         }
 
@@ -77,9 +87,9 @@ namespace UnityQuickSheet
         {
             get
             {
-                if (m_ScriptPrescription.assetFileCreateFuncName != string.Empty)
+                if (!string.IsNullOrEmpty(m_ScriptPrescription.assetFileCreateFuncName))
                     return m_ScriptPrescription.assetFileCreateFuncName;
-                return "Empty_AssetFileCreateFunc_Name";
+                return "Error_Empty_AssetFileCreateFunc_Name";
             }
         }
 
@@ -87,9 +97,9 @@ namespace UnityQuickSheet
         {
             get
             {
-                if (m_ScriptPrescription.importedFilePath != string.Empty)
+                if (!string.IsNullOrEmpty(m_ScriptPrescription.importedFilePath))
                     return m_ScriptPrescription.importedFilePath;
-                return "Empty_FilePath";
+                return "Error_Empty_FilePath";
             }
         }
 
@@ -97,9 +107,9 @@ namespace UnityQuickSheet
         {
             get
             {
-                if (m_ScriptPrescription.assetFilepath != string.Empty)
+                if (!string.IsNullOrEmpty(m_ScriptPrescription.assetFilepath))
                     return m_ScriptPrescription.assetFilepath;
-                return "Empty_AssetFilePath";
+                return "Error_Empty_AssetFilePath";
             }
         }
 
@@ -107,12 +117,15 @@ namespace UnityQuickSheet
         { 
             get
             {
-                if (m_ScriptPrescription.assetPostprocessorClass != String.Empty)
+                if (!string.IsNullOrEmpty(m_ScriptPrescription.assetPostprocessorClass))
                     return m_ScriptPrescription.assetPostprocessorClass;
-                return "Empty_AssetPostprocessorClass";
+                return "Error_Empty_AssetPostprocessorClass";
             }
         }
         
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public NewScriptGenerator (ScriptPrescription scriptPrescription)
         {
             m_ScriptPrescription = scriptPrescription;
@@ -132,7 +145,7 @@ namespace UnityQuickSheet
             
             // Class Name
             m_Text = m_Text.Replace ("$ClassName", ClassName);
-
+            m_Text = m_Text.Replace ("$SpreadSheetName", SpreadSheetName);
             m_Text = m_Text.Replace ("$WorkSheetClassName", WorkSheetClassName);
             m_Text = m_Text.Replace ("$DataClassName", DataClassName);
             m_Text = m_Text.Replace ("$AssetFileCreateFuncName", AssetFileCreateFuncName);

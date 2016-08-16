@@ -297,6 +297,7 @@ namespace UnityQuickSheet
         protected override void CreateAssetCreationScript(BaseMachine m, ScriptPrescription sp)
         {
             sp.className = machine.WorkSheetName;
+            sp.spreadsheetName = machine.SpreadSheetName;
             sp.worksheetClassName = machine.WorkSheetName;
             sp.assetFileCreateFuncName = "Create" + machine.WorkSheetName + "AssetFile";
             sp.template = GetTemplate("AssetFileClass");

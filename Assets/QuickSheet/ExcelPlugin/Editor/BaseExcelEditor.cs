@@ -72,7 +72,7 @@ namespace UnityQuickSheet
             //    GUILayout.EndVertical();
             //}
 
-            DrawProperties();
+            DrawInspector();
 
             // Be sure to call [your serialized object].ApplyModifiedProperties()to save any changes.  
             targetObject.ApplyModifiedProperties();
