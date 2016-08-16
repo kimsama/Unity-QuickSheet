@@ -42,8 +42,10 @@ namespace UnityQuickSheet
             return true;
         }
 
-        void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+
             // to resolve TlsException error
             ServicePointManager.ServerCertificateValidationCallback = Validator;
 
@@ -61,13 +63,13 @@ namespace UnityQuickSheet
             }
         }
 
-        //private Vector2 curretScroll = Vector2.zero;
-
         /// <summary>
         /// Draw custom UI.
         /// </summary>
         public override void OnInspectorGUI()
         {
+            base.OnInspectorGUI();
+
             if (GoogleDataSettings.Instance == null)
             {
                 GUILayout.BeginHorizontal();
@@ -79,25 +81,13 @@ namespace UnityQuickSheet
                 GUILayout.EndHorizontal();
             }
 
-            //Rect rc;
-            GUIStyle headerStyle = null;
-
-            headerStyle = GUIHelper.MakeHeader();
-
             GUILayout.Label("GoogleDrive Settings:", headerStyle);
-            //rc = GUILayoutUtility.GetLastRect();
-            //GUI.skin.box.Draw(rc, GUIContent.none, 0);
 
             EditorGUILayout.Separator();
 
             GUILayout.Label("Script Path Settings:", headerStyle);
-            //rc = GUILayoutUtility.GetLastRect();
-            //GUI.skin.box.Draw(new Rect(rc.left, rc.top + rc.height, rc.width, 1f), GUIContent.none, 0);
-
             machine.SpreadSheetName = EditorGUILayout.TextField("SpreadSheet Name: ", machine.SpreadSheetName);
             machine.WorkSheetName = EditorGUILayout.TextField("WorkSheet Name: ", machine.WorkSheetName);
-
-            EditorGUILayout.Separator();
 
             EditorGUILayout.Separator();
 
@@ -123,14 +113,6 @@ namespace UnityQuickSheet
 
             DrawHeaderSetting(machine);
 
-            // force save changed type.
-            if (GUI.changed)
-            {
-                EditorUtility.SetDirty(GoogleDataSettings.Instance);
-                EditorUtility.SetDirty(machine);
-                AssetDatabase.SaveAssets();
-            }
-
             EditorGUILayout.Separator();
 
             GUILayout.Label("Path Settings:", headerStyle);
@@ -149,6 +131,15 @@ namespace UnityQuickSheet
                     Debug.Log("Successfully generated!");
                 else
                     Debug.LogError("Failed to create a script from Google Spreadsheet.");
+            }
+
+            // force save changed type.
+            if (GUI.changed)
+            {
+                EditorUtility.SetDirty(GoogleDataSettings.Instance);
+                EditorUtility.SetDirty(machine);
+                //AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
             }
         }
 

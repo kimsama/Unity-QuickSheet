@@ -22,7 +22,22 @@ namespace UnityQuickSheet
     {
         protected BaseMachine machine;
 
-        protected readonly string NoTemplateString = "No Template File Found";
+        protected readonly string NoTemplateString = "No Template File is Found";
+
+        protected GUIStyle headerStyle = null;
+
+        protected virtual void OnEnable()
+        {
+            // Nothing to do here.
+        }
+
+        public override void OnInspectorGUI()
+        {
+            if (headerStyle == null)
+            {
+                headerStyle = GUIHelper.MakeHeader();
+            }
+        }
 
         protected virtual void Import(bool reimport = false)
         {
@@ -285,7 +300,7 @@ namespace UnityQuickSheet
         {
             if (m.HasColumnHeader())
             {
-                GUIStyle headerStyle = GUIHelper.MakeHeader();
+                //GUIStyle headerStyle = GUIHelper.MakeHeader();
                 GUILayout.Label("Type Settings:", headerStyle);
 
                 const int MEMBER_WIDTH = 100;

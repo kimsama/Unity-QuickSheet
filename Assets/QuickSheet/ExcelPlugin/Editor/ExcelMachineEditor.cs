@@ -20,8 +20,10 @@ namespace UnityQuickSheet
     [CustomEditor(typeof(ExcelMachine))]
     public class ExcelMachineEditor : BaseMachineEditor
     {
-        void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+
             machine = target as ExcelMachine;
             if (machine != null)
             {
@@ -34,9 +36,10 @@ namespace UnityQuickSheet
 
         public override void OnInspectorGUI()
         {
+            base.OnInspectorGUI();
+
             ExcelMachine machine = target as ExcelMachine;
 
-            GUIStyle headerStyle = GUIHelper.MakeHeader();
             GUILayout.Label("Excel Settings:", headerStyle);
 
             GUILayout.BeginHorizontal();
@@ -93,7 +96,8 @@ namespace UnityQuickSheet
                 return;
             }
 
-            machine.SpreadSheetName = EditorGUILayout.TextField("Spreadsheet File: ", machine.SpreadSheetName);
+            // spreadsheet name should be read-only
+            EditorGUILayout.TextField("Spreadsheet File: ", machine.SpreadSheetName);
 
             EditorGUILayout.Space();
 
@@ -171,8 +175,8 @@ namespace UnityQuickSheet
             if (GUI.changed)
             {
                 EditorUtility.SetDirty(machine);
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
+                //AssetDatabase.SaveAssets();
+                //AssetDatabase.Refresh();
             }
         }
 
