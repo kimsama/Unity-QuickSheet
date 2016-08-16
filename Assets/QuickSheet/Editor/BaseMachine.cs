@@ -12,6 +12,9 @@ using System.Collections.Generic;
 
 namespace UnityQuickSheet
 {
+    /// <summary>
+    /// A class which represents column header on the worksheet.
+    /// </summary>
     [System.Serializable]
     public class ColumnHeader
     {
@@ -26,7 +29,7 @@ namespace UnityQuickSheet
     }
 
     /// <summary>
-    /// 
+    /// A class which stores various settings for a worksheet which is imported.
     /// </summary>
     public class BaseMachine : ScriptableObject
     {
