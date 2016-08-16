@@ -169,7 +169,6 @@ namespace UnityQuickSheet
                     foreach(var field in m_ScriptPrescription.memberFields)
                     {
                         WriteMemberField(field);
-                        WriteBlankLine();
                         WriteProperty(field);
                         WriteBlankLine();
                     }
@@ -216,9 +215,7 @@ namespace UnityQuickSheet
         ///
         private void WriteProperty(MemberFieldData field)
         {
-            TextInfo ti = new CultureInfo("en-US",false).TextInfo;
-
-            m_Writer.WriteLine (m_Indentation + "[ExposeProperty]");
+            TextInfo ti = new CultureInfo("en-US", false).TextInfo;
 
             string tmp = string.Empty;
 
