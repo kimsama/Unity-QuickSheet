@@ -94,7 +94,9 @@ namespace UnityQuickSheet
             //rc = GUILayoutUtility.GetLastRect();
             //GUI.skin.box.Draw(new Rect(rc.left, rc.top + rc.height, rc.width, 1f), GUIContent.none, 0);
 
-            ExposeProperties.Expose(databaseFields);
+            machine.SpreadSheetName = EditorGUILayout.TextField("SpreadSheet Name: ", machine.SpreadSheetName);
+            machine.WorkSheetName = EditorGUILayout.TextField("WorkSheet Name: ", machine.WorkSheetName);
+
             EditorGUILayout.Separator();
 
             EditorGUILayout.Separator();
@@ -130,6 +132,12 @@ namespace UnityQuickSheet
             }
 
             EditorGUILayout.Separator();
+
+            GUILayout.Label("Path Settings:", headerStyle);
+
+            machine.TemplatePath = EditorGUILayout.TextField("Template: ", machine.TemplatePath);
+            machine.RuntimeClassPath = EditorGUILayout.TextField("Runtime: ", machine.RuntimeClassPath);
+            machine.EditorClassPath = EditorGUILayout.TextField("Editor:", machine.EditorClassPath);
 
             machine.onlyCreateDataClass = EditorGUILayout.Toggle("Only DataClass", machine.onlyCreateDataClass);
 
