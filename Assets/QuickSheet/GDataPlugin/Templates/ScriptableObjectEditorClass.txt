@@ -16,10 +16,7 @@ using UnityQuickSheet;
 public class $ClassName : BaseGoogleEditor<$WorkSheetClassName>
 {	    
     public override bool Load()
-    {
-        if (!base.Load())
-            return false;
-        
+    {        
         $WorkSheetClassName targetData = target as $WorkSheetClassName;
         
         var client = new DatabaseClient("", "");

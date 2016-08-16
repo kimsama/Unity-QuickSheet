@@ -90,13 +90,6 @@ namespace UnityQuickSheet
             targetObject.ApplyModifiedProperties();
         }
 
-        /// 
-        /// Should be reimplemented in derived class.
-        /// 
-        public virtual bool Load()
-        {
-            return true;
-        }
 
         protected List<int> SetArrayValue(string from)
         {

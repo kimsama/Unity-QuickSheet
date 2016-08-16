@@ -56,12 +56,6 @@ namespace UnityQuickSheet
             targetObject.ApplyModifiedProperties();
         }
 
-        /// 
-        /// Called when 'Update' button is pressed. It should be reimplemented in the derived class.
-        /// 
-        public virtual bool Load()
-        {
-            return false;
-        }
+
     }
 }
