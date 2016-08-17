@@ -155,7 +155,7 @@ namespace UnityQuickSheet
             m_Text = m_Text.Replace ("$ASSET_PATH", AssetFilePath);
             
             // Other replacements
-            foreach (KeyValuePair<string, string> kvp in m_ScriptPrescription.m_StringReplacements)
+            foreach (KeyValuePair<string, string> kvp in m_ScriptPrescription.mStringReplacements)
                 m_Text = m_Text.Replace (kvp.Key, kvp.Value);
 
             // Do not change tabs to spcaes of the .txt template files.

@@ -33,9 +33,7 @@ namespace UnityQuickSheet
     [CustomEditor(typeof(GoogleMachine))]
     public class GoogleMachineEditor : BaseMachineEditor
     {
-        PropertyField[] databaseFields;
-
-        // to resolve TlsException error
+        // To resolve TlsException error
         public static bool Validator(object sender, X509Certificate certificate,
                                       X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
@@ -54,8 +52,7 @@ namespace UnityQuickSheet
             {
                 machine.ReInitialize();
 
-                databaseFields = ExposeProperties.GetProperties(machine);
-
+                // Specify paths with one on the GoogleDataSettings.asset file.
                 if (string.IsNullOrEmpty(GoogleDataSettings.Instance.RuntimePath) == false)
                     machine.RuntimeClassPath = GoogleDataSettings.Instance.RuntimePath;
                 if (string.IsNullOrEmpty(GoogleDataSettings.Instance.EditorPath) == false)
@@ -196,8 +193,6 @@ namespace UnityQuickSheet
         /// </summary>
         protected override void Import(bool reimport = false)
         {
-            base.Import(reimport);
-
             Regex re = new Regex(@"\d+");
 
             Dictionary<string, ColumnHeader> headerDic = null;

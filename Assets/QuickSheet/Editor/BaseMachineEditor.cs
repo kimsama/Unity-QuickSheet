@@ -15,14 +15,14 @@ using System.Collections.Generic;
 namespace UnityQuickSheet
 {
     /// <summary>
-    /// 
+    /// A base class for a spreadsheet import setting.
     /// </summary>
     [CustomEditor(typeof(BaseMachine))]
     public class BaseMachineEditor : Editor
     {
         protected BaseMachine machine;
 
-        protected readonly string NoTemplateString = "No Template File is Found";
+        protected readonly string NoTemplateString = "No Template file is found";
 
         protected GUIStyle headerStyle = null;
 
@@ -39,6 +39,9 @@ namespace UnityQuickSheet
             }
         }
 
+        /// <summary>
+        /// Do not call this in the derived class.
+        /// </summary>
         protected virtual void Import(bool reimport = false)
         {
             Debug.LogWarning("!!! It should be implemented in the derived class !!!");
@@ -296,49 +299,50 @@ namespace UnityQuickSheet
             return Path.Combine(EditorApplication.applicationContentsPath, machine.TemplatePath);
         }
 
+        /// <summary>
+        /// Draw column headers on the Inspector view.
+        /// </summary>
         protected void DrawHeaderSetting(BaseMachine m)
         {
             if (m.HasColumnHeader())
             {
-                //GUIStyle headerStyle = GUIHelper.MakeHeader();
                 GUILayout.Label("Type Settings:", headerStyle);
 
+                // Title
                 const int MEMBER_WIDTH = 100;
-                GUILayout.BeginHorizontal(EditorStyles.toolbar);
-                GUILayout.Label("Member", GUILayout.MinWidth(MEMBER_WIDTH));
-                GUILayout.FlexibleSpace();
-                string[] names = { "Type", "Array" };
-                int[] widths = { 55, 40 };
-                for (int i = 0; i < names.Length; i++)
+                using (new GUILayout.HorizontalScope(EditorStyles.toolbar))
                 {
-                    GUILayout.Label(new GUIContent(names[i]), GUILayout.Width(widths[i]));
-                }
-                GUILayout.EndHorizontal();//EditorStyles.toolbar
-
-                //curretScroll = EditorGUILayout.BeginScrollView(curretScroll, false, false);
-                EditorGUILayout.BeginVertical("box");
-
-                //string lastCellName = string.Empty;
-                foreach (ColumnHeader header in m.ColumnHeaderList)
-                {
-                    GUILayout.BeginHorizontal();
-
-                    // member field label
-                    EditorGUILayout.LabelField(header.name, GUILayout.MinWidth(MEMBER_WIDTH));
+                    GUILayout.Label("Member", GUILayout.MinWidth(MEMBER_WIDTH));
                     GUILayout.FlexibleSpace();
-
-                    // type enum popup
-                    header.type = (CellType)EditorGUILayout.EnumPopup(header.type, GUILayout.Width(60));
-                    GUILayout.Space(20);
-
-                    // array toggle
-                    header.isArray = EditorGUILayout.Toggle(header.isArray, GUILayout.Width(20));
-                    GUILayout.Space(10);
-                    GUILayout.EndHorizontal();
+                    string[] names = { "Type", "Array" };
+                    int[] widths = { 55, 40 };
+                    for (int i = 0; i < names.Length; i++)
+                    {
+                        GUILayout.Label(new GUIContent(names[i]), GUILayout.Width(widths[i]));
+                    }
                 }
 
-                EditorGUILayout.EndVertical(); //box
-                //EditorGUILayout.EndScrollView();
+                // Each cells
+                using (new EditorGUILayout.VerticalScope("box"))
+                {
+                    foreach (ColumnHeader header in m.ColumnHeaderList)
+                    {
+                        GUILayout.BeginHorizontal();
+
+                        // show member field with label, read-only
+                        EditorGUILayout.LabelField(header.name, GUILayout.MinWidth(MEMBER_WIDTH));
+                        GUILayout.FlexibleSpace();
+
+                        // specify type with enum-popup
+                        header.type = (CellType)EditorGUILayout.EnumPopup(header.type, GUILayout.Width(60));
+                        GUILayout.Space(20);
+
+                        // array toggle
+                        header.isArray = EditorGUILayout.Toggle(header.isArray, GUILayout.Width(20));
+                        GUILayout.Space(10);
+                        GUILayout.EndHorizontal();
+                    }
+                }
             }
         }
     }

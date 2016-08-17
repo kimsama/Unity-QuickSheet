@@ -31,9 +31,16 @@ namespace UnityQuickSheet
         public string assetPostprocessorClass = string.Empty;
 
         public MemberFieldData[] memberFields;
-        public Dictionary<string, string> m_StringReplacements = new Dictionary<string, string> ();
+
+        /// <summary>
+        /// Reserved for future usage to make it easy for explicitly converting.
+        /// </summary>
+        public Dictionary<string, string> mStringReplacements = new Dictionary<string, string> ();
     }
     
+    /// <summary>
+    /// Represent type of an each cell.
+    /// </summary>
     public enum CellType
     {
         Undefined,

@@ -185,8 +185,6 @@ namespace UnityQuickSheet
         /// </summary>
         protected override void Import(bool reimport = false)
         {
-            base.Import(reimport);
-
             ExcelMachine machine = target as ExcelMachine;
 
             string path = machine.excelFilePath;
