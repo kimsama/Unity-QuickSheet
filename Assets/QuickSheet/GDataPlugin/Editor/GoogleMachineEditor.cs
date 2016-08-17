@@ -78,7 +78,7 @@ namespace UnityQuickSheet
                 GUILayout.EndHorizontal();
             }
 
-            GUILayout.Label("GoogleDrive Settings:", headerStyle);
+            GUILayout.Label("Google Spreadsheet Settings:", headerStyle);
 
             EditorGUILayout.Separator();
 

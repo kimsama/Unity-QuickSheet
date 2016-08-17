@@ -20,7 +20,7 @@ namespace UnityQuickSheet
 {
     internal class NewScriptGenerator
     {
-        private const int kCommentWrapLength = 35;
+        private const int CommentWrapLength = 35;
         
         private TextWriter m_Writer;
         private string m_Text;
@@ -140,7 +140,7 @@ namespace UnityQuickSheet
             m_Writer = new StringWriter ();
             m_Writer.NewLine = "\n";
             
-            // Make sure all line endings are Unix (Mac OS X) format
+            // Make sure all line endings to be Unix (Mac OSX) format.
             m_Text = Regex.Replace (m_Text, @"\r\n?", delegate(Match m) { return "\n"; });
             
             // Class Name
@@ -234,24 +234,31 @@ namespace UnityQuickSheet
             m_Writer.WriteLine (m_Indentation + tmp);
         }
 
+        /// <summary>
+        /// Write a blank line.
+        /// </summary>
         private void WriteBlankLine ()
         {
             m_Writer.WriteLine (m_Indentation);
         }
         
+        /// <summary>
+        /// Write comment.
+        /// </summary>
+        /// <param name="comment"></param>
         private void WriteComment (string comment)
         {
             int index = 0;
             while (true)
             {
-                if (comment.Length <= index + kCommentWrapLength)
+                if (comment.Length <= index + CommentWrapLength)
                 {
                     m_Writer.WriteLine (m_Indentation + "// " + comment.Substring (index));
                     break;
                 }
                 else
                 {
-                    int wrapIndex = comment.IndexOf (' ', index + kCommentWrapLength);
+                    int wrapIndex = comment.IndexOf (' ', index + CommentWrapLength);
                     if (wrapIndex < 0)
                     {
                         m_Writer.WriteLine (m_Indentation + "// " + comment.Substring (index));
