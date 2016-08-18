@@ -40,7 +40,7 @@ namespace UnityQuickSheet
 
             ExcelMachine machine = target as ExcelMachine;
 
-            GUILayout.Label("Excel Settings:", headerStyle);
+            GUILayout.Label("Excel Spreadsheet Settings:", headerStyle);
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("File:", GUILayout.Width(50));
@@ -57,10 +57,9 @@ namespace UnityQuickSheet
                 string folder = Path.GetDirectoryName(path);
 #if UNITY_EDITOR_WIN
                 path = EditorUtility.OpenFilePanel("Open Excel file", folder, "excel files;*.xls;*.xlsx");
-#else
-            path = EditorUtility.OpenFilePanel("Open Excel file", folder, "xls");
+#else // for UNITY_EDITOR_OSX
+                path = EditorUtility.OpenFilePanel("Open Excel file", folder, "xls");
 #endif
-
                 if (path.Length != 0)
                 {
                     machine.SpreadSheetName = Path.GetFileName(path);

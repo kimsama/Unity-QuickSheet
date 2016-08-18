@@ -33,6 +33,7 @@ namespace UnityQuickSheet
     /// </summary>
     public class BaseMachine : ScriptableObject
     {
+        protected readonly static string ImportSettingFilename = "New Import Setting.asset";
 
         [SerializeField]
         private string templatePath = "QuickSheet/Templates";
