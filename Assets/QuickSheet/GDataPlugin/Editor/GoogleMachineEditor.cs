@@ -280,7 +280,7 @@ namespace UnityQuickSheet
             // write a script to the given folder.		
             using (var writer = new StreamWriter(TargetPathForData(machine.WorkSheetName)))
             {
-                writer.Write(new NewScriptGenerator(sp).ToString());
+                writer.Write(new ScriptGenerator(sp).ToString());
                 writer.Close();
             }
         }
@@ -299,7 +299,7 @@ namespace UnityQuickSheet
             // write a script to the given folder.		
             using (var writer = new StreamWriter(TargetPathForAssetFileCreateFunc(machine.WorkSheetName)))
             {
-                writer.Write(new NewScriptGenerator(sp).ToString());
+                writer.Write(new ScriptGenerator(sp).ToString());
                 writer.Close();
             }
         }

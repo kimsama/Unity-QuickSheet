@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 ///
-/// NewScriptGenerator.cs
+/// ScriptGenerator.cs
 /// 
 /// (c)2013 Kim, Hyoun Woo
 ///
@@ -18,7 +18,7 @@ using Object = UnityEngine.Object;
 
 namespace UnityQuickSheet
 {
-    internal class NewScriptGenerator
+    internal class ScriptGenerator
     {
         private const int CommentWrapLength = 35;
         
@@ -126,7 +126,7 @@ namespace UnityQuickSheet
         /// <summary>
         /// Constructor.
         /// </summary>
-        public NewScriptGenerator (ScriptPrescription scriptPrescription)
+        public ScriptGenerator (ScriptPrescription scriptPrescription)
         {
             m_ScriptPrescription = scriptPrescription;
         }
