@@ -62,12 +62,14 @@ namespace UnityQuickSheet
             // path and asset file name which contains a google account and password.
             GUILayout.BeginHorizontal();
             GUILayout.Label("Setting FilePath: ", GUILayout.Width(110));
-            setting.AssetPath = GUILayout.TextField(setting.AssetPath, 120);
+            // prevent to modify by manual
+            GUILayout.TextField(GoogleDataSettings.AssetPath, 120);
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("Setting FileName: ", GUILayout.Width(110));
-            GoogleDataSettings.AssetFileName = GUILayout.TextField(GoogleDataSettings.AssetFileName, 120);
+            // read-only
+            GUILayout.TextField(GoogleDataSettings.AssetFileName, 120);
             GUILayout.EndHorizontal();
 
             EditorGUILayout.Separator();
@@ -210,7 +212,6 @@ namespace UnityQuickSheet
             if (GUI.changed)
             {
                 EditorUtility.SetDirty(setting);
-                AssetDatabase.SaveAssets();
             }
         }
     }

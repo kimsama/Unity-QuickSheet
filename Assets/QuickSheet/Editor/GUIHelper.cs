@@ -31,7 +31,6 @@ namespace UnityQuickSheet
 
         const int defaultVisibleArrayElements = 20;
         static int maxVisibleArrayElements = defaultVisibleArrayElements;
-        static bool someArraysVisible;
 
         /// <summary>
         /// Recursively draw properties of the given SerializedProperty data.
@@ -73,9 +72,10 @@ namespace UnityQuickSheet
                         {
                             if (guiStyle != null)
                             {
-                                GUILayout.BeginVertical(guiStyle);
-                                DrawSerializedProperty(prop.GetArrayElementAtIndex(i));
-                                GUILayout.EndVertical();
+                                using (new GUILayout.VerticalScope())
+                                {
+                                    DrawSerializedProperty(prop.GetArrayElementAtIndex(i));
+                                }
                             }
                             else
                                 DrawSerializedProperty(prop.GetArrayElementAtIndex(i));
@@ -83,18 +83,18 @@ namespace UnityQuickSheet
                         // Hide elements if it exceeds defined show count.
                         if (prop.arraySize > showCount)
                         {
-                            GUILayout.BeginHorizontal();
-                            // Do indentation
-                            for (int i = 0; i < EditorGUI.indentLevel; i++)
+                            using (new GUILayout.HorizontalScope())
                             {
-                                GUILayout.Space(EditorGUIUtility.singleLineHeight);
+                                // Do indentation
+                                for (int i = 0; i < EditorGUI.indentLevel; i++)
+                                {
+                                    GUILayout.Space(EditorGUIUtility.singleLineHeight);
+                                }
+                                if (GUILayout.Button("Show more ..."))
+                                {
+                                    maxVisibleArrayElements += defaultVisibleArrayElements;
+                                }
                             }
-                            if (GUILayout.Button("Show more ..."))
-                            {
-                                maxVisibleArrayElements += defaultVisibleArrayElements;
-                            }
-                            GUILayout.EndHorizontal();
-                            someArraysVisible = true;
                         }
                     }
                     // decrease indentation

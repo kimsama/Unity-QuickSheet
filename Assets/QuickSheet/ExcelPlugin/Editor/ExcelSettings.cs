@@ -13,51 +13,30 @@ using System.IO;
 namespace UnityQuickSheet
 {
     /// <summary>
-    /// A class to manage excel setting.
+    /// A class manages excel setting.
     /// </summary>
     public class ExcelSettings : ScriptableObject
     {
-        public string AssetPath = "Assets/QuickSheet/ExcelPlugin/Editor/";
+        // A path of default setting file is located.
+        public static string AssetPath = "Assets/QuickSheet/ExcelPlugin/Editor/";
 
-        [SerializeField]
-        public static string AssetFileName = "ExcelSettings.asset";
-
-        /// <summary>
-        /// A property which specifies or retrieves generated runtime class path.
-        /// </summary>
-        public string RuntimePath
-        {
-            get { return runTimePath; }
-            set
-            {
-                if (runTimePath != value)
-                    runTimePath = value;
-            }
-        }
-
-        [SerializeField]
-        private string runTimePath = string.Empty;
+        // A filename of setting .asset file.
+        public static readonly string AssetFileName = "ExcelSettings.asset";
 
         /// <summary>
-        /// A property which specifies or retrieves generated editor class path.
+        /// A path where generated ScriptableObject derived class and its data class script files are to be put.
         /// </summary>
-        public string EditorPath
-        {
-            get { return editorPath; }
-            set
-            {
-                if (editorPath != value)
-                    editorPath = value;
-            }
-        }
+        public string RuntimePath = string.Empty;
 
-        [SerializeField]
-        private string editorPath = string.Empty;
+        /// <summary>
+        /// A path where generated editor script files are to be put.
+        /// </summary>
+        public string EditorPath = string.Empty;
 
         /// <summary>
         /// A singleton instance.
         /// </summary>
-        private static ExcelSettings s_Instance;
+        private static ExcelSettings s_Instance = null;
 
         /// <summary>
         /// Create new account setting asset file if there is already one then select it.
@@ -77,15 +56,8 @@ namespace UnityQuickSheet
             Selection.activeObject = Instance;
             if (Selection.activeObject == null)
             {
-                Debug.LogError("No ExcelSetting.asset file is found. Create setting file first. See the menu at 'Assets/Create/QuickSheet/Setting/Excel Setting'.");
+                Debug.LogError(@"No ExcelSetting.asset file is found. Create setting file first. See the menu at 'Assets/Create/QuickSheet/Setting/Excel Setting'.");
             }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        void OnEnable()
-        {
         }
 
         /// <summary>
@@ -100,7 +72,7 @@ namespace UnityQuickSheet
         }
 
         /// <summary>
-        /// A property for singleton.
+        /// A property for a singleton instance.
         /// </summary>
         public static ExcelSettings Instance
         {
@@ -108,23 +80,30 @@ namespace UnityQuickSheet
             {
                 if (s_Instance == null)
                 {
-                    // A tricky way to assess non-static member in the static method.
-                    ExcelSettings temp = new ExcelSettings();
-                    string path = temp.AssetPath + ExcelSettings.AssetFileName;
-
+                    string path = ExcelSettings.AssetPath + ExcelSettings.AssetFileName;
                     s_Instance = AssetDatabase.LoadAssetAtPath(path, typeof(ExcelSettings)) as ExcelSettings;
                     if (s_Instance == null)
                     {
-                        Debug.LogWarning("No exel setting file is at " + path + " You need to create a new one or modify its path.");
+                        string title = string.Format(@"No {0} is found!", AssetFileName);
+                        string message = string.Format(@"No {0} is found at '{1}'. \n Press 'Create' button to create a default one.", AssetFileName, AssetPath);
+                        bool ok = EditorUtility.DisplayDialog(
+                            title,
+                            message,
+                            "Create",
+                            "Cancel"
+                        );
+
+                        // create excel setting .asset file if it does not exist under the asset path.
+                        if (ok)
+                            s_Instance = ExcelSettings.Create();
                     }
                 }
                 return s_Instance;
             }
-
         }
 
         /// <summary>
-        /// Create account setting asset file if it does not exist.
+        /// Create .asset file for excel setting.
         /// </summary>
         public static ExcelSettings Create()
         {
@@ -138,8 +117,8 @@ namespace UnityQuickSheet
                 string path = CustomAssetUtility.GetUniqueAssetPathNameOrFallback(AssetFileName);
                 AssetDatabase.CreateAsset(s_Instance, path);
 
-                s_Instance.AssetPath = Path.GetDirectoryName(path);
-                s_Instance.AssetPath += "/";
+                ExcelSettings.AssetPath = Path.GetDirectoryName(path);
+                ExcelSettings.AssetPath += "/";
 
                 // saves file path of the created asset.
                 EditorUtility.SetDirty(s_Instance);

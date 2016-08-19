@@ -35,12 +35,14 @@ namespace UnityQuickSheet
             // paths for runtime and editor folder which will contain generated script files.
             GUILayout.BeginHorizontal();
             GUILayout.Label("Setting FilePath: ", GUILayout.Width(110));
-            setting.AssetPath = GUILayout.TextField(setting.AssetPath, 120);
+            // prevent to modify by manual
+            GUILayout.TextField(ExcelSettings.AssetPath, 120);
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("Setting FileName: ", GUILayout.Width(110));
-            ExcelSettings.AssetFileName = GUILayout.TextField(ExcelSettings.AssetFileName, 120);
+            // read-only
+            GUILayout.TextField(ExcelSettings.AssetFileName, 120);
             GUILayout.EndHorizontal();
 
             EditorGUILayout.Separator();
@@ -71,7 +73,6 @@ namespace UnityQuickSheet
             if (GUI.changed)
             {
                 EditorUtility.SetDirty(setting);
-                AssetDatabase.SaveAssets();
             }
         }
     }
