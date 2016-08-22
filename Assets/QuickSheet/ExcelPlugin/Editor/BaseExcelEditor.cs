@@ -14,40 +14,25 @@ using System.IO;
 namespace UnityQuickSheet
 {
     /// <summary>
-    /// Base class of the created .asset ScriptableObject class.
+    /// Base class of .asset ScriptableObject class created from excel.
     /// </summary>
-    public class BaseExcelEditor<T> : Editor
+    public class BaseExcelEditor<T> : BaseEditor<T> where T : ScriptableObject
     {
-
-        // to reflect properties on the Inspector view.
-        protected PropertyField[] databaseFields;
-        protected PropertyField[] dataFields;
-
-        protected List<PropertyField[]> pInfoList = new List<PropertyField[]>();
-
-        GUIStyle brown;
-        bool isInitialized = false;
-
-        public virtual void OnEnable()
+        public override void OnEnable()
         {
+            base.OnEnable();
         }
 
-        private void InitGUISkin()
-        {
-            brown = new GUIStyle("box");
-            brown.normal.background = Resources.Load("brown", typeof(Texture2D)) as Texture2D;
-            brown.border = new RectOffset(4, 4, 4, 4);
-            brown.margin = new RectOffset(3, 3, 3, 3);
-            brown.padding = new RectOffset(4, 4, 4, 4);
-        }
-
+        /// <summary>
+        /// Draw Inspector view.
+        /// </summary>
         public override void OnInspectorGUI()
         {
-            if (!isInitialized)
-            {
-                isInitialized = true;
-                InitGUISkin();
-            }
+            if (target == null)
+                return;
+
+            // Update SerializedObject
+            targetObject.Update();
 
             if (GUILayout.Button("Update"))
             {
@@ -63,26 +48,14 @@ namespace UnityQuickSheet
                 }
             }
 
-            if (target == null)
-                return;
+            EditorGUILayout.Separator();
 
-            //this.DrawDefaultInspector();
-            ExposeProperties.Expose(databaseFields);
+            DrawInspector();
 
-            foreach (PropertyField[] p in pInfoList)
-            {
-                GUILayout.BeginVertical(brown);
-                ExposeProperties.Expose(p);
-                GUILayout.EndVertical();
-            }
+            // Be sure to call [your serialized object].ApplyModifiedProperties()to save any changes.  
+            targetObject.ApplyModifiedProperties();
         }
 
-        /// 
-        /// Called when 'Update' button is pressed. It should be reimplemented in the derived class.
-        /// 
-        public virtual bool Load()
-        {
-            return false;
-        }
+
     }
 }

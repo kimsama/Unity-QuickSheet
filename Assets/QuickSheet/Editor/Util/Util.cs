@@ -1,9 +1,17 @@
-﻿using UnityEngine;
+﻿///////////////////////////////////////////////////////////////////////////////
+///
+/// Util.cs
+/// 
+/// (c)2016 Kim, Hyoun Woo
+///
+///////////////////////////////////////////////////////////////////////////////
+using System;
 using System.Collections;
+using System.Linq;
 
 namespace UnityQuickSheet
 {
-    public class Util 
+    public static class Util 
     {
         //all c# keywords.
         public static string[] Keywords = new string[] {

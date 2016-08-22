@@ -14,14 +14,13 @@ using System.Collections.Generic;
 namespace UnityQuickSheet
 {
     /// <summary>
-    /// A class to manage google account setting.
+    /// A class manages google account setting.
     /// </summary>
     public class GoogleDataSettings : ScriptableObject
     {
-        public string AssetPath = "Assets/QuickSheet/GDataPlugin/Editor/";
+        public static string AssetPath = "Assets/QuickSheet/GDataPlugin/Editor/";
 
-        [SerializeField]
-        public static string AssetFileName = "GoogleDataSettings.asset";
+        public static readonly string AssetFileName = "GoogleDataSettings.asset";
 
         // A flag which indicates use local installed oauth2 json file for authentication or not.
         static public bool useOAuth2JsonFile = false;
@@ -38,36 +37,14 @@ namespace UnityQuickSheet
         private string jsonFilePath = string.Empty;
 
         /// <summary>
-        /// A property which specifies or retrieves generated runtime class path.
+        /// A path where generated ScriptableObject derived class and its data class script files are to be put.
         /// </summary>
-        public string RuntimePath
-        {
-            get { return runTimePath; }
-            set
-            {
-                if (runTimePath != value)
-                    runTimePath = value;
-            }
-        }
-
-        [SerializeField]
-        private string runTimePath = string.Empty;
+        public string RuntimePath = string.Empty;
 
         /// <summary>
-        /// A property which specifies or retrieves generated editor class path.
+        /// A path where generated editor script files are to be put.
         /// </summary>
-        public string EditorPath
-        {
-            get { return editorPath; }
-            set
-            {
-                if (editorPath != value)
-                    editorPath = value;
-            }
-        }
-
-        [SerializeField]
-        private string editorPath = string.Empty;
+        public string EditorPath = string.Empty;
 
         [System.Serializable]
         public struct OAuth2JsonData
@@ -83,13 +60,11 @@ namespace UnityQuickSheet
         public OAuth2JsonData OAuth2Data;
 
         // enter Access Code after getting it from auth url
-        [SerializeField]
         public string _AccessCode = "Paste AcecessCode here!";
 
         // enter Auth 2.0 Refresh Token and AccessToken after succesfully authorizing with Access Code
-        [SerializeField]
         public string _RefreshToken = "";
-        [SerializeField]
+
         public string _AccessToken = "";
 
         /// <summary>
@@ -120,15 +95,6 @@ namespace UnityQuickSheet
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        void OnEnable()
-        {
-            //if (OAuth2Data.client_id == null)
-            //    OAuth2Data = new OAuth2JsonData();
-        }
-
-        /// <summary>
         /// Checks GoogleDataSetting.asset file exist at the specified path(AssetPath+AssetFileName).
         /// </summary>
         public bool CheckPath()
@@ -140,7 +106,7 @@ namespace UnityQuickSheet
         }
 
         /// <summary>
-        /// A property for singleton.
+        /// A property for a singleton instance.
         /// </summary>
         public static GoogleDataSettings Instance
         {
@@ -148,23 +114,29 @@ namespace UnityQuickSheet
             {
                 if (s_Instance == null)
                 {
-                    // A tricky way to assess non-static member in the static method.
-                    GoogleDataSettings temp = new GoogleDataSettings();
-                    string path = temp.AssetPath + GoogleDataSettings.AssetFileName;
-
+                    string path = GoogleDataSettings.AssetPath + GoogleDataSettings.AssetFileName;
                     s_Instance = (GoogleDataSettings)AssetDatabase.LoadAssetAtPath(path, typeof(GoogleDataSettings));
                     if (s_Instance == null)
                     {
-                        Debug.LogWarning("No account setting file is at " + path + " You need to create a new one or modify its path.");
+                        string title = string.Format(@"No {0} is found!", AssetFileName);
+                        string message = string.Format(@"No {0} is found at '{1}'. \n Press 'Create' button to create a default one.", AssetFileName, AssetPath);
+                        bool ok = EditorUtility.DisplayDialog(
+                            title,
+                            message,
+                            "Create",
+                            "Cancel"
+                        );
+
+                        if (ok)
+                            s_Instance = GoogleDataSettings.Create();
                     }
                 }
                 return s_Instance;
             }
-
         }
 
         /// <summary>
-        /// Create account setting asset file if it does not exist.
+        /// Create .asset file for google spreadsheet setting if it does not exist.
         /// </summary>
         public static GoogleDataSettings Create()
         {
@@ -178,8 +150,8 @@ namespace UnityQuickSheet
                 string path = CustomAssetUtility.GetUniqueAssetPathNameOrFallback(AssetFileName);
                 AssetDatabase.CreateAsset(s_Instance, path);
 
-                s_Instance.AssetPath = Path.GetDirectoryName(path);
-                s_Instance.AssetPath += "/";
+                GoogleDataSettings.AssetPath = Path.GetDirectoryName(path);
+                GoogleDataSettings.AssetPath += "/";
 
                 // saves file path of the created asset.
                 EditorUtility.SetDirty(s_Instance);

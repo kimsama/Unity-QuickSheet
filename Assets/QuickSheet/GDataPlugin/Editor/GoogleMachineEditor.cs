@@ -33,17 +33,17 @@ namespace UnityQuickSheet
     [CustomEditor(typeof(GoogleMachine))]
     public class GoogleMachineEditor : BaseMachineEditor
     {
-        PropertyField[] databaseFields;
-
-        // to resolve TlsException error
+        // To resolve TlsException error
         public static bool Validator(object sender, X509Certificate certificate,
                                       X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
             return true;
         }
 
-        void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+
             // to resolve TlsException error
             ServicePointManager.ServerCertificateValidationCallback = Validator;
 
@@ -52,8 +52,7 @@ namespace UnityQuickSheet
             {
                 machine.ReInitialize();
 
-                databaseFields = ExposeProperties.GetProperties(machine);
-
+                // Specify paths with one on the GoogleDataSettings.asset file.
                 if (string.IsNullOrEmpty(GoogleDataSettings.Instance.RuntimePath) == false)
                     machine.RuntimeClassPath = GoogleDataSettings.Instance.RuntimePath;
                 if (string.IsNullOrEmpty(GoogleDataSettings.Instance.EditorPath) == false)
@@ -61,13 +60,13 @@ namespace UnityQuickSheet
             }
         }
 
-        //private Vector2 curretScroll = Vector2.zero;
-
         /// <summary>
         /// Draw custom UI.
         /// </summary>
         public override void OnInspectorGUI()
         {
+            base.OnInspectorGUI();
+
             if (GoogleDataSettings.Instance == null)
             {
                 GUILayout.BeginHorizontal();
@@ -79,23 +78,13 @@ namespace UnityQuickSheet
                 GUILayout.EndHorizontal();
             }
 
-            //Rect rc;
-            GUIStyle headerStyle = null;
-
-            headerStyle = GUIHelper.MakeHeader();
-
-            GUILayout.Label("GoogleDrive Settings:", headerStyle);
-            //rc = GUILayoutUtility.GetLastRect();
-            //GUI.skin.box.Draw(rc, GUIContent.none, 0);
+            GUILayout.Label("Google Spreadsheet Settings:", headerStyle);
 
             EditorGUILayout.Separator();
 
             GUILayout.Label("Script Path Settings:", headerStyle);
-            //rc = GUILayoutUtility.GetLastRect();
-            //GUI.skin.box.Draw(new Rect(rc.left, rc.top + rc.height, rc.width, 1f), GUIContent.none, 0);
-
-            ExposeProperties.Expose(databaseFields);
-            EditorGUILayout.Separator();
+            machine.SpreadSheetName = EditorGUILayout.TextField("SpreadSheet Name: ", machine.SpreadSheetName);
+            machine.WorkSheetName = EditorGUILayout.TextField("WorkSheet Name: ", machine.WorkSheetName);
 
             EditorGUILayout.Separator();
 
@@ -121,15 +110,13 @@ namespace UnityQuickSheet
 
             DrawHeaderSetting(machine);
 
-            // force save changed type.
-            if (GUI.changed)
-            {
-                EditorUtility.SetDirty(GoogleDataSettings.Instance);
-                EditorUtility.SetDirty(machine);
-                AssetDatabase.SaveAssets();
-            }
-
             EditorGUILayout.Separator();
+
+            GUILayout.Label("Path Settings:", headerStyle);
+
+            machine.TemplatePath = EditorGUILayout.TextField("Template: ", machine.TemplatePath);
+            machine.RuntimeClassPath = EditorGUILayout.TextField("Runtime: ", machine.RuntimeClassPath);
+            machine.EditorClassPath = EditorGUILayout.TextField("Editor:", machine.EditorClassPath);
 
             machine.onlyCreateDataClass = EditorGUILayout.Toggle("Only DataClass", machine.onlyCreateDataClass);
 
@@ -141,6 +128,15 @@ namespace UnityQuickSheet
                     Debug.Log("Successfully generated!");
                 else
                     Debug.LogError("Failed to create a script from Google Spreadsheet.");
+            }
+
+            // force save changed type.
+            if (GUI.changed)
+            {
+                EditorUtility.SetDirty(GoogleDataSettings.Instance);
+                EditorUtility.SetDirty(machine);
+                //AssetDatabase.SaveAssets();
+                //AssetDatabase.Refresh();
             }
         }
 
@@ -197,8 +193,6 @@ namespace UnityQuickSheet
         /// </summary>
         protected override void Import(bool reimport = false)
         {
-            base.Import(reimport);
-
             Regex re = new Regex(@"\d+");
 
             Dictionary<string, ColumnHeader> headerDic = null;
@@ -286,7 +280,7 @@ namespace UnityQuickSheet
             // write a script to the given folder.		
             using (var writer = new StreamWriter(TargetPathForData(machine.WorkSheetName)))
             {
-                writer.Write(new NewScriptGenerator(sp).ToString());
+                writer.Write(new ScriptGenerator(sp).ToString());
                 writer.Close();
             }
         }
@@ -297,6 +291,7 @@ namespace UnityQuickSheet
         protected override void CreateAssetCreationScript(BaseMachine m, ScriptPrescription sp)
         {
             sp.className = machine.WorkSheetName;
+            sp.spreadsheetName = machine.SpreadSheetName;
             sp.worksheetClassName = machine.WorkSheetName;
             sp.assetFileCreateFuncName = "Create" + machine.WorkSheetName + "AssetFile";
             sp.template = GetTemplate("AssetFileClass");
@@ -304,7 +299,7 @@ namespace UnityQuickSheet
             // write a script to the given folder.		
             using (var writer = new StreamWriter(TargetPathForAssetFileCreateFunc(machine.WorkSheetName)))
             {
-                writer.Write(new NewScriptGenerator(sp).ToString());
+                writer.Write(new ScriptGenerator(sp).ToString());
                 writer.Close();
             }
         }

@@ -53,11 +53,10 @@ namespace UnityQuickSheet
         public static void CreateScriptMachineAsset()
         {
             ExcelMachine inst = ScriptableObject.CreateInstance<ExcelMachine>();
-            string path = CustomAssetUtility.GetUniqueAssetPathNameOrFallback("New ExcelMachine.asset");
+            string path = CustomAssetUtility.GetUniqueAssetPathNameOrFallback(ImportSettingFilename);
             AssetDatabase.CreateAsset(inst, path);
             AssetDatabase.SaveAssets();
             Selection.activeObject = inst;
         }
-
     }
 }

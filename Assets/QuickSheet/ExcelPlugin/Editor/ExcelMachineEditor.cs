@@ -20,8 +20,10 @@ namespace UnityQuickSheet
     [CustomEditor(typeof(ExcelMachine))]
     public class ExcelMachineEditor : BaseMachineEditor
     {
-        void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+
             machine = target as ExcelMachine;
             if (machine != null)
             {
@@ -34,10 +36,11 @@ namespace UnityQuickSheet
 
         public override void OnInspectorGUI()
         {
+            base.OnInspectorGUI();
+
             ExcelMachine machine = target as ExcelMachine;
 
-            GUIStyle headerStyle = GUIHelper.MakeHeader();
-            GUILayout.Label("Excel Settings:", headerStyle);
+            GUILayout.Label("Excel Spreadsheet Settings:", headerStyle);
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("File:", GUILayout.Width(50));
@@ -54,10 +57,9 @@ namespace UnityQuickSheet
                 string folder = Path.GetDirectoryName(path);
 #if UNITY_EDITOR_WIN
                 path = EditorUtility.OpenFilePanel("Open Excel file", folder, "excel files;*.xls;*.xlsx");
-#else
-            path = EditorUtility.OpenFilePanel("Open Excel file", folder, "xls");
+#else // for UNITY_EDITOR_OSX
+                path = EditorUtility.OpenFilePanel("Open Excel file", folder, "xls");
 #endif
-
                 if (path.Length != 0)
                 {
                     machine.SpreadSheetName = Path.GetFileName(path);
@@ -93,7 +95,8 @@ namespace UnityQuickSheet
                 return;
             }
 
-            machine.SpreadSheetName = EditorGUILayout.TextField("Spreadsheet File: ", machine.SpreadSheetName);
+            // spreadsheet name should be read-only
+            EditorGUILayout.TextField("Spreadsheet File: ", machine.SpreadSheetName);
 
             EditorGUILayout.Space();
 
@@ -171,8 +174,8 @@ namespace UnityQuickSheet
             if (GUI.changed)
             {
                 EditorUtility.SetDirty(machine);
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
+                //AssetDatabase.SaveAssets();
+                //AssetDatabase.Refresh();
             }
         }
 
@@ -181,8 +184,6 @@ namespace UnityQuickSheet
         /// </summary>
         protected override void Import(bool reimport = false)
         {
-            base.Import(reimport);
-
             ExcelMachine machine = target as ExcelMachine;
 
             string path = machine.excelFilePath;
@@ -299,7 +300,7 @@ namespace UnityQuickSheet
             // write a script to the given folder.
             using (var writer = new StreamWriter(TargetPathForAssetPostProcessorFile(machine.WorkSheetName)))
             {
-                writer.Write(new NewScriptGenerator(sp).ToString());
+                writer.Write(new ScriptGenerator(sp).ToString());
                 writer.Close();
             }
         }

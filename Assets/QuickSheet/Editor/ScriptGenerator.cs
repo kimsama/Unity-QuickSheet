@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 ///
-/// NewScriptGenerator.cs
+/// ScriptGenerator.cs
 /// 
 /// (c)2013 Kim, Hyoun Woo
 ///
@@ -18,9 +18,9 @@ using Object = UnityEngine.Object;
 
 namespace UnityQuickSheet
 {
-    internal class NewScriptGenerator
+    internal class ScriptGenerator
     {
-        private const int kCommentWrapLength = 35;
+        private const int CommentWrapLength = 35;
         
         private TextWriter m_Writer;
         private string m_Text;
@@ -47,9 +47,19 @@ namespace UnityQuickSheet
         {
             get
             {
-                if (m_ScriptPrescription.className != string.Empty)
+                if (!string.IsNullOrEmpty(m_ScriptPrescription.className))
                     return m_ScriptPrescription.className;
-                return "Example";
+                return "Error_Empty_ClassName";
+            }
+        }
+
+        private string SpreadSheetName
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(m_ScriptPrescription.spreadsheetName))
+                    return m_ScriptPrescription.spreadsheetName;
+                return "Error_Empty_SpreadSheetName";
             }
         }
 
@@ -57,9 +67,9 @@ namespace UnityQuickSheet
         {
             get
             {
-                if (m_ScriptPrescription.worksheetClassName != string.Empty)
+                if (!string.IsNullOrEmpty(m_ScriptPrescription.worksheetClassName))
                     return m_ScriptPrescription.worksheetClassName;
-                return "Empty_WorkSheetClass_Name";
+                return "Error_Empty_WorkSheet_ClassName";
             }
         }
 
@@ -67,9 +77,9 @@ namespace UnityQuickSheet
         {
             get
             {
-                if (m_ScriptPrescription.dataClassName != string.Empty)
+                if (!string.IsNullOrEmpty(m_ScriptPrescription.dataClassName))
                     return m_ScriptPrescription.dataClassName;
-                return "Empty_DataClass_Name";
+                return "Error_Empty_DataClassName";
             }
         }
 
@@ -77,9 +87,9 @@ namespace UnityQuickSheet
         {
             get
             {
-                if (m_ScriptPrescription.assetFileCreateFuncName != string.Empty)
+                if (!string.IsNullOrEmpty(m_ScriptPrescription.assetFileCreateFuncName))
                     return m_ScriptPrescription.assetFileCreateFuncName;
-                return "Empty_AssetFileCreateFunc_Name";
+                return "Error_Empty_AssetFileCreateFunc_Name";
             }
         }
 
@@ -87,9 +97,9 @@ namespace UnityQuickSheet
         {
             get
             {
-                if (m_ScriptPrescription.importedFilePath != string.Empty)
+                if (!string.IsNullOrEmpty(m_ScriptPrescription.importedFilePath))
                     return m_ScriptPrescription.importedFilePath;
-                return "Empty_FilePath";
+                return "Error_Empty_FilePath";
             }
         }
 
@@ -97,9 +107,9 @@ namespace UnityQuickSheet
         {
             get
             {
-                if (m_ScriptPrescription.assetFilepath != string.Empty)
+                if (!string.IsNullOrEmpty(m_ScriptPrescription.assetFilepath))
                     return m_ScriptPrescription.assetFilepath;
-                return "Empty_AssetFilePath";
+                return "Error_Empty_AssetFilePath";
             }
         }
 
@@ -107,13 +117,16 @@ namespace UnityQuickSheet
         { 
             get
             {
-                if (m_ScriptPrescription.assetPostprocessorClass != String.Empty)
+                if (!string.IsNullOrEmpty(m_ScriptPrescription.assetPostprocessorClass))
                     return m_ScriptPrescription.assetPostprocessorClass;
-                return "Empty_AssetPostprocessorClass";
+                return "Error_Empty_AssetPostprocessorClass";
             }
         }
         
-        public NewScriptGenerator (ScriptPrescription scriptPrescription)
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public ScriptGenerator (ScriptPrescription scriptPrescription)
         {
             m_ScriptPrescription = scriptPrescription;
         }
@@ -127,12 +140,12 @@ namespace UnityQuickSheet
             m_Writer = new StringWriter ();
             m_Writer.NewLine = "\n";
             
-            // Make sure all line endings are Unix (Mac OS X) format
+            // Make sure all line endings to be Unix (Mac OSX) format.
             m_Text = Regex.Replace (m_Text, @"\r\n?", delegate(Match m) { return "\n"; });
             
             // Class Name
             m_Text = m_Text.Replace ("$ClassName", ClassName);
-
+            m_Text = m_Text.Replace ("$SpreadSheetName", SpreadSheetName);
             m_Text = m_Text.Replace ("$WorkSheetClassName", WorkSheetClassName);
             m_Text = m_Text.Replace ("$DataClassName", DataClassName);
             m_Text = m_Text.Replace ("$AssetFileCreateFuncName", AssetFileCreateFuncName);
@@ -142,7 +155,7 @@ namespace UnityQuickSheet
             m_Text = m_Text.Replace ("$ASSET_PATH", AssetFilePath);
             
             // Other replacements
-            foreach (KeyValuePair<string, string> kvp in m_ScriptPrescription.m_StringReplacements)
+            foreach (KeyValuePair<string, string> kvp in m_ScriptPrescription.mStringReplacements)
                 m_Text = m_Text.Replace (kvp.Key, kvp.Value);
 
             // Do not change tabs to spcaes of the .txt template files.
@@ -156,7 +169,6 @@ namespace UnityQuickSheet
                     foreach(var field in m_ScriptPrescription.memberFields)
                     {
                         WriteMemberField(field);
-                        WriteBlankLine();
                         WriteProperty(field);
                         WriteBlankLine();
                     }
@@ -203,9 +215,7 @@ namespace UnityQuickSheet
         ///
         private void WriteProperty(MemberFieldData field)
         {
-            TextInfo ti = new CultureInfo("en-US",false).TextInfo;
-
-            m_Writer.WriteLine (m_Indentation + "[ExposeProperty]");
+            TextInfo ti = new CultureInfo("en-US", false).TextInfo;
 
             string tmp = string.Empty;
 
@@ -224,24 +234,31 @@ namespace UnityQuickSheet
             m_Writer.WriteLine (m_Indentation + tmp);
         }
 
+        /// <summary>
+        /// Write a blank line.
+        /// </summary>
         private void WriteBlankLine ()
         {
             m_Writer.WriteLine (m_Indentation);
         }
         
+        /// <summary>
+        /// Write comment.
+        /// </summary>
+        /// <param name="comment"></param>
         private void WriteComment (string comment)
         {
             int index = 0;
             while (true)
             {
-                if (comment.Length <= index + kCommentWrapLength)
+                if (comment.Length <= index + CommentWrapLength)
                 {
                     m_Writer.WriteLine (m_Indentation + "// " + comment.Substring (index));
                     break;
                 }
                 else
                 {
-                    int wrapIndex = comment.IndexOf (' ', index + kCommentWrapLength);
+                    int wrapIndex = comment.IndexOf (' ', index + CommentWrapLength);
                     if (wrapIndex < 0)
                     {
                         m_Writer.WriteLine (m_Indentation + "// " + comment.Substring (index));

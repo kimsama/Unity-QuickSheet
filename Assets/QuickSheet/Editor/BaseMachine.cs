@@ -12,6 +12,9 @@ using System.Collections.Generic;
 
 namespace UnityQuickSheet
 {
+    /// <summary>
+    /// A class which represents column header on the worksheet.
+    /// </summary>
     [System.Serializable]
     public class ColumnHeader
     {
@@ -25,24 +28,19 @@ namespace UnityQuickSheet
         public int OrderNO { get; set; }
     }
 
+    /// <summary>
+    /// A class which stores various settings for a worksheet which is imported.
+    /// </summary>
     public class BaseMachine : ScriptableObject
     {
+        protected readonly static string ImportSettingFilename = "New Import Setting.asset";
 
-        [ExposeProperty]
+        [SerializeField]
+        private string templatePath = "QuickSheet/Templates";
         public string TemplatePath
         {
             get { return templatePath; }
             set { templatePath = value; }
-        }
-
-        [SerializeField]
-        private string templatePath = "QuickSheet/Templates";
-
-        [ExposeProperty]
-        public string RuntimeClassPath
-        {
-            get { return scriptFilePath; }
-            set { scriptFilePath = value; }
         }
 
         /// <summary>
@@ -50,12 +48,10 @@ namespace UnityQuickSheet
         /// </summary>
         [SerializeField]
         private string scriptFilePath;
-
-        [ExposeProperty]
-        public string EditorClassPath
+        public string RuntimeClassPath
         {
-            get { return editorScriptFilePath; }
-            set { editorScriptFilePath = value; }
+            get { return scriptFilePath; }
+            set { scriptFilePath = value; }
         }
 
         /// <summary>
@@ -63,21 +59,14 @@ namespace UnityQuickSheet
         /// </summary>
         [SerializeField]
         private string editorScriptFilePath;
+        public string EditorClassPath
+        {
+            get { return editorScriptFilePath; }
+            set { editorScriptFilePath = value; }
+        }
 
-        //[ExposeProperty]
-        //public string DataFilePath
-        //{
-        //    get { return dataFilePath; }
-        //    set { dataFilePath = value; }
-        //}
-
-        /// <summary>
-        /// path the created asset file will be located.
-        /// </summary>
-        //[SerializeField]
-        //private string dataFilePath;
-
-        [ExposeProperty]
+        [SerializeField]
+        private string sheetName;
         public string SpreadSheetName
         {
             get { return sheetName; }
@@ -85,17 +74,12 @@ namespace UnityQuickSheet
         }
 
         [SerializeField]
-        private string sheetName;
-
-        [ExposeProperty]
+        private string workSheetName;
         public string WorkSheetName
         {
             get { return workSheetName; }
             set { workSheetName = value; }
         }
-
-        [SerializeField]
-        private string workSheetName;
 
         [System.NonSerialized]
         public bool onlyCreateDataClass = false;
