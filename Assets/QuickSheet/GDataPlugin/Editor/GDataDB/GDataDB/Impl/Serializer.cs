@@ -86,7 +86,18 @@ namespace GDataDB.Impl {
                             } 
                             else 
                             {
-                                object[] temp = c.Value.Split(DELIMETER);
+                                // remove whitespace between each of element
+                                string str = new string(c.Value.ToCharArray()
+                                                        .Where(ch => !Char.IsWhiteSpace(ch))
+                                                        .ToArray());
+
+                                // remove ',', if it is found at the end.
+                                char[] charToTrim = { ',', ' ' };
+                                str = str.TrimEnd(charToTrim);
+
+                                // split by ','
+                                object[] temp = str.Split(DELIMETER);
+
                                 Array array = (Array)Activator.CreateInstance(property.PropertyType, temp.Length);
 
                                 for (int i = 0; i < array.Length; i++) 

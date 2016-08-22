@@ -132,36 +132,35 @@ namespace UnityQuickSheet
 
                             if (property.PropertyType.IsArray)
                             {
-                                // collect string values.
-                                CsvParser parser = new CsvParser(value as string);
-                                List<string> tokenizedValues = new List<string>();
-                                foreach (string s in parser)
-                                    tokenizedValues.Add(s);
+                                //NOTE: enum array type is not supported. (Does it really needed?)
 
-                                // convert string to corresponded type of the array element.
-                                object[] convertedValues = null;
-                                if (property.PropertyType.GetElementType() == typeof(string))
-                                    convertedValues = tokenizedValues.ToArray();
-                                else
-                                    convertedValues = tokenizedValues.ToArray().Select(s => Convert.ChangeType(s, property.PropertyType.GetElementType())).ToArray();
+                                const char DELIMETER = ',';
+                                string str = value as string;
 
-                                // set converted string value to the array.
-                                Array array = (Array)property.GetValue(item, null);
-                                if (array != null)
+                                // remove whitespace between each of element
+                                str = new string(str.ToCharArray()
+                                                    .Where(ch => !Char.IsWhiteSpace(ch))
+                                                    .ToArray());
+
+                                // remove ',', if it is found at the end.
+                                char[] charToTrim = { ',', ' ' };
+                                str = str.TrimEnd(charToTrim);
+
+                                // split by ','
+                                object[] temp = str.Split(DELIMETER);
+
+                                Array array = (Array)Activator.CreateInstance(property.PropertyType, temp.Length);
+
+                                for (int j = 0; j < array.Length; j++)
                                 {
-                                    // initialize the array of the data class
-                                    array = Array.CreateInstance(property.PropertyType.GetElementType(), convertedValues.Length);
-                                    for (int j = 0; j < convertedValues.Length; j++)
-                                        array.SetValue(convertedValues[j], j);
-
-                                    // should do deep copy
-                                    property.SetValue(item, array, null);
+                                    array.SetValue(Convert.ChangeType(temp[j], property.PropertyType.GetElementType()), j);
                                 }
+
+                                property.SetValue(item, array, null);
                             }
                             else
                                 property.SetValue(item, value, null);
 
-                            //Debug.Log("cell value: " + value.ToString());
                         }
                         catch (Exception e)
                         {
