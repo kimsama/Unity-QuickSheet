@@ -196,15 +196,16 @@ namespace UnityQuickSheet
         {
             m_Writer.WriteLine (m_Indentation + "[SerializeField]");
 
+			var fieldName = GetFieldNameForField(field);
             string tmp;
             if (field.type == CellType.Enum)
-                tmp = field.Name + " " + field.Name.ToLower() + ";";
+				tmp = field.Name + " " + fieldName + ";";
             else
             {
                 if (field.IsArrayType)
-                    tmp = field.Type + "[]" + " " + field.Name.ToLower() + " = new " + field.Type + "[0]" +";";
+					tmp = field.Type + "[]" + " " + fieldName + " = new " + field.Type + "[0]" +";";
                 else
-                    tmp = field.Type + " " + field.Name.ToLower() + ";";
+					tmp = field.Type + " " + fieldName + ";";
             }
 
             m_Writer.WriteLine (m_Indentation + tmp);
@@ -215,24 +216,40 @@ namespace UnityQuickSheet
         ///
         private void WriteProperty(MemberFieldData field)
         {
-            TextInfo ti = new CultureInfo("en-US", false).TextInfo;
-
             string tmp = string.Empty;
+			var propertyName = GetPropertyNameForField(field);
+			var fieldName = GetFieldNameForField(field);
 
             if (field.type == CellType.Enum)
-                tmp += "public " + field.Name + " " + field.Name.ToUpper() + " ";
+				tmp += "public " + field.Name + " " + propertyName + " ";
             else
             {
                 if (field.IsArrayType)
-                    tmp += "public " + field.Type + "[]" + " " + ti.ToTitleCase(field.Name) + " ";
+					tmp += "public " + field.Type + "[]" + " " + propertyName + " ";
                 else
-                    tmp += "public " + field.Type + " " + ti.ToTitleCase(field.Name) + " ";
+					tmp += "public " + field.Type + " " + propertyName + " ";
             }
 
-            tmp += "{ get {return " + field.Name.ToLower() + "; } set { " + field.Name.ToLower() + " = value;} }";
+			tmp += "{ get {return " + fieldName + "; } set { " + fieldName + " = value;} }";
 
             m_Writer.WriteLine (m_Indentation + tmp);
         }
+
+		private string GetFieldNameForField(MemberFieldData field)
+		{
+			if (field.type == CellType.Enum)
+				return field.Name.ToLower();
+			
+			return "_" + field.Name;
+		}
+
+		private string GetPropertyNameForField(MemberFieldData field)
+		{
+			if (field.type == CellType.Enum)
+				return field.Name.ToUpper();
+			
+			return field.Name;
+		}
 
         /// <summary>
         /// Write a blank line.
