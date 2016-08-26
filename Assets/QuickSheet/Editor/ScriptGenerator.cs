@@ -39,7 +39,7 @@ namespace UnityQuickSheet
                 m_IndentLevel = value;
                 m_Indentation = String.Empty;
                 for (int i=0; i<m_IndentLevel; i++)
-                    m_Indentation += "	";
+                    m_Indentation += "  ";
             }
         }
         
@@ -196,16 +196,16 @@ namespace UnityQuickSheet
         {
             m_Writer.WriteLine (m_Indentation + "[SerializeField]");
 
-			var fieldName = GetFieldNameForField(field);
+            var fieldName = GetFieldNameForField(field);
             string tmp;
             if (field.type == CellType.Enum)
-				tmp = field.Name + " " + fieldName + ";";
+                tmp = field.Name + " " + fieldName + ";";
             else
             {
                 if (field.IsArrayType)
-					tmp = field.Type + "[]" + " " + fieldName + " = new " + field.Type + "[0]" +";";
+                    tmp = field.Type + "[]" + " " + fieldName + " = new " + field.Type + "[0]" +";";
                 else
-					tmp = field.Type + " " + fieldName + ";";
+                    tmp = field.Type + " " + fieldName + ";";
             }
 
             m_Writer.WriteLine (m_Indentation + tmp);
@@ -217,39 +217,39 @@ namespace UnityQuickSheet
         private void WriteProperty(MemberFieldData field)
         {
             string tmp = string.Empty;
-			var propertyName = GetPropertyNameForField(field);
-			var fieldName = GetFieldNameForField(field);
+            var propertyName = GetPropertyNameForField(field);
+            var fieldName = GetFieldNameForField(field);
 
             if (field.type == CellType.Enum)
-				tmp += "public " + field.Name + " " + propertyName + " ";
+                tmp += "public " + field.Name + " " + propertyName + " ";
             else
             {
                 if (field.IsArrayType)
-					tmp += "public " + field.Type + "[]" + " " + propertyName + " ";
+                    tmp += "public " + field.Type + "[]" + " " + propertyName + " ";
                 else
-					tmp += "public " + field.Type + " " + propertyName + " ";
+                    tmp += "public " + field.Type + " " + propertyName + " ";
             }
 
-			tmp += "{ get {return " + fieldName + "; } set { " + fieldName + " = value;} }";
+            tmp += "{ get {return " + fieldName + "; } set { " + fieldName + " = value;} }";
 
             m_Writer.WriteLine (m_Indentation + tmp);
         }
 
-		private string GetFieldNameForField(MemberFieldData field)
-		{
-			if (field.type == CellType.Enum)
-				return field.Name.ToLower();
-			
-			return "_" + field.Name;
-		}
+        private string GetFieldNameForField(MemberFieldData field)
+        {
+            if (field.type == CellType.Enum)
+                return field.Name.ToLower();
+            
+            return "_" + field.Name;
+        }
 
-		private string GetPropertyNameForField(MemberFieldData field)
-		{
-			if (field.type == CellType.Enum)
-				return field.Name.ToUpper();
-			
-			return field.Name;
-		}
+        private string GetPropertyNameForField(MemberFieldData field)
+        {
+            if (field.type == CellType.Enum)
+                return field.Name.ToUpper();
+            
+            return field.Name;
+        }
 
         /// <summary>
         /// Write a blank line.
@@ -280,7 +280,7 @@ namespace UnityQuickSheet
                     {
                         m_Writer.WriteLine (m_Indentation + "// " + comment.Substring (index));
                         break;
-                    }	
+                    }   
                     else
                     {
                         m_Writer.WriteLine (m_Indentation + "// " + comment.Substring (index, wrapIndex-index));
