@@ -52,6 +52,9 @@ You can use array type with comma sperated values in a cell as the following:
 
 ~~Note that don't miss the last comma which should be after a last value in a cell.~~ (Changed on v.1.0.0.0)
 
+```		
+ 1,2,3,4,5, -> The comma right after '5' is not needed anymore after v.1.0.0.0.
+```
 
 After importing with the given excel file, specify type of each column-header and check *array* option for an array type.
 
@@ -63,13 +66,11 @@ It will generate array type memeber field of a data class with the specified typ
 	[SerializeField]
 	int[] intarray = new int[0];
 	
-	[ExposeProperty]
 	public int[] Intarray { get {return intarray; } set { intarray = value;} }
 	
 	[SerializeField]
 	string[] stringarray = new string[0];
 	
-	[ExposeProperty]
 	public string[] Stringarray { get {return stringarray; } set { stringarray = value;} }
 ```
 
