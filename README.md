@@ -50,11 +50,8 @@ You can use array type with comma sperated values in a cell as the following:
 
 ![Array type](./images/array_cell.png "Array Cell")
 
-Note that don't miss the last comma which should be after a last value in a cell.
+~~Note that don't miss the last comma which should be after a last value in a cell.~~ (Changed on v.1.0.0.0)
 
-```
-1,2,3,4,5, -> Don't miss the comma right after '5' if not, the value '5' will not imported to an asset file.
-```
 
 After importing with the given excel file, specify type of each column-header and check *array* option for an array type.
 
