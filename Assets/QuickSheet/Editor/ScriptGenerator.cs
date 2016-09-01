@@ -237,18 +237,17 @@ namespace UnityQuickSheet
 
         private string GetFieldNameForField(MemberFieldData field)
         {
-            if (field.type == CellType.Enum)
-                return field.Name.ToLower();
-            
-            return "_" + field.Name;
+            return field.Name.ToLower();
         }
 
         private string GetPropertyNameForField(MemberFieldData field)
         {
             if (field.type == CellType.Enum)
                 return field.Name.ToUpper();
-            
-            return field.Name;
+
+            // To prevent an error can happen when the name of the column header has all lower case characters.
+            TextInfo ti = new CultureInfo("en-US", false).TextInfo;
+            return ti.ToTitleCase(field.Name);
         }
 
         /// <summary>
