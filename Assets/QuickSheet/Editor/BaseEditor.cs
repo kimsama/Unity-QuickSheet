@@ -81,7 +81,7 @@ namespace UnityQuickSheet
             if (useGUIStyle)
                 GUIHelper.DrawSerializedProperty(serializedData, brown);
             else
-                GUIHelper.DrawSerializedProperty(serializedData, brown);
+                GUIHelper.DrawSerializedProperty(serializedData);
         }
 
         /// <summary>
