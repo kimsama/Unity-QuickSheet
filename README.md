@@ -58,7 +58,9 @@ You can use array type with comma sperated values in a cell as the following:
 
 After importing with the given excel file, specify type of each column-header and check *array* option for an array type.
 
-![Array type setting](./images/arraytype_setting.png "Array Cell setting")
+<p align="center">
+  <img src="./images/arraytype_setting.png" width="80%" height="80%">
+</p>
 
 It will generate array type memeber field of a data class with the specified type as the following code:
 
