@@ -48,7 +48,9 @@ Usage
 
 You can use array type with comma sperated values in a cell as the following:
 
-![Array type](./images/array_cell.png "Array Cell")
+<p align="center">
+  <img src="./images/array_cell.png" >
+</p>
 
 ~~Note that don't miss the last comma which should be after a last value in a cell.~~ (Changed on v.1.0.0.0)
 
@@ -80,7 +82,10 @@ It will generate array type memeber field of a data class with the specified typ
 
 Specify enum type for a data class is easy. Let's say that you want to set enum type for *'RareType'* on a spreadsheet as the following:
 
-![Enum type](./images/enum_type.png "Enum Type")
+
+<p align="center">
+  <img src="./images/enum_type.png" >
+</p>
 
 The 'RareType' only can have one of value from three type which are *Normal*, *Rare* and *Legend*. 
 
