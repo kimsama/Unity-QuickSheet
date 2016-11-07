@@ -235,12 +235,18 @@ namespace UnityQuickSheet
             m_Writer.WriteLine (m_Indentation + tmp);
         }
 
-        private string GetFieldNameForField(MemberFieldData field)
+        /// <summary>
+        /// Override to implement your own field name format.
+        /// </summary>
+        protected virtual string GetFieldNameForField(MemberFieldData field)
         {
             return field.Name.ToLower();
         }
 
-        private string GetPropertyNameForField(MemberFieldData field)
+        /// <summary>
+        /// Override to implement your own property name format.
+        /// </summary>
+        protected virtual string GetPropertyNameForField(MemberFieldData field)
         {
             if (field.type == CellType.Enum)
                 return field.Name.ToUpper();
