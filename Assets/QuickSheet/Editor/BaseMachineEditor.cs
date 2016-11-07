@@ -40,11 +40,11 @@ namespace UnityQuickSheet
         }
 
         /// <summary>
-        /// Do not call this in the derived class.
+        /// It should be overried and implemented in the derived class
         /// </summary>
         protected virtual void Import(bool reimport = false)
         {
-            Debug.LogWarning("!!! It should be implemented in the derived class !!!");
+            throw new NotImplementedException();
         }
 
         /// <summary>
