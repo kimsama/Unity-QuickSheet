@@ -1,7 +1,7 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
 ///
 /// ExcelQuery.cs
-/// 
+///
 /// (c)2014 Kim, Hyoun Woo
 ///
 ///////////////////////////////////////////////////////////////////////////////
@@ -97,9 +97,9 @@ namespace UnityQuickSheet
 
         /// <summary>
         /// Deserialize all the cell of the given sheet.
-        /// 
+        ///
         /// NOTE:
-        ///     The first row of a sheet is header column which is not the actual value 
+        ///     The first row of a sheet is header column which is not the actual value
         ///     so it skips when it deserializes.
         /// </summary>
         public List<T> Deserialize<T>(int start = 1)
@@ -225,7 +225,7 @@ namespace UnityQuickSheet
 
                 return result.ToArray();
             }
-            
+
             error = string.Format(@"Empty row at {0}", start);
             return null;
         }
@@ -253,10 +253,22 @@ namespace UnityQuickSheet
                     if (t == typeof(long))
                         value = Convert.ToInt64(cell.StringCellValue);
                 }
+                else if (cell.CellType == NPOI.SS.UserModel.CellType.Formula)
+                {
+                    // Get value even if cell is a formula
+                    if (t == typeof(float))
+                        value = Convert.ToSingle(cell.NumericCellValue);
+                    if (t == typeof(double))
+                        value = Convert.ToDouble(cell.NumericCellValue);
+                    if (t == typeof(int))
+                        value = Convert.ToInt32(cell.NumericCellValue);
+                    if (t == typeof(long))
+                        value = Convert.ToInt64(cell.NumericCellValue);
+                }
             }
             else if (t == typeof(string) || t.IsArray)
             {
-                // HACK: handles the case that a cell contains numeric value 
+                // HACK: handles the case that a cell contains numeric value
                 //       but a member field in a data class is defined as string type.
                 if (cell.CellType == NPOI.SS.UserModel.CellType.Numeric)
                     value = cell.NumericCellValue;
@@ -280,7 +292,7 @@ namespace UnityQuickSheet
             }
             else if (t.IsArray)
             {
-                // for array type, return comma separated string 
+                // for array type, return comma separated string
                 // then parse and covert its corresponding type.
                 return value as string;
             }
