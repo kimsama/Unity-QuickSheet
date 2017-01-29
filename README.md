@@ -50,15 +50,6 @@ You can also find it on the Unity forum page which can be found on [here](http:/
 * Automation of formula calculation
 
 
-Setting up OAuth2 for accessing Google Drive
----------------------------------------------
-Google has changed the authentication scheme since May 5, 2015. Now it requires OAuth2. 
-To set this up visit [Google Developer Console](http://console.developers.google.com), create a new project, enable the Drive API, create a new client ID of type "service account" and download json file. See the **OAuth2 Google Service Account** section on the [Google Spreadsheet Howto](http://kimsama.github.io/googlehowto/) page for more details. 
-
-See [the page](./Doc/Google/OAuth2/oauth2-setting.md) for setting up credentials and getting OAuth2 *`'client_ID'`* and *`'client_secret'`*.
-
-
-
 ## References
 
 * [Unity Serialization](http://forum.unity3d.com/threads/155352-Serialization-Best-Practices-Megapost) on Unity's forum for details of serialization mechanism.
