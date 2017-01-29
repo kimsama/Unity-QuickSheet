@@ -31,7 +31,7 @@ See the [Release](https://github.com/kimsama/Unity-QuickSheet/releases) page for
 
 ## Documentaion
 
-Documentation is located [here](https://github.com/kimsama/Unity-QuickSheet)
+Documentation is located [here](https://kimsama.gitbooks.io/unity-quicksheet/content/)
 
 ### Getting Started
 
