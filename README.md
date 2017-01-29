@@ -1,5 +1,5 @@
-Unity-QuickSheet
-====================
+# Unity-QuickSheet
+
 
 <p align="left">
     <a href="https://github.com/kimsama/Unity-QuickSheet/releases">
@@ -14,9 +14,12 @@ Unity-QuickSheet
 
 Unity-QuickSheet enables you to use google and excel spreadsheet data within Unity editor. With Unity-QuickSheet, you can retrieve data from a spreadsheet and save it as an asset file with a [ScriptableObject](http://docs.unity3d.com/ScriptReference/ScriptableObject.html) format even without writing single line of code.
 
+<p align="center">
+  <img src="./images/arraytype_setting.png" >
+</p>
 
-Features
---------
+## Features
+
 * **_Easy!_** No need to write any single line of code.
 * **_Convenient!_** It can retrieve data from excel file. (both of xls and xlsx format are supported on Windows, only xls on OSX.)
 * **_Flexible!_** It can also retrieve data from google spreadsheet.
@@ -26,103 +29,26 @@ Saying again, you don't need to write even single line of code to import data fr
 
 See the [Release](https://github.com/kimsama/Unity-QuickSheet/releases) page for change logs.
 
-Getting Started
----------------
+## Documentaion
 
-* [Excel Howto](http://kimsama.github.io/excel-howto/) 
-* [Google Spreadsheet Howto](http://kimsama.github.io/googlehowto/) 
+Documentation is located [here](https://github.com/kimsama/Unity-QuickSheet)
 
-See [FAQ](https://github.com/kimsama/Unity-QuickSheet/wiki/FAQ) page for more information.
+### Getting Started
+
+* [Excel Howto](https://kimsama.gitbooks.io/unity-quicksheet/content/excel-howto/) 
+* [Google Spreadsheet Howto](https://kimsama.gitbooks.io/unity-quicksheet/content/google-howto/) 
+
+See [FAQ](https://kimsama.gitbooks.io/unity-quicksheet/content/faq/) page for other information.
 
 You can also find it on the Unity forum page which can be found on [here](http://forum.unity3d.com/threads/released-unity-quicksheet.289146/).
 
-Usage
------
+## Usage
 
 * Using [LINQ](https://code.msdn.microsoft.com/101-LINQ-Samples-3fb9811b) with QuickSheet
 * Enum with QuickSheet
 * NGUI localization with QuickSheet
 * Automation of formula calculation
 
-### Using Array type with QuickSheet
-
-You can use array type with comma sperated values in a cell as the following:
-
-<p align="center">
-  <img src="./images/array_cell.png" >
-</p>
-
-~~Note that don't miss the last comma which should be after a last value in a cell.~~ (Changed on v.1.0.0.0)
-
-```		
- 1,2,3,4,5, -> The comma right after '5' is not needed anymore after v.1.0.0.0.
-```
-
-After importing with the given excel file, specify type of each column-header and check *array* option for an array type.
-
-<p align="center">
-  <img src="./images/arraytype_setting.png" >
-</p>
-
-It will generate array type memeber field of a data class with the specified type as the following code:
-
-```csharp
-	[SerializeField]
-	int[] intarray = new int[0];
-	
-	public int[] Intarray { get {return intarray; } set { intarray = value;} }
-	
-	[SerializeField]
-	string[] stringarray = new string[0];
-	
-	public string[] Stringarray { get {return stringarray; } set { stringarray = value;} }
-```
-
-### Using Enum type with QuickSheet
-
-Specify enum type for a data class is easy. Let's say that you want to set enum type for *'RareType'* on a spreadsheet as the following:
-
-
-<p align="center">
-  <img src="./images/enum_type.png" >
-</p>
-
-The 'RareType' only can have one of value from three type which are *Normal*, *Rare* and *Legend*. 
-
-Because QuickSheet can not generate enum itself, you should first declare an enum type before generating script files.
-
-Create an empty .cs file which usually contains various enums then declare 'RareType' enum type what for you've set on the spreadsheet.
-
-
-```csharp
-public enum RareType
-{
-	Normal,
-	Rare,
-	Legend,
-}
-```
-
-Now you can generate necessary script files without an error!
-
-
-
-Add QuickSheet via subtree
------------------------------
-
-You can add QuickSheet via subtree to your github project like the following:
-
-```
-git subtree add --prefix=Assets/QuickSheet https://github.com/your_github_account/your_project.git QuickSheet 
-```
-
-It creates *QuickSheet* folder under *Assets* unity project folder then put all the neccessary files under the *QuickSheet* folder.
-
-Any changes for the remote repository easily can pull with *git subtree pull* as the following:
-
-```
-git subtree pull --prefix=Assets/QuickSheet https://github.com/kimsama/Unity-QuickSheet.git QuickSheet 
-```
 
 Setting up OAuth2 for accessing Google Drive
 ---------------------------------------------
@@ -130,13 +56,6 @@ Google has changed the authentication scheme since May 5, 2015. Now it requires 
 To set this up visit [Google Developer Console](http://console.developers.google.com), create a new project, enable the Drive API, create a new client ID of type "service account" and download json file. See the **OAuth2 Google Service Account** section on the [Google Spreadsheet Howto](http://kimsama.github.io/googlehowto/) page for more details. 
 
 See [the page](./Doc/Google/OAuth2/oauth2-setting.md) for setting up credentials and getting OAuth2 *`'client_ID'`* and *`'client_secret'`*.
-
-Tips
-----
-
-### Excel
-
-* Keep as small number of sheet in one excel file. Let's consider a case that an excel file which contains over twenty sheet in one excel file and you've generated all *ScriptableObject* asset files for each sheet. And you've created a new sheet in the same excel file then try to generate necessary script files. What happens? Even you've created only one sheet and want to only import data into the new one but Quicksheet try to reimport all data from all sheets because querying data from excel into newly created *ScriptableObject* done by Unity's reimport. So keep in mind that working with an excel file which has too much sheets can be slow.
 
 
 Limitations
