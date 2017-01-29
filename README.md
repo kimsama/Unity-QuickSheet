@@ -27,20 +27,27 @@ Unity-QuickSheet enables you to use google and excel spreadsheet data within Uni
 
 Saying again, you don't need to write even single line of code to import data from a spreadsheet whatever Exced or Google spreadsheet.
 
-See the [Release](https://github.com/kimsama/Unity-QuickSheet/releases) page for change logs.
 
 ## Documentaion
 
-Documentation is located [here](https://kimsama.gitbooks.io/unity-quicksheet/content/)
+Documentation, located on GitBook site found on [here](https://kimsama.gitbooks.io/unity-quicksheet/content/).
 
-### Getting Started
+#### Getting Started
 
-* [Excel Howto](https://kimsama.gitbooks.io/unity-quicksheet/content/excel-howto/) 
-* [Google Spreadsheet Howto](https://kimsama.gitbooks.io/unity-quicksheet/content/google-howto/) 
+See the following pages to quick start Unity-Quicksheet.
 
-See [FAQ](https://kimsama.gitbooks.io/unity-quicksheet/content/faq/) page for other information.
+* [Excel Howto](https://kimsama.gitbooks.io/unity-quicksheet/content/excel-howto/)
+* [Google Spreadsheet Howto](https://kimsama.gitbooks.io/unity-quicksheet/content/google-howto/)
 
-You can also find it on the Unity forum page which can be found on [here](http://forum.unity3d.com/threads/released-unity-quicksheet.289146/).
+#### FAQ
+
+* See [FAQ](https://kimsama.gitbooks.io/unity-quicksheet/content/faq/) page for other information.
+
+#### Release Note
+* See the [Release](https://github.com/kimsama/Unity-QuickSheet/releases) page for change log.
+
+#### Unity Forum
+* You can also find it on the Unity forum page which can be found on [here](http://forum.unity3d.com/threads/released-unity-quicksheet.289146/).
 
 ## Usage
 
@@ -54,7 +61,6 @@ You can also find it on the Unity forum page which can be found on [here](http:/
 
 * [Unity Serialization](http://forum.unity3d.com/threads/155352-Serialization-Best-Practices-Megapost) on Unity's forum for details of serialization mechanism.
 * [GDataDB](https://github.com/mausch/GDataDB) is used to retrieve data from Google Spreadsheet. Note that [GDataDB](https://github.com/mausch/GDataDB) is slightly modified to support *enum* type.
-* ~~[ExposeProperties](http://wiki.unity3d.com/index.php/Expose_properties_in_inspector) is used to easily expose variables of spreadsheet on the Unity3D's inspector view and let [GDataDB](https://github.com/mausch/GDataDB) access through get/set accessors.~~ *(Dropped on v.1.0.0.)*
 * [NPOI](https://npoi.codeplex.com/) is used to read xls and xlsx file.
 * All "*.dll" files of Google Data SDK are available at [Google Data API SDK](https://code.google.com/p/google-gdata/downloads/detail?name=libgoogle-data-mono-2.1.0.0.tar.gz&can=2&q=)
 * Newtonsoft.Json source code for net 2.0 is available at [here](https://github.com/JamesNK/Newtonsoft.Json)
@@ -64,6 +70,6 @@ You can also find it on the Unity forum page which can be found on [here](http:/
 
 This code is distributed under the terms and conditions of the MIT license.
 
-Some codes are borrowed from [GDataDB](https://github.com/mausch/GDataDB) and [ExposeProperties](http://wiki.unity3d.com/index.php/Expose_properties_in_inspector). The license of the that follow theirs.
+> Other code borrowed from [GDataDB](https://github.com/mausch/GDataDB) follow its the license.
 
 Copyright (c) 2013 Kim, Hyoun Woo
