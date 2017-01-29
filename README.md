@@ -58,18 +58,9 @@ To set this up visit [Google Developer Console](http://console.developers.google
 See [the page](./Doc/Google/OAuth2/oauth2-setting.md) for setting up credentials and getting OAuth2 *`'client_ID'`* and *`'client_secret'`*.
 
 
-Limitations
------------
 
-* *[ScritableObject](http://docs.unity3d.com/ScriptReference/ScriptableObject.html)* does not allow to save data changed on runtime. So if you need to serialize and save things that changes on runtime, you need to look at other methods of serialization such as JSON, BSON or XML, depending on your platform and/or requirements.
+## References
 
-* Excel versions 97/2000/XP/2003 are suppported for .xls (Note that NPOI of Unity-QuickSheet does not support Excel versions 5.0/95 for .xls)
-
-* Google Spreadsheet plugin does not work in the Unity web player's security sandbox. You should change the *Platform* to *'Stand Alone'* or something else such as *'iOS'* or *'Android'* platform in the Unity's [Build Setting](http://docs.unity3d.com/Manual/PublishingBuilds.html).
-
-
-References
-----------
 * [Unity Serialization](http://forum.unity3d.com/threads/155352-Serialization-Best-Practices-Megapost) on Unity's forum for details of serialization mechanism.
 * [GDataDB](https://github.com/mausch/GDataDB) is used to retrieve data from Google Spreadsheet. Note that [GDataDB](https://github.com/mausch/GDataDB) is slightly modified to support *enum* type.
 * ~~[ExposeProperties](http://wiki.unity3d.com/index.php/Expose_properties_in_inspector) is used to easily expose variables of spreadsheet on the Unity3D's inspector view and let [GDataDB](https://github.com/mausch/GDataDB) access through get/set accessors.~~ *(Dropped on v.1.0.0.)*
@@ -78,8 +69,7 @@ References
 * Newtonsoft.Json source code for net 2.0 is available at [here](https://github.com/JamesNK/Newtonsoft.Json)
 * [Unity-GoogleData](https://github.com/kimsama/Unity-GoogleData), my previous effort to import a spreadsheet data to Unity.
 
-License
--------
+## License
 
 This code is distributed under the terms and conditions of the MIT license.
 
