@@ -49,13 +49,6 @@ See the following pages to quick start Unity-Quicksheet.
 #### Unity Forum
 * You can also find it on the Unity forum page which can be found on [here](http://forum.unity3d.com/threads/released-unity-quicksheet.289146/).
 
-## Usage
-
-* Using [LINQ](https://code.msdn.microsoft.com/101-LINQ-Samples-3fb9811b) with QuickSheet
-* Enum with QuickSheet
-* NGUI localization with QuickSheet
-* Automation of formula calculation
-
 
 ## References
 
