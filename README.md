@@ -32,23 +32,9 @@ Saying again, you don't need to write even single line of code to import data fr
 
 Documentation, located on GitBook site found on [here](https://kimsama.gitbooks.io/unity-quicksheet/content/).
 
-#### Getting Started
 
-See the following pages to quick start Unity-Quicksheet.
-
-* [Excel Howto](https://kimsama.gitbooks.io/unity-quicksheet/content/excel-howto/)
-* [Google Spreadsheet Howto](https://kimsama.gitbooks.io/unity-quicksheet/content/google-howto/)
-
-#### FAQ
-
-* See [FAQ](https://kimsama.gitbooks.io/unity-quicksheet/content/faq/) page for other information.
-
-#### Release Note
-* See the [Release](https://github.com/kimsama/Unity-QuickSheet/releases) page for change log.
-
-#### Unity Forum
-* You can also find it on the Unity forum page which can be found on [here](http://forum.unity3d.com/threads/released-unity-quicksheet.289146/).
-
+* **Release Note**: See the [Release](https://github.com/kimsama/Unity-QuickSheet/releases) page for change log.
+* **Unity Forum**: You can also find *'Unity-Quicksheet'* on the Unity forum page found on [here](http://forum.unity3d.com/threads/released-unity-quicksheet.289146/). Any feedbacks, patches or suggestions are always welcome!
 
 ## References
 
