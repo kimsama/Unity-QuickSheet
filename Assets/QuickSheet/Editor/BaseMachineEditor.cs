@@ -9,8 +9,8 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.IO;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace UnityQuickSheet
 {
@@ -344,6 +344,49 @@ namespace UnityQuickSheet
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Extract only column-header string from the given string if it contains '|' dilimeter.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        protected string GetColumnHeaderString(string s)
+        {
+            if (s.Contains('|'))
+            {
+                string substr = s.Substring(0, s.IndexOf('|'));
+                return substr;
+            }
+
+            return s;
+        }
+
+        /// <summary>
+        /// Try to parse column-header if it contains '|'. e.g) 'Skill|string'
+        /// </summary>
+        /// <param name="s">A column header string in the spreadsheet.</param>
+        /// <param name="order">A order number to sort column header.</param>
+        /// <returns>A newly created ColumnHeader class instance.</returns>
+        protected ColumnHeader ParseColumnHeader(string columnheader, int order)
+        {
+            string substr = columnheader;
+            CellType ctype = CellType.Undefined;
+            bool bArray = false;
+            if (columnheader.Contains('|'))
+            {
+                bArray = columnheader.Contains("!");
+                substr = columnheader.Substring(0, columnheader.IndexOf('|'));
+
+                int startIndex = columnheader.IndexOf('|') + 1;
+                int length = columnheader.Length - columnheader.IndexOf('|') - (bArray ? 2 : 1);
+                string strType = columnheader.Substring(startIndex, length).ToLower();
+                ctype = (CellType)Enum.Parse(typeof(CellType), strType, true);
+
+                return new ColumnHeader { name = substr, type = ctype, isArray = bArray, OrderNO = order };
+            }
+
+            return new ColumnHeader { name = columnheader, type = CellType.Undefined, OrderNO = order };
         }
     }
 }
