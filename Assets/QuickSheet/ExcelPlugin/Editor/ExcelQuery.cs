@@ -134,7 +134,7 @@ namespace UnityQuickSheet
                             {
                                 //NOTE: enum array type is not supported. (Does it really needed?)
 
-                                const char DELIMETER = ',';
+                                const char DILIMETER = ',';
                                 string str = value as string;
 
                                 // remove whitespace between each of element
