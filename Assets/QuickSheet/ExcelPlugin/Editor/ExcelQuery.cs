@@ -147,7 +147,7 @@ namespace UnityQuickSheet
                                 str = str.TrimEnd(charToTrim);
 
                                 // split by ','
-                                object[] temp = str.Split(DELIMETER);
+                                object[] temp = str.Split(DILIMETER);
 
                                 Array array = (Array)Activator.CreateInstance(property.PropertyType, temp.Length);
 
