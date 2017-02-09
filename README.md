@@ -32,6 +32,8 @@ Saying again, you don't need to write even single line of code to import data fr
 
 Documentation, located on GitBook site found on [here](https://kimsama.gitbooks.io/unity-quicksheet/content/).
 
+> Also you can find ['Unity-Quicksheet.pdf'](https://github.com/kimsama/Unity-QuickSheet/blob/master/Assets/QuickSheet/Doc/Unity-Quicksheet.pdf), a pdf file same as the one on the [GitBook page](https://kimsama.gitbooks.io/unity-quicksheet/content/)
+
 
 * **Release Note**: See the [Release](https://github.com/kimsama/Unity-QuickSheet/releases) page for change log.
 * **Unity Forum**: You can also find *'Unity-Quicksheet'* on the Unity forum page found on [here](http://forum.unity3d.com/threads/released-unity-quicksheet.289146/). Any feedbacks, patches or suggestions are always welcome!
@@ -43,7 +45,7 @@ Documentation, located on GitBook site found on [here](https://kimsama.gitbooks.
 * [NPOI](https://npoi.codeplex.com/) is used to read xls and xlsx file.
 * All "*.dll" files of Google Data SDK are available at [Google Data API SDK](https://code.google.com/p/google-gdata/downloads/detail?name=libgoogle-data-mono-2.1.0.0.tar.gz&can=2&q=)
 * Newtonsoft.Json source code for net 2.0 is available at [here](https://github.com/JamesNK/Newtonsoft.Json)
-* [Unity-GoogleData](https://github.com/kimsama/Unity-GoogleData), my previous effort to import a spreadsheet data to Unity.
+* [Unity-GoogleData](https://github.com/kimsama/Unity-GoogleData), my previous effort to import a spreadsheet data into Unity.
 
 ## License
 
