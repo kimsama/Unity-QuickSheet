@@ -163,7 +163,7 @@ namespace UnityQuickSheet
                 else
                     message = string.Format(@"{0}", error);
 
-                message += "\n\nSee 'GoogleDataSettings.asset' file and check the oAuth2 setting is correctly done.";
+                message += "\n\nOn the other hand, see 'GoogleDataSettings.asset' file and check the oAuth2 setting is correctly done.";
                 EditorUtility.DisplayDialog("Error", message, "OK");
                 return;
             }
