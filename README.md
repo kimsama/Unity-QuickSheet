@@ -25,7 +25,7 @@ Unity-QuickSheet enables you to use google and excel spreadsheet data within Uni
 * **_Flexible!_** It can also retrieve data from google spreadsheet.
 * **_Fast!_** No need to write a parser to retrieve data, it automatically serializes retrieved data into Unity3D's [ScriptableObject](http://docs.unity3d.com/ScriptReference/ScriptableObject.html), the binary format and so it is fast than to use XML which is usually ASCII format.
 
-Saying again, you don't need to write even single line of code to import data from a spreadsheet whatever Exced or Google spreadsheet.
+Saying again, you don't need to write even single line of code to import data from a spreadsheet whatever Excel or Google spreadsheet.
 
 
 ## Documentaion
@@ -49,6 +49,6 @@ Documentation, located on GitBook site found on [here](https://kimsama.gitbooks.
 
 This code is distributed under the terms and conditions of the MIT license.
 
-> Other code borrowed from [GDataDB](https://github.com/mausch/GDataDB) follow its the license.
+> Other code or libraries borrowed from [GDataDB](https://github.com/mausch/GDataDB), [NPOI](https://npoi.codeplex.com/) and [Google Data API SDK](https://code.google.com/p/google-gdata/downloads/detail?name=libgoogle-data-mono-2.1.0.0.tar.gz&can=2&q=) follow its license.
 
 Copyright (c) 2013 Kim, Hyoun Woo
