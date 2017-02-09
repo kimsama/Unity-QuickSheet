@@ -101,25 +101,33 @@ namespace GDataDB.Impl
 
         public static void FinishAuthenticate()
         {
-            OAuth2Parameters parameters = new OAuth2Parameters();
-            parameters.ClientId = GoogleDataSettings.Instance.OAuth2Data.client_id;
-            parameters.ClientSecret = GoogleDataSettings.Instance.OAuth2Data.client_secret;
-            parameters.RedirectUri = REDIRECT_URI;
+            try
+            {
+                OAuth2Parameters parameters = new OAuth2Parameters();
+                parameters.ClientId = GoogleDataSettings.Instance.OAuth2Data.client_id;
+                parameters.ClientSecret = GoogleDataSettings.Instance.OAuth2Data.client_secret;
+                parameters.RedirectUri = REDIRECT_URI;
 
-            parameters.Scope = SCOPE;
-            parameters.AccessType = "offline"; // IMPORTANT 
-            parameters.TokenType = TOKEN_TYPE; // IMPORTANT 
+                parameters.Scope = SCOPE;
+                parameters.AccessType = "offline"; // IMPORTANT 
+                parameters.TokenType = TOKEN_TYPE; // IMPORTANT 
 
-            parameters.AccessCode = GoogleDataSettings.Instance._AccessCode;
+                parameters.AccessCode = GoogleDataSettings.Instance._AccessCode;
 
-            OAuthUtil.GetAccessToken(parameters);
-            string accessToken = parameters.AccessToken;
-            string refreshToken = parameters.RefreshToken;
-            //Debug.Log("OAuth Access Token: " + accessToken + "\n");
-            //Debug.Log("OAuth Refresh Token: " + refreshToken + "\n");
+                OAuthUtil.GetAccessToken(parameters);
+                string accessToken = parameters.AccessToken;
+                string refreshToken = parameters.RefreshToken;
+                //Debug.Log("OAuth Access Token: " + accessToken + "\n");
+                //Debug.Log("OAuth Refresh Token: " + refreshToken + "\n");
 
-            GoogleDataSettings.Instance._RefreshToken = refreshToken;
-            GoogleDataSettings.Instance._AccessToken = accessToken;
+                GoogleDataSettings.Instance._RefreshToken = refreshToken;
+                GoogleDataSettings.Instance._AccessToken = accessToken;
+            }
+            catch(Exception e)
+            {
+                // To display the error message with EditorGUI.Dialogue, we throw it again.
+                throw new Exception(e.Message);
+            }
         }
     }
 }

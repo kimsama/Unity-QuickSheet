@@ -33,19 +33,12 @@ namespace UnityQuickSheet
     [CustomEditor(typeof(GoogleMachine))]
     public class GoogleMachineEditor : BaseMachineEditor
     {
-        // To resolve TlsException error
-        public static bool Validator(object sender, X509Certificate certificate,
-                                      X509Chain chain, SslPolicyErrors sslPolicyErrors)
-        {
-            return true;
-        }
-
         protected override void OnEnable()
         {
             base.OnEnable();
 
-            // to resolve TlsException error
-            ServicePointManager.ServerCertificateValidationCallback = Validator;
+            // resolve TlsException error
+            UnsafeSecurityPolicy.Instate();
 
             machine = target as GoogleMachine;
             if (machine != null)
@@ -169,6 +162,8 @@ namespace UnityQuickSheet
                     message = @"Unknown error.";
                 else
                     message = string.Format(@"{0}", error);
+
+                message += "\n\nSee 'GoogleDataSettings.asset' file and check the oAuth2 setting is correctly done.";
                 EditorUtility.DisplayDialog("Error", message, "OK");
                 return;
             }

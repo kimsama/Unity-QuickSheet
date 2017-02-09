@@ -21,11 +21,14 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace UnityQuickSheet
 {
+    /// <summary>
+    /// Resolve TlsException error.
+    /// </summary>
     public class UnsafeSecurityPolicy
     {
         public static bool Validator(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors policyErrors)
         {
-            Debug.Log("Validation successful!");
+            //Debug.Log("Validation successful!");
             return true;
         }
 
@@ -47,6 +50,7 @@ namespace UnityQuickSheet
         {
             setting = target as GoogleDataSettings;
 
+            // resolve TlsException error
             UnsafeSecurityPolicy.Instate();
         }
 
@@ -184,7 +188,14 @@ namespace UnityQuickSheet
                 GoogleDataSettings.Instance._AccessCode = EditorGUILayout.TextField("AccessCode", GoogleDataSettings.Instance._AccessCode);
                 if (GUILayout.Button("Finish Authentication"))
                 {
-                    GDataDB.Impl.GDataDBRequestFactory.FinishAuthenticate();
+                    try
+                    {
+                        GDataDB.Impl.GDataDBRequestFactory.FinishAuthenticate();
+                    }
+                    catch (Exception e)
+                    {
+                        EditorUtility.DisplayDialog("Error", e.Message, "OK");
+                    }
                 }
                 EditorGUILayout.Separator();
 
