@@ -35,8 +35,6 @@ namespace UnityQuickSheet
         {
             try
             {
-                this.filepath = path;
-
                 using (FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
                     string extension = GetSuffix(path);
@@ -58,6 +56,10 @@ namespace UnityQuickSheet
 
                     if (!string.IsNullOrEmpty(sheetName))
                         sheet = workbook.GetSheet(sheetName);
+                    else
+                        throw new Exception(string.Format("No sheet is found has name {0}", sheetName));
+
+                    this.filepath = path;
                 }
             }
             catch (Exception e)
