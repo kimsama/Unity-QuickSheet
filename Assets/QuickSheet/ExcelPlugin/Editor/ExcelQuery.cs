@@ -54,10 +54,9 @@ namespace UnityQuickSheet
                         throw new Exception("Wrong file.");
                     }
 
+                    //NOTE: An empty sheetName can be available. Nothing to do with an empty sheetname.
                     if (!string.IsNullOrEmpty(sheetName))
                         sheet = workbook.GetSheet(sheetName);
-                    else
-                        throw new Exception(string.Format("No sheet is found has name {0}", sheetName));
 
                     this.filepath = path;
                 }
