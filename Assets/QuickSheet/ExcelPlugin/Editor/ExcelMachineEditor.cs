@@ -162,6 +162,12 @@ namespace UnityQuickSheet
 
             if (GUILayout.Button("Generate"))
             {
+                if (string.IsNullOrEmpty(machine.SpreadSheetName) || string.IsNullOrEmpty(machine.WorkSheetName))
+                {
+                    Debug.LogWarning("No spreadsheet or worksheet is specified.");
+                    return;
+                }
+
                 ScriptPrescription sp = Generate(machine);
                 if (sp != null)
                 {
