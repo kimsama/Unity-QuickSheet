@@ -121,7 +121,7 @@ namespace UnityQuickSheet
             }
             catch (System.Exception e)
             {
-                Debug.LogError(e);
+                Debug.LogError(e.Message);
             }
             finally
             {
