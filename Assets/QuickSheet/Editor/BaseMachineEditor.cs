@@ -363,7 +363,9 @@ namespace UnityQuickSheet
         }
 
         /// <summary>
-        /// Try to parse column-header if it contains '|'. e.g) 'Skill|string'
+        /// Try to parse column-header if it contains '|'. Note postfix '!' means it has array type.
+        /// e.g) 'Skill|string': Skill is string type.
+        ///      'MyArray | int!' : MyArray is int array type. 
         /// </summary>
         /// <param name="s">A column header string in the spreadsheet.</param>
         /// <param name="order">A order number to sort column header.</param>
