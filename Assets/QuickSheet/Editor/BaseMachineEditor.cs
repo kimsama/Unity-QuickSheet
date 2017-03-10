@@ -372,23 +372,28 @@ namespace UnityQuickSheet
         /// <returns>A newly created ColumnHeader class instance.</returns>
         protected ColumnHeader ParseColumnHeader(string columnheader, int order)
         {
-            string substr = columnheader;
+            // remove all white space. e.g.) "SkillLevel | uint"
+            string cHeader = new string(columnheader.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
+
             CellType ctype = CellType.Undefined;
             bool bArray = false;
-            if (columnheader.Contains('|'))
+            if (cHeader.Contains('|'))
             {
-                bArray = columnheader.Contains("!");
-                substr = columnheader.Substring(0, columnheader.IndexOf('|'));
+                // retrive columnheader name.
+                string substr = cHeader;
+                bArray = cHeader.Contains("!");
+                substr = cHeader.Substring(0, cHeader.IndexOf('|'));
 
-                int startIndex = columnheader.IndexOf('|') + 1;
-                int length = columnheader.Length - columnheader.IndexOf('|') - (bArray ? 2 : 1);
-                string strType = columnheader.Substring(startIndex, length).ToLower();
+                // retrieve CellType from the columnheader.
+                int startIndex = cHeader.IndexOf('|') + 1;
+                int length = cHeader.Length - cHeader.IndexOf('|') - (bArray ? 2 : 1);
+                string strType = cHeader.Substring(startIndex, length).ToLower();
                 ctype = (CellType)Enum.Parse(typeof(CellType), strType, true);
 
                 return new ColumnHeader { name = substr, type = ctype, isArray = bArray, OrderNO = order };
             }
 
-            return new ColumnHeader { name = columnheader, type = CellType.Undefined, OrderNO = order };
+            return new ColumnHeader { name = cHeader, type = CellType.Undefined, OrderNO = order };
         }
     }
 }
