@@ -45,6 +45,7 @@ namespace UnityQuickSheet
     {
         Undefined,
         String,
+        Short,
         Int,
         Long,
         Float,
@@ -77,6 +78,8 @@ namespace UnityQuickSheet
                 {
                 case CellType.String:
                     return "string";
+                case CellType.Short:
+                    return "short";
                 case CellType.Int:
                     return "int";
                 case CellType.Long:

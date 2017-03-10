@@ -35,8 +35,6 @@ namespace UnityQuickSheet
         {
             try
             {
-                this.filepath = path;
-
                 using (FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
                     string extension = GetSuffix(path);
@@ -56,8 +54,11 @@ namespace UnityQuickSheet
                         throw new Exception("Wrong file.");
                     }
 
+                    //NOTE: An empty sheetName can be available. Nothing to do with an empty sheetname.
                     if (!string.IsNullOrEmpty(sheetName))
                         sheet = workbook.GetSheet(sheetName);
+
+                    this.filepath = path;
                 }
             }
             catch (Exception e)
@@ -129,42 +130,11 @@ namespace UnityQuickSheet
                         try
                         {
                             var value = ConvertFrom(cell, property.PropertyType);
-
-                            if (property.PropertyType.IsArray)
-                            {
-                                //NOTE: enum array type is not supported. (Does it really needed?)
-
-                                const char DELIMETER = ',';
-                                string str = value as string;
-
-                                // remove whitespace between each of element
-                                str = new string(str.ToCharArray()
-                                                    .Where(ch => !Char.IsWhiteSpace(ch))
-                                                    .ToArray());
-
-                                // remove ',', if it is found at the end.
-                                char[] charToTrim = { ',', ' ' };
-                                str = str.TrimEnd(charToTrim);
-
-                                // split by ','
-                                object[] temp = str.Split(DELIMETER);
-
-                                Array array = (Array)Activator.CreateInstance(property.PropertyType, temp.Length);
-
-                                for (int j = 0; j < array.Length; j++)
-                                {
-                                    array.SetValue(Convert.ChangeType(temp[j], property.PropertyType.GetElementType()), j);
-                                }
-
-                                property.SetValue(item, array, null);
-                            }
-                            else
-                                property.SetValue(item, value, null);
-
+                            property.SetValue(item, value, null);
                         }
                         catch (Exception e)
                         {
-                            string pos = string.Format("Row[{0}], Cell[{1}]", (current + 1).ToString(), GetHeaderColumnName(i));
+                            string pos = string.Format("Row[{0}], Cell[{1}]", (current).ToString(), GetHeaderColumnName(i));
                             Debug.LogError(string.Format("Excel File {0} Deserialize Exception: {1} at {2}", this.filepath, e.Message, pos));
                         }
                     }
@@ -231,16 +201,18 @@ namespace UnityQuickSheet
         }
 
         /// <summary>
-        /// Convert type of cell value to its predefined type in the sheet's ScriptMachine setting file.
+        /// Convert type of cell value to its predefined type which is specified in the sheet's ScriptMachine setting file.
         /// </summary>
         protected object ConvertFrom(ICell cell, Type t)
         {
             object value = null;
 
-            if (t == typeof(float) || t == typeof(double) || t == typeof(int) || t == typeof(long))
+            if (t == typeof(float) || t == typeof(double) || t == typeof(short) || t == typeof(int) || t == typeof(long))
             {
                 if (cell.CellType == NPOI.SS.UserModel.CellType.Numeric)
+                {
                     value = cell.NumericCellValue;
+                }
                 else if (cell.CellType == NPOI.SS.UserModel.CellType.String)
                 {
                     //Get correct numeric value even the cell is string type but defined with a numeric type in a data class.
@@ -248,6 +220,8 @@ namespace UnityQuickSheet
                         value = Convert.ToSingle(cell.StringCellValue);
                     if (t == typeof(double))
                         value = Convert.ToDouble(cell.StringCellValue);
+                    if (t == typeof(short))
+                        value = Convert.ToInt16(cell.StringCellValue);
                     if (t == typeof(int))
                         value = Convert.ToInt32(cell.StringCellValue);
                     if (t == typeof(long))
@@ -260,6 +234,8 @@ namespace UnityQuickSheet
                         value = Convert.ToSingle(cell.NumericCellValue);
                     if (t == typeof(double))
                         value = Convert.ToDouble(cell.NumericCellValue);
+                    if (t == typeof(short))
+                        value = Convert.ToInt16(cell.NumericCellValue);
                     if (t == typeof(int))
                         value = Convert.ToInt32(cell.NumericCellValue);
                     if (t == typeof(long))
@@ -270,6 +246,7 @@ namespace UnityQuickSheet
             {
                 // HACK: handles the case that a cell contains numeric value
                 //       but a member field in a data class is defined as string type.
+                //       e.g. string s = "123"
                 if (cell.CellType == NPOI.SS.UserModel.CellType.Numeric)
                     value = cell.NumericCellValue;
                 else
@@ -292,15 +269,27 @@ namespace UnityQuickSheet
             }
             else if (t.IsArray)
             {
-                // for array type, return comma separated string
-                // then parse and covert its corresponding type.
-                return value as string;
+                if (t.GetElementType() == typeof(float))
+                    return ConvertExt.ToSingleArray((string)value);
+
+                if (t.GetElementType() == typeof(double))
+                    return ConvertExt.ToDoubleArray((string)value);
+
+                if (t.GetElementType() == typeof(short))
+                    return ConvertExt.ToInt16Array((string)value);
+
+                if (t.GetElementType() == typeof(int))
+                    return ConvertExt.ToInt32Array((string)value);
+
+                if (t.GetElementType() == typeof(long))
+                    return ConvertExt.ToInt64Array((string)value);
+
+                if (t.GetElementType() == typeof(string))
+                    return ConvertExt.ToStringArray((string)value);
             }
-            else
-            {
-                // for all other types, convert its corresponding type.
-                return Convert.ChangeType(value, t);
-            }
+
+            // for all other types, convert its corresponding type.
+            return Convert.ChangeType(value, t);
         }
     }
 }
