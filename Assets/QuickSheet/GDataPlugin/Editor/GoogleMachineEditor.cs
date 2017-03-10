@@ -134,8 +134,6 @@ namespace UnityQuickSheet
             {
                 EditorUtility.SetDirty(GoogleDataSettings.Instance);
                 EditorUtility.SetDirty(machine);
-                //AssetDatabase.SaveAssets();
-                //AssetDatabase.Refresh();
             }
         }
 
@@ -204,6 +202,7 @@ namespace UnityQuickSheet
 
             List<ColumnHeader> tmpColumnList = new List<ColumnHeader>();
 
+            int order = 0;
             // query the first columns only.
             DoCellQuery((cell) =>
             {
@@ -223,8 +222,7 @@ namespace UnityQuickSheet
                     return;
                 }
 
-                ColumnHeader column = new ColumnHeader();
-                column.name = cell.Value;
+                ColumnHeader column = ParseColumnHeader(cell.Value, order++);
                 if (headerDic != null && headerDic.ContainsKey(cell.Value))
                 {
                     // if the column is already exist, copy its name and type from the exist one.
@@ -234,11 +232,7 @@ namespace UnityQuickSheet
                         column.type = h.type;
                         column.isArray = h.isArray;
                     }
-                    else
-                        column.type = CellType.Undefined;
                 }
-                else
-                    column.type = CellType.Undefined;
 
                 tmpColumnList.Add(column);
             });

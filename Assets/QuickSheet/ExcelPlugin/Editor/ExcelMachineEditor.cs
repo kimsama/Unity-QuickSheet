@@ -180,8 +180,6 @@ namespace UnityQuickSheet
             if (GUI.changed)
             {
                 EditorUtility.SetDirty(machine);
-                //AssetDatabase.SaveAssets();
-                //AssetDatabase.Refresh();
             }
         }
 
@@ -244,14 +242,15 @@ namespace UnityQuickSheet
                 var headerDic = machine.ColumnHeaderList.ToDictionary(header => header.name);
 
                 // collect non-changed column headers
-                var exist = from t in titleList
-                            where headerDic.ContainsKey(t) == true
-                            select new ColumnHeader { name = t, type = headerDic[t].type, isArray = headerDic[t].isArray, OrderNO = headerDic[t].OrderNO };
+                var exist = titleList.Select(t => GetColumnHeaderString(t))
+                    .Where(e => headerDic.ContainsKey(e) == true)
+                    .Select(t => new ColumnHeader { name = t, type = headerDic[t].type, isArray = headerDic[t].isArray, OrderNO = headerDic[t].OrderNO });
 
+                
                 // collect newly added or changed column headers
-                var changed = from t in titleList
-                              where headerDic.ContainsKey(t) == false
-                              select new ColumnHeader { name = t, type = CellType.Undefined, OrderNO = titleList.IndexOf(t) };
+                var changed = titleList.Select(t => GetColumnHeaderString(t))
+                    .Where(e => headerDic.ContainsKey(e) == false)
+                    .Select(t => ParseColumnHeader(t, titleList.IndexOf(t)));
 
                 // merge two list via LINQ
                 var merged = exist.Union(changed).OrderBy(x => x.OrderNO);
@@ -268,7 +267,7 @@ namespace UnityQuickSheet
                     int i = 0;
                     foreach (string s in titles)
                     {
-                        machine.ColumnHeaderList.Add(new ColumnHeader { name = s, type = CellType.Undefined, OrderNO = i });
+                        machine.ColumnHeaderList.Add( ParseColumnHeader(s, i) );
                         i++;
                     }
                 }
