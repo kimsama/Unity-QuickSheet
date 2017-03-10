@@ -195,21 +195,15 @@ namespace UnityQuickSheet
 
             if (string.IsNullOrEmpty(path))
             {
-                EditorUtility.DisplayDialog(
-                    "Error",
-                    "You should specify spreadsheet file first!",
-                    "OK"
-                );
+                string msg = "You should specify spreadsheet file first!";
+                EditorUtility.DisplayDialog("Error", msg, "OK");
                 return;
             }
 
             if (!File.Exists(path))
             {
-                EditorUtility.DisplayDialog(
-                    "Error",
-                    "File at " + path + " does not exist.",
-                    "OK"
-                );
+                string msg = string.Format("File at {0} does not exist.",path);
+                EditorUtility.DisplayDialog("Error", msg, "OK");
                 return;
             }
 
@@ -261,19 +255,15 @@ namespace UnityQuickSheet
             else
             {
                 machine.ColumnHeaderList.Clear();
-
-                if (titles != null)
+                if (titleList.Count > 0)
                 {
-                    int i = 0;
-                    foreach (string s in titles)
-                    {
-                        machine.ColumnHeaderList.Add( ParseColumnHeader(s, i) );
-                        i++;
-                    }
+                    int order = 0;
+                    machine.ColumnHeaderList = titleList.Select(e => ParseColumnHeader(e, order++)).ToList();
                 }
                 else
                 {
-                    Debug.LogWarning("The WorkSheet [" + sheet + "] may be empty.");
+                    string msg = string.Format("An empty workhheet: [{0}] ", sheet);
+                    Debug.LogWarning(msg);
                 }
             }
 
