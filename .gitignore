@@ -1,2 +1,45 @@
-**/.DS_Store
+# Supyrb .gitignore standalone v0.1.4
 
+# Unity generated
+/Temp/**
+/Library/**
+/obj/**
+
+# Visual Studio / MonoDevelop generated
+/ExportedObj/**
+/obj
+/.vs/**
+*.svd
+*.userprefs
+*.csproj
+*.pidb
+*.suo
+*.sln
+*.user
+*.unityproj
+*.booproj
+
+*.csproj
+*.cache
+*Resharper*
+*ReSharper*
+*.orig
+*.orig.*
+*sln*
+.idea/**
+
+# OS generated
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+report.xml
+
+# Custom
+/Builds/**
+/Data/**
+/Assets/Temp/**
+/Assets/Temp.meta
