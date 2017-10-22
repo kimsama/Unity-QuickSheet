@@ -55,7 +55,7 @@ namespace UnityQuickSheet
         protected void InitGUIStyle()
         {
             brown = new GUIStyle("box");
-            brown.normal.background = Resources.Load("brown", typeof(Texture2D)) as Texture2D;
+            //brown.normal.background = Resources.Load("brown", typeof(Texture2D)) as Texture2D;
             brown.border = new RectOffset(4, 4, 4, 4);
             brown.margin = new RectOffset(3, 3, 3, 3);
             brown.padding = new RectOffset(4, 4, 4, 4);
