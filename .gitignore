@@ -37,6 +37,7 @@
 ehthumbs.db
 Thumbs.db
 report.xml
+~$*
 
 # Custom
 /Builds/**
