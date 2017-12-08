@@ -168,6 +168,9 @@ namespace UnityQuickSheet
                     return;
                 }
 
+	            Directory.CreateDirectory(Application.dataPath + Path.DirectorySeparatorChar + machine.RuntimeClassPath);
+	            Directory.CreateDirectory(Application.dataPath + Path.DirectorySeparatorChar + machine.EditorClassPath);
+
                 ScriptPrescription sp = Generate(machine);
                 if (sp != null)
                 {
