@@ -23,7 +23,7 @@ namespace UnityQuickSheet
         protected SerializedProperty worksheetProp;
         protected SerializedProperty serializedData;
 
-        protected GUIStyle brown;
+        protected GUIStyle box;
         protected bool isGUISkinInitialized = false;
 
         /// <summary>
@@ -54,11 +54,11 @@ namespace UnityQuickSheet
         /// </summary>
         protected void InitGUIStyle()
         {
-            brown = new GUIStyle("box");
-            //brown.normal.background = Resources.Load("brown", typeof(Texture2D)) as Texture2D;
-            brown.border = new RectOffset(4, 4, 4, 4);
-            brown.margin = new RectOffset(3, 3, 3, 3);
-            brown.padding = new RectOffset(4, 4, 4, 4);
+            box = new GUIStyle("box");
+            box.normal.background = Resources.Load(EditorGUIUtility.isProSkin ? "brown" : "lightSkinBox", typeof(Texture2D)) as Texture2D;
+            box.border = new RectOffset(4, 4, 4, 4);
+            box.margin = new RectOffset(3, 3, 3, 3);
+            box.padding = new RectOffset(4, 4, 4, 4);
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace UnityQuickSheet
             }
 
             if (useGUIStyle)
-                GUIHelper.DrawSerializedProperty(serializedData, brown);
+                GUIHelper.DrawSerializedProperty(serializedData, box);
             else
                 GUIHelper.DrawSerializedProperty(serializedData);
         }
