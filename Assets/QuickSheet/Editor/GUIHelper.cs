@@ -1,7 +1,7 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
 ///
 /// GUIHelper.cs
-/// 
+///
 /// (c)2015 Kim, Hyoun Woo
 ///
 ///////////////////////////////////////////////////////////////////////////////
@@ -26,7 +26,7 @@ namespace UnityQuickSheet
         /// </summary>
         public static void HelpBox(string message, MessageType msgType)
         {
-            EditorGUILayout.HelpBox(message, msgType);                
+            EditorGUILayout.HelpBox(message, msgType);
         }
 
         const int defaultVisibleArrayElements = 20;
@@ -64,7 +64,7 @@ namespace UnityQuickSheet
                     }
                     else
                     {
-                        // Handles array type with separate way due to SerializedProperty provides 
+                        // Handles array type with separate way due to SerializedProperty provides
                         // its own method for array type.
                         prop.arraySize = EditorGUILayout.IntField("Length", prop.arraySize);
                         var showCount = Mathf.Min(prop.arraySize, maxVisibleArrayElements);
@@ -127,11 +127,11 @@ namespace UnityQuickSheet
                     break;
                 case SerializedPropertyType.Enum:
                     EditorGUILayout.PropertyField(prop);
-                    //prop.enumValueIndex = EditorGUILayout.IntField(prop.name, prop.enumValueIndex);
-                    //EditorGUI.indentLevel++;
-                    //prop.enumValueIndex = EditorGUILayout.Popup("< Enum >", prop.enumValueIndex, prop.enumNames);
-                    //prop.enumValueIndex = EditorGUILayout.MaskField("< Mask >", prop.enumValueIndex, prop.enumNames);
-                    //EditorGUI.indentLevel--;
+                    EditorGUI.indentLevel++;
+                    EditorGUI.BeginDisabledGroup(true);
+                    prop.enumValueIndex = EditorGUILayout.IntField(prop.name, prop.enumValueIndex);
+                    EditorGUI.EndDisabledGroup();
+                    EditorGUI.indentLevel--;
                     break;
                 case SerializedPropertyType.Vector2:
                     prop.vector2Value = EditorGUILayout.Vector2Field(prop.displayName, prop.vector2Value);
