@@ -33,7 +33,7 @@ MonoBehaviour:
     name: Difficulty
     isEnable: 0
     isArray: 0
-  excelFilePath: Assets/Example.xlsx
+  excelFilePath: Assets/QuickSheet/Example/Excel/Example.xlsx
   SheetNames:
   - ExcelExample
   currentSelectedSheet: 0
