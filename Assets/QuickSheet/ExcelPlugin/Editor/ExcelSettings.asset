@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Name: ExcelSettings
   m_EditorClassIdentifier: 
   RuntimePath: 
-  EditorPath: Editor
+  EditorPath: 

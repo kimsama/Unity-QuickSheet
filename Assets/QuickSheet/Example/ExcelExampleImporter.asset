@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Name: ExcelExampleImporter
   m_EditorClassIdentifier: 
   templatePath: QuickSheet/ExcelPlugin/Templates
-  scriptFilePath: 
-  editorScriptFilePath: Editor
+  scriptFilePath: QuickSheet/Example/Data/Runtime
+  editorScriptFilePath: QuickSheet/Example/Data/Editor
   sheetName: Example.xlsx
   workSheetName: ExcelExample
   columnHeaderList:
