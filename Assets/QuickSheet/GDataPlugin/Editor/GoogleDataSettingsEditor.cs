@@ -1,7 +1,7 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
 ///
 /// GoogleDataSettingsEditor.cs
-/// 
+///
 /// (c)2013 Kim, Hyoun Woo
 ///
 ///////////////////////////////////////////////////////////////////////////////
@@ -169,13 +169,13 @@ namespace UnityQuickSheet
                 // client_id for OAuth2
                 GUILayout.BeginHorizontal();
                 GUILayout.Label("Client ID: ", GUILayout.Width(LabelWidth));
-                setting.OAuth2Data.client_id = GUILayout.TextField(setting.OAuth2Data.client_id);
+                setting.OAuth2Data.client_id = EditorGUILayout.TextField(setting.OAuth2Data.client_id);
                 GUILayout.EndHorizontal();
 
                 // client_secret for OAuth2
                 GUILayout.BeginHorizontal();
                 GUILayout.Label("Client Secret: ", GUILayout.Width(LabelWidth));
-                setting.OAuth2Data.client_secret = GUILayout.TextField(setting.OAuth2Data.client_secret);
+                setting.OAuth2Data.client_secret = EditorGUILayout.TextField(setting.OAuth2Data.client_secret);
                 GUILayout.EndHorizontal();
 
                 EditorGUILayout.Separator();
@@ -201,12 +201,12 @@ namespace UnityQuickSheet
 
                 GUILayout.BeginHorizontal();
                 GUILayout.Label("Runtime Path: ", GUILayout.Width(LabelWidth));
-                setting.RuntimePath = GUILayout.TextField(setting.RuntimePath);
+                setting.RuntimePath = EditorGUILayout.TextField(setting.RuntimePath);
                 GUILayout.EndHorizontal();
 
                 GUILayout.BeginHorizontal();
                 GUILayout.Label("Editor Path: ", GUILayout.Width(LabelWidth));
-                setting.EditorPath = GUILayout.TextField(setting.EditorPath);
+                setting.EditorPath = EditorGUILayout.TextField(setting.EditorPath);
                 GUILayout.EndHorizontal();
             }
             else
