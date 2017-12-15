@@ -1,4 +1,0 @@
-    [SerializeField]
-    string $FieldName;
-    public string $CapitalFieldName	{ get {return $FieldName; } set { $FieldName = value;} }
-    
