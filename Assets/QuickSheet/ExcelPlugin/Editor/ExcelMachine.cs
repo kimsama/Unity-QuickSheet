@@ -1,7 +1,7 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
 ///
 /// ExcelMachine.cs
-/// 
+///
 /// (c)2014 Kim, Hyoun Woo
 ///
 ///////////////////////////////////////////////////////////////////////////////
@@ -17,32 +17,29 @@ namespace UnityQuickSheet
     internal class ExcelMachine : BaseMachine
     {
         /// <summary>
-        /// where the .xls or .xlsx file is. The path should start with "Assets/". 
+        /// where the .xls or .xlsx file is. The path should start with "Assets/".
         /// </summary>
         public string excelFilePath;
 
         // both are needed for popup editor control.
         public string[] SheetNames = { "" };
-        public int CurrentSheetIndex 
+        public int CurrentSheetIndex
         {
             get { return currentSelectedSheet; }
-            set { currentSelectedSheet = value;} 
+            set { currentSelectedSheet = value;}
         }
 
         [SerializeField]
         protected int currentSelectedSheet = 0;
 
-        // excel and google plugin have its own template files, 
+        // excel and google plugin have its own template files,
         // so we need to set the different path when the asset file is created.
         private readonly string excelTemplatePath = "QuickSheet/ExcelPlugin/Templates";
 
         /// <summary>
-        /// Note: Called when the asset file is selected.
+        /// Note: Called when the asset file is created.
         /// </summary>
-        protected new void OnEnable()
-        {
-            base.OnEnable();
-
+        private void Awake() {
             TemplatePath = excelTemplatePath;
         }
 
