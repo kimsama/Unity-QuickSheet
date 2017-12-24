@@ -183,8 +183,8 @@ namespace UnityQuickSheet
                     string value = title.GetCell(i).StringCellValue;
                     if (string.IsNullOrEmpty(value))
                     {
-                        error = string.Format(@"Empty column is found at {0}.", i);
-                        return null;
+                        // null or empty column is found. Note column index starts from 0.
+                        Debug.LogWarningFormat("Null or empty column is found at {0}.The celltype of {0} is '{1}' type.\n", i, title.GetCell(i).CellType);
                     }
                     else
                     {
