@@ -19,7 +19,7 @@ namespace UnityQuickSheet
     public class ExcelSettings : SingletonScriptableObject<ExcelSettings>
     {
         /// <summary>
-        /// A path where template .txt files are.
+        /// A default path where .txt template files are.
         /// </summary>
         public string TemplatePath = "QuickSheet/ExcelPlugin/Templates";
 

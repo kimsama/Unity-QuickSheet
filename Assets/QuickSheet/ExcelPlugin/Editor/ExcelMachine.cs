@@ -32,15 +32,13 @@ namespace UnityQuickSheet
         [SerializeField]
         protected int currentSelectedSheet = 0;
 
-        // excel and google plugin have its own template files,
-        // so we need to set the different path when the asset file is created.
-        private readonly string excelTemplatePath = "QuickSheet/ExcelPlugin/Templates";
-
         /// <summary>
         /// Note: Called when the asset file is created.
         /// </summary>
         private void Awake() {
-            TemplatePath = excelTemplatePath;
+            // excel and google plugin have its own template files,
+            // so we need to set the different path when the asset file is created.
+            TemplatePath = ExcelSettings.Instance.TemplatePath;
         }
 
         /// <summary>

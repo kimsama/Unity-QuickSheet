@@ -20,12 +20,12 @@ namespace GDataDB.Impl {
 
         public ListEntry Serialize(T e, ListEntry record) {
             foreach (var p in typeof (T).GetProperties()) {
-				if (p.CanRead) {
-					record.Elements.Add(new ListEntry.Custom {
-						LocalName = p.Name.ToLowerInvariant(), // for some reason this HAS to be lowercase or it throws
-						Value = ToNullOrString(p.GetValue(e, null)),
-					});
-				}
+                if (p.CanRead) {
+                    record.Elements.Add(new ListEntry.Custom {
+                        LocalName = p.Name.ToLowerInvariant(), // for some reason this HAS to be lowercase or it throws
+                        Value = ToNullOrString(p.GetValue(e, null)),
+                    });
+                }
             }
             return record;
         }
@@ -41,14 +41,14 @@ namespace GDataDB.Impl {
                 var nc = new NullableConverter(t);
                 return nc.ConvertFrom(value);
             }
-			
-			//HACK: modified to return enum.
-			if (t.IsEnum)
-			{
-				return Enum.Parse(t, value.ToString(), true);
-			}
-			else
-            	return Convert.ChangeType(value, t);
+            
+            //HACK: modified to return enum.
+            if (t.IsEnum)
+            {
+                return Enum.Parse(t, value.ToString(), true);
+            }
+            else
+                return Convert.ChangeType(value, t);
         }
 
         public T Deserialize(ListEntry e) {
@@ -58,10 +58,10 @@ namespace GDataDB.Impl {
                 var property = t.GetProperty(c.LocalName, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public);
                 if (property == null)
                     continue;
-				if (property.CanWrite) {
-					
-					try
-					{
+                if (property.CanWrite) {
+                    
+                    try
+                    {
                         if (property.PropertyType.IsArray) 
                         {
                             const char DELIMETER = ','; // '\n'
@@ -123,12 +123,12 @@ namespace GDataDB.Impl {
 
                             property.SetValue(r, value, null);
                         }
-					}
-					catch(Exception exc)
-					{
-						Debug.LogError ("GDataDB Serialization Exception: " + exc.Message + " ListEntry LocalName: " + c.LocalName);
-					}
-				}
+                    }
+                    catch(Exception exc)
+                    {
+                        Debug.LogError ("GDataDB Serialization Exception: " + exc.Message + " ListEntry LocalName: " + c.LocalName);
+                    }
+                }
             }
             return r;
         }

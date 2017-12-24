@@ -34,7 +34,7 @@ namespace UnityQuickSheet
         private string jsonFilePath = string.Empty;
 
         /// <summary>
-        /// A path where template .txt files are.
+        /// A default path where .txt template files are.
         /// </summary>
         public string TemplatePath = "QuickSheet/GDataPlugin/Templates";
 
