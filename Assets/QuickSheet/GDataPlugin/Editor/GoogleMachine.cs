@@ -23,12 +23,14 @@ namespace UnityQuickSheet
         [SerializeField]
         public static string assetFileName = "GoogleMachine.asset";
 
+
         public string AccessCode = "";
 
         /// <summary>
         /// Note: Called when the asset file is created.
         /// </summary>
-        private void Awake() {
+        private void Awake() 
+        {
             // excel and google plugin have its own template files,
             // so we need to set the different path when the asset file is created.
             TemplatePath = GoogleDataSettings.Instance.TemplatePath;
