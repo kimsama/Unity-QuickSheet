@@ -16,12 +16,9 @@ namespace UnityQuickSheet
     /// <summary>
     /// A class manages google account setting.
     /// </summary>
-    public class GoogleDataSettings : ScriptableObject
+    [CreateAssetMenu(menuName = "QuickSheet/Setting/GoogleData Setting")]
+    public class GoogleDataSettings : SingletonScriptableObject<GoogleDataSettings>
     {
-        public static string AssetPath = "Assets/QuickSheet/GDataPlugin/Editor/";
-
-        public static readonly string AssetFileName = "GoogleDataSettings.asset";
-
         // A flag which indicates use local installed oauth2 json file for authentication or not.
         static public bool useOAuth2JsonFile = false;
 
@@ -35,6 +32,11 @@ namespace UnityQuickSheet
             }
         }
         private string jsonFilePath = string.Empty;
+
+        /// <summary>
+        /// A default path where .txt template files are.
+        /// </summary>
+        public string TemplatePath = "QuickSheet/GDataPlugin/Templates";
 
         /// <summary>
         /// A path where generated ScriptableObject derived class and its data class script files are to be put.
@@ -68,20 +70,6 @@ namespace UnityQuickSheet
         public string _AccessToken = "";
 
         /// <summary>
-        /// A singleton instance.
-        /// </summary>
-        private static GoogleDataSettings s_Instance;
-
-        /// <summary>
-        /// Create new account setting asset file if there is already one then select it.
-        /// </summary>
-        [MenuItem("Assets/Create/QuickSheet/Setting/GoogleData Setting")]
-        public static void CreateGoogleDataSetting()
-        {
-            GoogleDataSettings.Create();
-        }
-
-        /// <summary>
         /// Select currently exist account setting asset file.
         /// </summary>
         [MenuItem("Edit/Project Settings/QuickSheet/Select Google Data Setting")]
@@ -92,85 +80,6 @@ namespace UnityQuickSheet
             {
                 Debug.LogError("No GoogleDataSettings.asset file is found. Create setting file first.");
             }
-        }
-
-        /// <summary>
-        /// Checks GoogleDataSetting.asset file exist at the specified path(AssetPath+AssetFileName).
-        /// </summary>
-        public bool CheckPath()
-        {
-            string file = AssetDatabase.GetAssetPath(Selection.activeObject);
-            string assetFile = AssetPath + GoogleDataSettings.AssetFileName;
-
-            return (file == assetFile) ? true : false;
-        }
-
-        /// <summary>
-        /// A property for a singleton instance.
-        /// </summary>
-        public static GoogleDataSettings Instance
-        {
-            get
-            {
-                if (s_Instance == null)
-                {
-                    string path = GoogleDataSettings.AssetPath + GoogleDataSettings.AssetFileName;
-                    s_Instance = (GoogleDataSettings)AssetDatabase.LoadAssetAtPath(path, typeof(GoogleDataSettings));
-                    if (s_Instance == null)
-                    {
-                        string title = string.Format(@"No {0} is found!", AssetFileName);
-                        string message = string.Format(@"No {0} is found at '{1}'. \n Press 'Create' button to create a default one.", AssetFileName, AssetPath);
-                        bool ok = EditorUtility.DisplayDialog(
-                            title,
-                            message,
-                            "Create",
-                            "Cancel"
-                        );
-
-                        if (ok)
-                            s_Instance = GoogleDataSettings.Create();
-                    }
-                }
-                return s_Instance;
-            }
-        }
-
-        /// <summary>
-        /// Create .asset file for google spreadsheet setting if it does not exist.
-        /// </summary>
-        public static GoogleDataSettings Create()
-        {
-            string filePath = CustomAssetUtility.GetUniqueAssetPathNameOrFallback(AssetFileName);
-            s_Instance = (GoogleDataSettings)AssetDatabase.LoadAssetAtPath(filePath, typeof(GoogleDataSettings));
-
-            if (s_Instance == null)
-            {
-                s_Instance = CreateInstance<GoogleDataSettings>();
-
-                string path = CustomAssetUtility.GetUniqueAssetPathNameOrFallback(AssetFileName);
-                AssetDatabase.CreateAsset(s_Instance, path);
-
-                GoogleDataSettings.AssetPath = Path.GetDirectoryName(path);
-                GoogleDataSettings.AssetPath += "/";
-
-                // saves file path of the created asset.
-                EditorUtility.SetDirty(s_Instance);
-                AssetDatabase.SaveAssets();
-
-                EditorUtility.DisplayDialog(
-                    "Validate Settings",
-                    "Default google data settings file has been created for accessing Google project page. You should validate these before proceeding.",
-                    "OK"
-                );
-            }
-            else
-            {
-                Debug.LogWarning("Already exist at " + filePath);
-            }
-
-            Selection.activeObject = s_Instance;
-
-            return s_Instance;
         }
     }
 }
