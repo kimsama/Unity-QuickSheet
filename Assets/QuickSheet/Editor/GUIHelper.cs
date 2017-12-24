@@ -1,7 +1,7 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
 ///
 /// GUIHelper.cs
-/// 
+///
 /// (c)2015 Kim, Hyoun Woo
 ///
 ///////////////////////////////////////////////////////////////////////////////
@@ -26,7 +26,7 @@ namespace UnityQuickSheet
         /// </summary>
         public static void HelpBox(string message, MessageType msgType)
         {
-            EditorGUILayout.HelpBox(message, msgType);                
+            EditorGUILayout.HelpBox(message, msgType);
         }
 
         const int defaultVisibleArrayElements = 20;
@@ -41,7 +41,7 @@ namespace UnityQuickSheet
             {
                 case SerializedPropertyType.Generic:
                     // make Array and Object to be fold
-                    prop.isExpanded = EditorGUILayout.Foldout(prop.isExpanded, prop.name);
+                    prop.isExpanded = EditorGUILayout.Foldout(prop.isExpanded, prop.displayName);
                     if (!prop.isExpanded)
                         break;
 
@@ -64,7 +64,7 @@ namespace UnityQuickSheet
                     }
                     else
                     {
-                        // Handles array type with separate way due to SerializedProperty provides 
+                        // Handles array type with separate way due to SerializedProperty provides
                         // its own method for array type.
                         prop.arraySize = EditorGUILayout.IntField("Length", prop.arraySize);
                         var showCount = Mathf.Min(prop.arraySize, maxVisibleArrayElements);
@@ -101,66 +101,65 @@ namespace UnityQuickSheet
                     EditorGUI.indentLevel--;
                     break;
                 case SerializedPropertyType.Integer:
-                    prop.intValue = EditorGUILayout.IntField(prop.name, prop.intValue);
+                    prop.intValue = EditorGUILayout.IntField(prop.displayName, prop.intValue);
                     break;
                 case SerializedPropertyType.Boolean:
-                    prop.boolValue = EditorGUILayout.Toggle(prop.name, prop.boolValue);
+                    prop.boolValue = EditorGUILayout.Toggle(prop.displayName, prop.boolValue);
                     break;
                 case SerializedPropertyType.Float:
-                    prop.floatValue = EditorGUILayout.FloatField(prop.name, prop.floatValue);
+                    prop.floatValue = EditorGUILayout.FloatField(prop.displayName, prop.floatValue);
                     break;
                 case SerializedPropertyType.String:
-                    prop.stringValue = EditorGUILayout.TextField(prop.name, prop.stringValue);
+                    prop.stringValue = EditorGUILayout.TextField(prop.displayName, prop.stringValue);
                     break;
                 case SerializedPropertyType.Color:
-                    prop.colorValue = EditorGUILayout.ColorField(prop.name, prop.colorValue);
+                    prop.colorValue = EditorGUILayout.ColorField(prop.displayName, prop.colorValue);
                     break;
                 case SerializedPropertyType.ObjectReference:
                     prop.objectReferenceValue = EditorGUILayout.ObjectField(
-                        prop.name, prop.objectReferenceValue, typeof(Object), true);
+                        prop.displayName, prop.objectReferenceValue, typeof(Object), true);
                     EditorGUI.indentLevel++;
                     EditorGUILayout.LabelField("Type", prop.type);
                     EditorGUI.indentLevel--;
                     break;
                 case SerializedPropertyType.LayerMask:
-                    prop.intValue = EditorGUILayout.IntField(prop.name, prop.intValue);
+                    prop.intValue = EditorGUILayout.IntField(prop.displayName, prop.intValue);
                     break;
                 case SerializedPropertyType.Enum:
-                    // Both of Mask and normal status are shown
                     EditorGUILayout.PropertyField(prop);
-                    prop.enumValueIndex = EditorGUILayout.IntField(prop.name, prop.enumValueIndex);
                     EditorGUI.indentLevel++;
-                    prop.enumValueIndex = EditorGUILayout.Popup("< Enum >", prop.enumValueIndex, prop.enumNames);
-                    prop.enumValueIndex = EditorGUILayout.MaskField("< Mask >", prop.enumValueIndex, prop.enumNames);
+                    EditorGUI.BeginDisabledGroup(true);
+                    prop.enumValueIndex = EditorGUILayout.IntField(prop.name, prop.enumValueIndex);
+                    EditorGUI.EndDisabledGroup();
                     EditorGUI.indentLevel--;
                     break;
                 case SerializedPropertyType.Vector2:
-                    prop.vector2Value = EditorGUILayout.Vector2Field(prop.name, prop.vector2Value);
+                    prop.vector2Value = EditorGUILayout.Vector2Field(prop.displayName, prop.vector2Value);
                     break;
                 case SerializedPropertyType.Vector3:
-                    prop.vector3Value = EditorGUILayout.Vector3Field(prop.name, prop.vector3Value);
+                    prop.vector3Value = EditorGUILayout.Vector3Field(prop.displayName, prop.vector3Value);
                     break;
                 case SerializedPropertyType.Rect:
-                    prop.rectValue = EditorGUILayout.RectField(prop.name, prop.rectValue);
+                    prop.rectValue = EditorGUILayout.RectField(prop.displayName, prop.rectValue);
                     break;
                 case SerializedPropertyType.ArraySize:
-                    prop.intValue = EditorGUILayout.IntField(prop.name, prop.intValue);
+                    prop.intValue = EditorGUILayout.IntField(prop.displayName, prop.intValue);
                     break;
                 case SerializedPropertyType.Character:
                     EditorGUILayout.PropertyField(prop);
                     break;
                 case SerializedPropertyType.AnimationCurve:
-                    prop.animationCurveValue = EditorGUILayout.CurveField(prop.name, prop.animationCurveValue);
+                    prop.animationCurveValue = EditorGUILayout.CurveField(prop.displayName, prop.animationCurveValue);
                     break;
                 case SerializedPropertyType.Bounds:
-                    prop.boundsValue = EditorGUILayout.BoundsField(prop.name, prop.boundsValue);
+                    prop.boundsValue = EditorGUILayout.BoundsField(prop.displayName, prop.boundsValue);
                     break;
                 case SerializedPropertyType.Gradient:
                     EditorGUILayout.PropertyField(prop);
                     break;
                 case SerializedPropertyType.Quaternion:
                     prop.quaternionValue = Quaternion.Euler(
-                        EditorGUILayout.Vector3Field(prop.name, prop.quaternionValue.eulerAngles));
+                        EditorGUILayout.Vector3Field(prop.displayName, prop.quaternionValue.eulerAngles));
                     break;
             }
         }

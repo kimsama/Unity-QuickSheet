@@ -1,7 +1,7 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
 ///
 /// GoogleMachine.cs
-/// 
+///
 /// (c)2013 Kim, Hyoun Woo
 ///
 ///////////////////////////////////////////////////////////////////////////////
@@ -23,19 +23,16 @@ namespace UnityQuickSheet
         [SerializeField]
         public static string assetFileName = "GoogleMachine.asset";
 
-        // excel and google plugin have its own template files, 
+        // excel and google plugin have its own template files,
         // so we need to set the different path when the asset file is created.
         private readonly string gDataTemplatePath = "QuickSheet/GDataPlugin/Templates";
 
         public string AccessCode = "";
 
         /// <summary>
-        /// Note: Called when the asset file is selected.
+        /// Note: Called when the asset file is created.
         /// </summary>
-        protected new void OnEnable()
-        {
-            base.OnEnable();
-
+        private void Awake() {
             TemplatePath = gDataTemplatePath;
         }
 
