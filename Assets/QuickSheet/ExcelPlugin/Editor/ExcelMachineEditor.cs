@@ -25,7 +25,7 @@ namespace UnityQuickSheet
             base.OnEnable();
 
             machine = target as ExcelMachine;
-            if (machine != null)
+            if (machine != null && ExcelSettings.Instance != null)
             {
                 if (string.IsNullOrEmpty(ExcelSettings.Instance.RuntimePath) == false)
                     machine.RuntimeClassPath = ExcelSettings.Instance.RuntimePath;
