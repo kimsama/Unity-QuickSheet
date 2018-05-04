@@ -95,17 +95,19 @@ namespace GDataDB.Impl {
                                 char[] charToTrim = { ',', ' ' };
                                 str = str.TrimEnd(charToTrim);
 
-                                // split by ','
-                                object[] temp = str.Split(DELIMETER);
+                                if (!string.IsNullOrEmpty(str)) {
+                                    // split by ','
+                                    object[] temp = str.Split(DELIMETER);
 
-                                Array array = (Array)Activator.CreateInstance(property.PropertyType, temp.Length);
+                                    Array array = (Array)Activator.CreateInstance(property.PropertyType, temp.Length);
 
-                                for (int i = 0; i < array.Length; i++) 
-                                {
-                                    array.SetValue(Convert.ChangeType(temp[i], property.PropertyType.GetElementType()), i);
+                                    for (int i = 0; i < array.Length; i++)
+                                    {
+                                        array.SetValue(Convert.ChangeType(temp[i], property.PropertyType.GetElementType()), i);
+                                    }
+
+                                    property.SetValue(r, array, null);
                                 }
-
-                                property.SetValue(r, array, null);
                             }
                         } 
                         else 
