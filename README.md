@@ -3,7 +3,7 @@
 
 <p align="left">
     <a href="https://github.com/kimsama/Unity-QuickSheet/releases">
-        <img src="https://img.shields.io/badge/release-v1.0.1-orange.svg"
+        <img src="https://img.shields.io/badge/release-v.1.0.2-orange.svg"
              alt="POD">
     </a>
     <a href="https://opensource.org/licenses/MIT">
