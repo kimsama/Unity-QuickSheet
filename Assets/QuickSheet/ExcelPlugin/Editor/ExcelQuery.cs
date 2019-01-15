@@ -56,7 +56,11 @@ namespace UnityQuickSheet
 
                     //NOTE: An empty sheetName can be available. Nothing to do with an empty sheetname.
                     if (!string.IsNullOrEmpty(sheetName))
+                    {
                         sheet = workbook.GetSheet(sheetName);
+                        if (sheet == null)
+                            Debug.LogErrorFormat("Cannot find sheet '{0}'.", sheetName);
+                    }
 
                     this.filepath = path;
                 }
@@ -124,6 +128,9 @@ namespace UnityQuickSheet
                 {
                     ICell cell = row.GetCell(i);
 
+                    if (cell == null)  // skip empty cell
+                        continue;
+
                     var property = p[i];
                     if (property.CanWrite)
                     {
@@ -173,6 +180,12 @@ namespace UnityQuickSheet
         /// </summary>
         public string[] GetTitle(int start, ref string error)
         {
+            if (sheet == null)
+            {
+                error = @"Sheet is null";
+                return null;
+            }
+
             List<string> result = new List<string>();
 
             IRow title = sheet.GetRow(start);
@@ -180,7 +193,14 @@ namespace UnityQuickSheet
             {
                 for (int i = 0; i < title.LastCellNum; i++)
                 {
-                    string value = title.GetCell(i).StringCellValue;
+                    var cell = title.GetCell(i);
+                    if (cell == null)
+                    {
+                        // null or empty column is found. Note column index starts from 0.
+                        Debug.LogWarningFormat("Null or empty column is found at {0}.\n", i);
+                        continue;
+                    }
+                    string value = cell.StringCellValue;
                     if (string.IsNullOrEmpty(value))
                     {
                         // null or empty column is found. Note column index starts from 0.
