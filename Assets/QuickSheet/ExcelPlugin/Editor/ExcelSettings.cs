@@ -32,18 +32,5 @@ namespace UnityQuickSheet
         /// A path where generated editor script files are to be put.
         /// </summary>
         public string EditorPath = string.Empty;
-
-        /// <summary>
-        /// Select currently exist account setting asset file.
-        /// </summary>
-        [MenuItem("Edit/Project Settings/QuickSheet/Select Excel Setting")]
-        public static void Edit()
-        {
-            Selection.activeObject = Instance;
-            if (Selection.activeObject == null)
-            {
-                Debug.LogError(@"No ExcelSetting.asset file is found. Create setting file first. See the menu at 'Create/QuickSheet/Setting/Excel Setting'.");
-            }
-        }
     }
 }

@@ -189,7 +189,7 @@ namespace UnityQuickSheet
         /// <summary>
         /// Import the specified excel file and prepare to set type of each cell.
         /// </summary>
-        protected override void Import(bool reimport = false)
+        public override void Import(bool reimport = false)
         {
             ExcelMachine machine = target as ExcelMachine;
 

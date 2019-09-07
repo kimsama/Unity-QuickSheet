@@ -68,18 +68,5 @@ namespace UnityQuickSheet
         public string _RefreshToken = "";
 
         public string _AccessToken = "";
-
-        /// <summary>
-        /// Select currently exist account setting asset file.
-        /// </summary>
-        [MenuItem("Edit/Project Settings/QuickSheet/Select Google Data Setting")]
-        public static void Edit()
-        {
-            Selection.activeObject = Instance;
-            if (Selection.activeObject == null)
-            {
-                Debug.LogError("No GoogleDataSettings.asset file is found. Create setting file first.");
-            }
-        }
     }
 }

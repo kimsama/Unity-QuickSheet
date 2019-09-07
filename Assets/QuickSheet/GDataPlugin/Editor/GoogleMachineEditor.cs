@@ -190,7 +190,7 @@ namespace UnityQuickSheet
         /// <summary>
         /// Connect to the google spreadsheet and retrieves its header columns.
         /// </summary>
-        protected override void Import(bool reimport = false)
+        public override void Import(bool reimport = false)
         {
             Regex re = new Regex(@"\d+");
 

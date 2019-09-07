@@ -50,13 +50,14 @@ namespace UnityQuickSheet
         /// A menu item which create a 'ExcelMachine' asset file.
         /// </summary>
         [MenuItem("Assets/Create/QuickSheet/Tools/Excel")]
-        public static void CreateScriptMachineAsset()
+        public static ExcelMachine CreateScriptMachineAsset()
         {
             ExcelMachine inst = ScriptableObject.CreateInstance<ExcelMachine>();
             string path = CustomAssetUtility.GetUniqueAssetPathNameOrFallback(ImportSettingFilename);
             AssetDatabase.CreateAsset(inst, path);
             AssetDatabase.SaveAssets();
             Selection.activeObject = inst;
+            return inst;
         }
     }
 }
