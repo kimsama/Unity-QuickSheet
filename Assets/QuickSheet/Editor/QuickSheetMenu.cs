@@ -56,6 +56,8 @@ namespace UnityQuickSheet
                 var path = AssetDatabase.GUIDToAssetPath(guid);
                 if (!IsExcel(path)) continue;
                 
+                ExcelSettings.Instance._waitImportPath.Add(path);
+                
                 var excelQuery = new ExcelQuery(path);
                 var sheets = excelQuery.GetSheetNames();
                 for (int i = 0; i < sheets.Length; i++)
@@ -68,19 +70,30 @@ namespace UnityQuickSheet
                     machine.SpreadSheetName = Path.GetFileName(path);
                     
                     ReimportMachine(machine, true);
+                    BaseMachineEditor.CreateGenerateDirectory(machine);
                     GenerateMachine(machine, false);
                     RenameMachineAsset(machine);
                     
                     selectObjs.Add(machine);
                     Debug.LogFormat("Setup finished! file:{0}, Sheet:{1}", machine.SpreadSheetName, sheets[i]);
                 }
-                
-                //reimport excel file to generate data asset and update it
-                AssetDatabase.ImportAsset(path);
             }
 
             Selection.objects = selectObjs.ToArray();
             AssetDatabase.Refresh();
+        }
+        
+        /// <summary>
+        /// After generate script reload, reimport excel file to generate data asset and update it
+        /// </summary>
+        [UnityEditor.Callbacks.DidReloadScripts]
+        private static void OnScriptsReloaded() 
+        {
+            foreach (var path in ExcelSettings.Instance._waitImportPath)
+            {
+                AssetDatabase.ImportAsset(path);
+            }
+            ExcelSettings.Instance._waitImportPath.Clear();
         }
 
         /// <summary>

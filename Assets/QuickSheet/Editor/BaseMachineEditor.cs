@@ -395,5 +395,11 @@ namespace UnityQuickSheet
 
             return new ColumnHeader { name = cHeader, type = CellType.Undefined, OrderNO = order };
         }
+        
+        public static void CreateGenerateDirectory(BaseMachine machine)
+        {
+            Directory.CreateDirectory(Application.dataPath + Path.DirectorySeparatorChar + machine.RuntimeClassPath);
+            Directory.CreateDirectory(Application.dataPath + Path.DirectorySeparatorChar + machine.EditorClassPath);
+        }
     }
 }

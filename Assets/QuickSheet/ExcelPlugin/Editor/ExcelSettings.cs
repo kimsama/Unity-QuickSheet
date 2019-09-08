@@ -8,6 +8,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
 namespace UnityQuickSheet
@@ -32,5 +33,10 @@ namespace UnityQuickSheet
         /// A path where generated editor script files are to be put.
         /// </summary>
         public string EditorPath = string.Empty;
+        
+        /// <summary>
+        /// record import path for QuickSheetMenu
+        /// </summary>
+        internal List<string> _waitImportPath = new List<string>();
     }
 }
