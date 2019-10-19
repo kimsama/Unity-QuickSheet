@@ -168,8 +168,7 @@ namespace UnityQuickSheet
                     return;
                 }
 
-	            Directory.CreateDirectory(Application.dataPath + Path.DirectorySeparatorChar + machine.RuntimeClassPath);
-	            Directory.CreateDirectory(Application.dataPath + Path.DirectorySeparatorChar + machine.EditorClassPath);
+	            CreateGenerateDirectory(machine);
 
                 ScriptPrescription sp = Generate(machine);
                 if (sp != null)
@@ -189,7 +188,7 @@ namespace UnityQuickSheet
         /// <summary>
         /// Import the specified excel file and prepare to set type of each cell.
         /// </summary>
-        protected override void Import(bool reimport = false)
+        public override void Import(bool reimport = false)
         {
             ExcelMachine machine = target as ExcelMachine;
 

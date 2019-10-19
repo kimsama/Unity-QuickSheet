@@ -27,16 +27,14 @@ namespace UnityQuickSheet
                     _instance = Resources.FindObjectsOfTypeAll<T>().FirstOrDefault();
                     if (!_instance)
                     {
-                        string filter = "t:" + typeof(T);
-                        var guids = AssetDatabase.FindAssets(filter);
-                        if (guids.Length > 0)
+                        var assets = Util.FindAssetsByType<T>();
+                        if (assets.Length > 0)
                         {
-                            if (guids.Length > 1)
+                            if (assets.Length > 1)
                                 Debug.LogWarningFormat("Multiple {0} assets are found.", typeof(T));
 
-                            string assetPath = AssetDatabase.GUIDToAssetPath(guids[0]);
-                            Debug.LogFormat("Using {0}.", assetPath);
-                            _instance = AssetDatabase.LoadAssetAtPath<T>(assetPath);
+                            _instance = assets[0];
+                            Debug.LogFormat("Using {0}.", AssetDatabase.GetAssetPath(_instance));
                         }
                         // no found any setting file.
                         else
