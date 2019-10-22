@@ -42,7 +42,7 @@ namespace UnityQuickSheet
         /// <summary>
         /// It should be overried and implemented in the derived class
         /// </summary>
-        protected virtual void Import(bool reimport = false)
+        public virtual void Import(bool reimport = false)
         {
             throw new NotImplementedException();
         }
@@ -66,7 +66,7 @@ namespace UnityQuickSheet
         /// Generate script files with the given templates.
         /// Total four files are generated, two for runtime and others for editor.
         /// </summary>
-        protected virtual ScriptPrescription Generate(BaseMachine m)
+        public virtual ScriptPrescription Generate(BaseMachine m)
         {
             if (m == null)
                 return null;
@@ -394,6 +394,12 @@ namespace UnityQuickSheet
             }
 
             return new ColumnHeader { name = cHeader, type = CellType.Undefined, OrderNO = order };
+        }
+        
+        public static void CreateGenerateDirectory(BaseMachine machine)
+        {
+            Directory.CreateDirectory(Application.dataPath + Path.DirectorySeparatorChar + machine.RuntimeClassPath);
+            Directory.CreateDirectory(Application.dataPath + Path.DirectorySeparatorChar + machine.EditorClassPath);
         }
     }
 }

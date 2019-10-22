@@ -8,6 +8,7 @@
 using System;
 using System.Collections;
 using System.Linq;
+using UnityEditor;
 
 namespace UnityQuickSheet
 {
@@ -25,5 +26,18 @@ namespace UnityQuickSheet
             "ushort", "using", "virtual", "void", "volatile", "while",
         };
 
+        public static T[] FindAssetsByType<T>() where T : UnityEngine.Object
+        {
+            string filter = "t:" + typeof(T);
+            var guids = AssetDatabase.FindAssets(filter);
+            var results = new T[guids.Length];
+            for (int i = 0; i < guids.Length; i++)
+            {
+                string assetPath = AssetDatabase.GUIDToAssetPath(guids[i]);
+                results[i] = AssetDatabase.LoadAssetAtPath<T>(assetPath);
+            }
+
+            return results;
+        }
     }
 }
