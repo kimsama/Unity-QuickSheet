@@ -36,7 +36,7 @@ namespace UnityQuickSheet
         /// <summary>
         /// Select currently exist account setting asset file.
         /// </summary>
-        [MenuItem("Edit/Project Settings/QuickSheet/Select Excel Setting")]
+        [MenuItem("Edit/QuickSheet/Select Excel Setting")]
         public static void Edit()
         {
             Selection.activeObject = Instance;
