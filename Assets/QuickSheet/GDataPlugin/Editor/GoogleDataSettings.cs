@@ -72,7 +72,7 @@ namespace UnityQuickSheet
         /// <summary>
         /// Select currently exist account setting asset file.
         /// </summary>
-        [MenuItem("Edit/Project Settings/QuickSheet/Select Google Data Setting")]
+        [MenuItem("Edit/QuickSheet/Select Google Data Setting")]
         public static void Edit()
         {
             Selection.activeObject = Instance;
