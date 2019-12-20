@@ -41,7 +41,7 @@ namespace UnityQuickSheet
             {
                 case SerializedPropertyType.Generic:
                     // make Array and Object to be fold
-                    prop.isExpanded = EditorGUILayout.Foldout(prop.isExpanded, prop.displayName);
+                    prop.isExpanded = EditorGUILayout.Foldout(prop.isExpanded, prop.displayName, true);
                     if (!prop.isExpanded)
                         break;
 
