@@ -230,7 +230,7 @@ namespace UnityQuickSheet
                     tmp += "public " + field.Type + " " + propertyName + " ";
             }
 
-            tmp += "{ get {return " + fieldName + "; } set { " + fieldName + " = value;} }";
+            tmp += "{ get {return " + fieldName + "; } set { this." + fieldName + " = value;} }";
 
             m_Writer.WriteLine (m_Indentation + tmp);
         }
