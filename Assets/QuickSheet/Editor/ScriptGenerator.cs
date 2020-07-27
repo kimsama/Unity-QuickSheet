@@ -199,7 +199,16 @@ namespace UnityQuickSheet
             var fieldName = GetFieldNameForField(field);
             string tmp;
             if (field.type == CellType.Enum)
-                tmp = field.Name + " " + fieldName + ";";
+            {
+                if (field.IsArrayType)
+                {
+                    tmp = field.Name + "[] " + fieldName + ";";
+                }
+                else
+                {
+                    tmp = field.Name + " " + fieldName + ";";
+                }
+            }
             else
             {
                 if (field.IsArrayType)
@@ -221,7 +230,16 @@ namespace UnityQuickSheet
             var fieldName = GetFieldNameForField(field);
 
             if (field.type == CellType.Enum)
-                tmp += "public " + field.Name + " " + propertyName + " ";
+            {
+                if (field.IsArrayType)
+                {
+                    tmp += "public " + field.Name + "[]" + " " + propertyName + " ";
+                }
+                else
+                {
+                    tmp += "public " + field.Name + " " + propertyName + " ";
+                }
+            }
             else
             {
                 if (field.IsArrayType)

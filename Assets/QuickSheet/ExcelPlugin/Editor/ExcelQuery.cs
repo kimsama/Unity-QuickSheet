@@ -306,6 +306,21 @@ namespace UnityQuickSheet
 
                 if (t.GetElementType() == typeof(string))
                     return ConvertExt.ToStringArray((string)value);
+
+                if (t.GetElementType().IsEnum)
+                {
+                    var stringValue = cell.StringCellValue.ToString();
+                    var splitValues = stringValue.Split(',');
+                    var enumArray = Array.CreateInstance(t.GetElementType(), splitValues.Length);
+                    for (int i = 0; i < splitValues.Length; ++i)
+                    {
+                        string splitValue = splitValues[i];
+                        var enumValue = Enum.Parse(t.GetElementType(), splitValue, true);
+                        enumArray.SetValue(enumValue, i);
+                    }
+
+                    return enumArray;
+                }
             }
 
             // for all other types, convert its corresponding type.
