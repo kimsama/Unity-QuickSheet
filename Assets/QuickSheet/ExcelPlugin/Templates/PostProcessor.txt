@@ -10,7 +10,7 @@ using UnityQuickSheet;
 public class $AssetPostprocessorClass : AssetPostprocessor 
 {
     private static readonly string filePath = "$IMPORT_PATH";
-    private static readonly string assetFilePath = "$ASSET_PATH";
+    private static readonly string assetFilePath = @"$ASSET_PATH";
     private static readonly string sheetName = "$ClassName";
     
     static void OnPostprocessAllAssets (string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
